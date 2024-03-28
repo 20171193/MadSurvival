@@ -10,6 +10,10 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
+        private GameObject[] models;
+        private int curModel = 0;
+
+        [SerializeField]
         private CharacterController controller;
         [SerializeField]
         private Animator anim;
@@ -32,12 +36,33 @@ namespace Jc
 
         private void Start()
         {
-
+            SetModel(curModel);
         }
 
         private void Update()
         {
             Move();
+        }
+        private void SetModel(int index)
+        {
+            // 모델 변경함수
+            // 예외처리 : 인덱스 범위를 벗어난 경우
+            if (index >= models.Length || index < 0) return;
+
+            // 현재 모델을 비활성화
+            models[curModel]?.SetActive(false);
+            
+            // 모델 변경 후 활성화
+            curModel = index;
+            models[curModel].SetActive(true);
+            // 애니메이터 변경
+            anim = models[curModel].GetComponent<Animator>();            
+        }
+
+        // 테스트용 캐릭터 모델 변경
+        private void OnCharacterChange(InputValue value)
+        {
+            SetModel(value.Get<float>() < 0 ? curModel-1 : curModel+1);
         }
 
         // 마우스 입력 시 조이스틱 위치 설정
