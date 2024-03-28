@@ -11,12 +11,12 @@ public class item : MonoBehaviour
 
 	private void OnTriggerEnter( Collider other )
 	{
-		if ( other.gameObject.GetComponent<BackPack>() )
-		{
-			Destroy(gameObject);
+		//if ( other.gameObject.GetComponent<BackPack>())
+		//{
+		//	Destroy(gameObject);
 
 			
-		}
+		//}
 
 	}
 }
