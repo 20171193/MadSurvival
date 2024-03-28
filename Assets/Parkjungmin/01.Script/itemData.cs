@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace jungmin
+[CreateAssetMenu]
+public class itemData : ScriptableObject
 {
-	public class itemData : ScriptableObject
-	{
+	public string name;
+	public Sprite itemSprite;
 
-	}
+
 
 }
