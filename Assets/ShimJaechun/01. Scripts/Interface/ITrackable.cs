@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITrackable
+namespace Jc
 {
-    public void OnGround();
+    public interface ITrackable
+    {
+        public void OnGround(Ground ground);
+    }
 }
