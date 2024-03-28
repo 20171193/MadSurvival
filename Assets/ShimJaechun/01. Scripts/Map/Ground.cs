@@ -30,21 +30,19 @@ namespace Jc
         Wall,
         Water
     }
-
+    [Serializable]
+    public struct GroundPos
+    {
+        public int x;
+        public int y;
+        public GroundPos(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
     public class Ground : MonoBehaviour
     {
-        [Serializable]
-        public struct GroundPos
-        {
-            public int x;
-            public int y;
-            public GroundPos(int x, int y)
-            {
-                this.x = x;
-                this.y = y;
-            }
-        }
-
         // 게임맵 상 타일의 좌푯값
         // 좌측 상단 : (0, 0)
         // 우측 하단 : (타일의 총 개수-1, 타일의 총 개수 -1)
