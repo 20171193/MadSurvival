@@ -6,6 +6,18 @@ using UnityEngine;
 
 namespace Jc
 {
+    [Serializable]
+    public struct GroundList
+    {
+        [SerializeField]
+        public List<Ground> groundList;
+
+        public GroundList(List<Ground> groundList)
+        {
+            this.groundList = groundList;
+        }
+    }
+
     public class GroundSet : MonoBehaviour
     {
         [Header("Component")]
@@ -21,18 +33,7 @@ namespace Jc
 
         [SerializeField]
         private List<GroundList> groundLists;
-
-        [Serializable]
-        public struct GroundList
-        {
-            [SerializeField]
-            public List<Ground> groundList;
-
-            public GroundList(List<Ground> groundList)
-            {
-                this.groundList = groundList;
-            }
-        }
+        public List<GroundList> GroundLists { get { return groundLists; } } 
 
         // 프리팹 크기
         [SerializeField]
@@ -49,6 +50,14 @@ namespace Jc
         private float xStartPos;
         // z 축 끝점 (첫 프리팹이 생성될 z좌표)
         private float zStartPos;
+
+        private void Start()
+        {
+            // 길찾기 매니저에 게임 맵을 할당
+            //if (groundLists.Count > 0)
+                //Manager.Navigation.AssginGameMap(groundLists);
+        }
+
 
         [ContextMenu("DrawGround")]
         public void DrawGround()
@@ -68,7 +77,6 @@ namespace Jc
             xCount = (int)(transform.localScale.x * 10 / prefabXscale);
             zCount = (int)(transform.localScale.z * 10 / prefabZscale);
 
-
             for (int z = 0; z < zCount; z++)
             {
                 GroundList grounds = new GroundList(new List<Ground>());
@@ -82,7 +90,7 @@ namespace Jc
                     GameObject inst = Instantiate(groundPrefab, groundPos, Quaternion.identity);
                     grounds.groundList.Add(inst.GetComponent<Ground>());
                     inst.transform.parent = transform;
-                    inst.gameObject.name = $"Ground_({x}, {z})";
+                    inst.gameObject.name = $"{x}{z}_Ground";
                 }
 
                 groundLists.Add(grounds);
