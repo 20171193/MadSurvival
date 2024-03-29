@@ -62,6 +62,7 @@ namespace Jc
             onGround = ground;
         }
 
+        // 플레이어 위치가 변경될 경우 호출될 함수
         public void OnChangeTarget(Ground playerGround)
         {
             this.playerGround = playerGround;
