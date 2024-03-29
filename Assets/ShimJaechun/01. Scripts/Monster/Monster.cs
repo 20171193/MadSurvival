@@ -19,6 +19,19 @@ namespace Jc
         [SerializeField]
         private Animator anim;
 
+        [SerializeField]
+        private MonsterFSM fsm;
+
+        [Header("Specs")]
+        [SerializeField]
+        private float speed;
+        public float Speed { get { return speed; } set { speed = value; agent.speed = value; } }  
+
+        [SerializeField]
+        private float hp;
+        [SerializeField]
+        private float atk;
+
         [Space(3)]
         [Header("Balancing")]
         [Space(2)]
@@ -38,6 +51,11 @@ namespace Jc
 
         private void OnEnable()
         {
+            // 추후 CSV 데이터를 먼저 로드해서 정해진 속도로 할당하기.
+
+            // 속도 할당
+            agent.speed = speed;
+
             // 플레이어의 타일 위치가 변경될 경우 발생할 액션
             Navi.OnChangePlayerGround += OnChangeTarget;
             // 게임맵 할당
@@ -61,14 +79,12 @@ namespace Jc
         {
             onGround = ground;
         }
-
         // 플레이어 위치가 변경될 경우 호출될 함수
         public void OnChangeTarget(Ground playerGround)
         {
             this.playerGround = playerGround;
             TargetSetting(playerGround);
         }
-
         // 목적지 세팅
         // 플레이어가 벽으로 둘러싸여 있는지 체크
         //  - true : 가장 가까운 벽으로 이동
