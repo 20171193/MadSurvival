@@ -5,7 +5,7 @@ using UnityEngine;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 
-public class Slot : MonoBehaviour,IPointerDownHandler,IDragHandler,IDropHandler,IPointerUpHandler
+public class Slot : MonoBehaviour,IPointerDownHandler,IDragHandler,IDropHandler,IPointerUpHandler,IBeginDragHandler
 {
 
 	[SerializeField] public Item item;
@@ -29,7 +29,11 @@ public class Slot : MonoBehaviour,IPointerDownHandler,IDragHandler,IDropHandler,
 			transform.GetChild(1).gameObject.SetActive(false);
 		} // 없을 경우는 비워두기
 	}
-
+	public void OnBeginDrag(PointerEventData data )
+	{
+		DragSlot.instance.TargetSlot = this;
+		DragSlot.instance.image = this.transform.GetChild(1).GetComponent<Image>();
+	}
 
 	public void OnDrop(PointerEventData data)
 	{
@@ -40,33 +44,33 @@ public class Slot : MonoBehaviour,IPointerDownHandler,IDragHandler,IDropHandler,
 	}
 	public void OnPointerDown(PointerEventData data )
 	{
-		if(item != null )
-		{
-			firstPos = transform.GetChild(1).position;
-			IsDraggSprite = true;
-		}
+		//if(item != null )
+		//{
+		//	firstPos = transform.GetChild(1).position;
+		//	IsDraggSprite = true;
+		//}
 	}
 	public void OnPointerUp(PointerEventData data)
 	{
-		if(IsDraggSprite && (IsSlotAnchor == false) )
-		{
-			transform.GetChild(1).position = firstPos;
-			IsDraggSprite = false;
-		}
+		//if(IsDraggSprite && (IsSlotAnchor == false) )
+		//{
+		//	transform.GetChild(1).position = firstPos;
+		//	IsDraggSprite = false;
+		//}
 
-		if ( IsDraggSprite && IsSlotAnchor)
-		{
-			transform.GetChild(1).position = NewSlotPos;
-			IsSlotAnchor = false;
-			IsDraggSprite = false;
-		}
+		//if ( IsDraggSprite && IsSlotAnchor)
+		//{
+		//	transform.GetChild(1).position = NewSlotPos;
+		//	IsSlotAnchor = false;
+		//	IsDraggSprite = false;
+		//}
 	}
 	public void OnDrag(PointerEventData data )
 	{
-		if(item != null )
-		{
-			transform.GetChild(1).position = Input.mousePosition;
-		}
+		//if(item != null )
+		//{
+		//	transform.GetChild(1).position = Input.mousePosition;
+		//}
 	}
 
 
