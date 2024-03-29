@@ -1,21 +1,22 @@
+using jungmin;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class item : MonoBehaviour
+public class Item : MonoBehaviour
 {
+
+	[SerializeField] public string name;
 	[SerializeField] public Sprite icon;
 	[SerializeField] itemData itemdata;
-	
 
 
 	private void OnTriggerEnter( Collider other )
 	{
-		if ( other.gameObject.GetComponent<BackPack>() )
+		if (other.gameObject.GetComponent<moveing>())
 		{
-			Destroy(gameObject);
-
-			
+			other.gameObject.GetComponent<moveing>().backpack.GetComponent<BackPack>().GetItem(this);
+			gameObject.SetActive(false);
 		}
 
 	}

@@ -15,9 +15,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "BackPack",
+                    "name": "Backpack",
                     "type": "Button",
-                    "id": "f509976d-1294-4cc9-920e-2937111f87cb",
+                    "id": "32d781d6-daed-490b-9350-2a33ebd3a50f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -93,12 +93,12 @@
                 },
                 {
                     "name": "",
-                    "id": "72b7775f-5b7a-4f03-9933-a83c946c901a",
+                    "id": "f10e7b2e-befd-473c-9038-28b4c1fe6470",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "BackPack",
+                    "action": "Backpack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
