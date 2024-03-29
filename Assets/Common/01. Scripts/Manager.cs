@@ -1,7 +1,4 @@
-using System.Resources;
-using UnityEditor.EditorTools;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public static class Manager
 {

@@ -23,24 +23,26 @@ public class BackPack : MonoBehaviour
 	 * <<Craft>>
 	 * 아이템: 음식,장비,재료,건축물,
 	 */
-	public Slot[] backpack;
+
+
+	/*
+	 * 
+	 * 
+	 * 
+	 */
+	[SerializeField] public Slot[] backpack;
+	[SerializeField] public GameObject SlotSet;
 	List<RaycastResult> list = new List<RaycastResult>();
 	Slot CurArmor;
-	GraphicRaycaster Isclickable;
-	Vector3 startPostion;
-	[HideInInspector] public Transform startParent;
-
-	Vector3 DragStartPos;
-	Vector3 DragStayPos;
-	PointerEventData MousePos;
+	Vector2 OpenPos;
+	Vector2 hidePos;
+	[SerializeField] public bool Ishide;
 
 	private void Awake()
 	{
-		backpack = transform.GetChild(1).gameObject.GetComponentsInChildren<Slot>(); 
-		if(backpack != null )
-		{
-			Debug.Log("할당 완료");
-		}
+		backpack = SlotSet.GetComponentsInChildren<Slot>();
+		OpenPos = new Vector2(0, -48.1f);
+		hidePos = new Vector2(-1600, -48.1f);
 	}
 
 	void Swap()
@@ -51,17 +53,28 @@ public class BackPack : MonoBehaviour
 	{
 
 	}
+
 	public void GetItem( Item z )
 	{
 		for(int x=0;x<backpack.Length;x++)
 		{
-			if(backpack[x].item == null )
+			if (backpack[x].item == null )
 			{
 				backpack [x].item = z;
 				Debug.Log($"{x}번 슬롯에 저장되었습니다.");
 				return;
 			}
 		}
+	}
+	public void Close()
+	{
+		transform.parent.GetComponent<RectTransform>().anchoredPosition = hidePos;
+		Ishide = false;
+	}
+	public void Open()
+	{
+		transform.parent.GetComponent<RectTransform>().anchoredPosition = OpenPos;
+		Ishide = true;
 	}
 	void Craft()
 	{ 
