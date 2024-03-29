@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
@@ -9,15 +10,17 @@ using UnityEngine.UIElements;
 
 namespace Jc
 {
-    public class Monster : MonoBehaviour, ITileable
+    public class Monster : MonoBehaviour, ITileable, IDamageable
     {
         [Header("Components")]
         [Space(2)]
         [SerializeField]
         private NavMeshAgent agent;
+        public NavMeshAgent Agent { get { return agent; } }
 
         [SerializeField]
         private Animator anim;
+        public Animator Anim { get { return anim; }  }
 
         [SerializeField]
         private MonsterFSM fsm;
@@ -42,6 +45,7 @@ namespace Jc
         // 전체적인 게임 맵
         [SerializeField]
         private List<GroundList> gameMap;
+        public List<GroundList> GameMap { get { return gameMap; } }
 
         // 몬스터가 스폰된 타일
         [SerializeField]
@@ -49,9 +53,13 @@ namespace Jc
         public Ground OnGround { get { return onGround; } }
 
         private Ground playerGround;
+        public Ground PlayerGround { get { return playerGround; } }
+
+        private bool isTrackingPlayer;
+        public bool IsTrackingPlayer { get { return isTrackingPlayer; } }
 
         // 간략화
-        private NavigationManager Navi => Manager.Navi;
+        public NavigationManager Navi => Manager.Navi;
 
         private void OnEnable()
         {
@@ -78,6 +86,14 @@ namespace Jc
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
 
+        // 데미지 처리
+        public void TakeDamage(float damage, Vector3 suspectPos)
+        {
+            // 데미지값 처리
+
+            // 넉백 처리
+        }
+
         // 몬스터가 타일에 진입한 경우 세팅
         public void OnTile(Ground ground)
         {
@@ -89,11 +105,14 @@ namespace Jc
             this.playerGround = playerGround;
             TargetSetting(playerGround);
         }
+
+        #region 몬스터 추격 알고리즘
+
         // 목적지 세팅
         // 플레이어가 벽으로 둘러싸여 있는지 체크
         //  - true : 가장 가까운 벽으로 이동
         //  - false : 플레이어로 이동
-        private void TargetSetting(Ground playerGround)
+        public void TargetSetting(Ground playerGround)
         {
             // 예외처리 : 플레이어가 타일 위에 위치하지않은 경우
             if (playerGround == null)
@@ -101,8 +120,14 @@ namespace Jc
                 Debug.Log("플레이어가 위치한 타일이 존재하지 않습니다.");
                 return;
             }
-
-            agent.destination = CheckPlayerBaseCamp().transform.position;
+            // 지정한 목표 (플레이어)
+            Ground originTarget = playerGround;
+            // 탐색 결과 목표
+            Ground resultTarget = CheckPlayerBaseCamp();
+            agent.destination = resultTarget.transform.position;
+            
+            // 탐색 결과가 플레이어일 경우 true
+            isTrackingPlayer = originTarget == resultTarget;
         }
         // 진지를 구축할 수 있는 좌표에서 탐색
         private Ground CheckPlayerBaseCamp()
@@ -164,5 +189,6 @@ namespace Jc
             }
             return null;
         }
+        #endregion
     }
 }
