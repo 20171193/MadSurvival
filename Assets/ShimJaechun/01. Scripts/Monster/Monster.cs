@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 namespace Jc
 {
@@ -14,6 +18,9 @@ namespace Jc
         public Ground onGround;
 
         private Ground playerGround;
+
+        // 간략화
+        private NavigationManager Navi => Manager.Navi;
 
         private void OnEnable()
         {
@@ -37,59 +44,85 @@ namespace Jc
         {
 
         }
-        #region 길찾기 알고리즘 로직
-        /*****************************************************************************************************************
-         * 
-         *  1. 플레이어가 벽으로 둘러싸여 있는지 체크 (플레이어 기준으로 BFS탐색)
-         *    a. 벽으로 둘러싸여있다면 
-         *     a-1. 현재 위치에서 가장 가까운 벽을 찾아 Astar 알고리즘 실행
-         *     a-2. 3초에 한번씩 1을 재실행 (전투 중 벽을 파괴하거나, 벽을 생성하는 경우가 존재하기 때문)
-         *     
-         *    b. 플레이어에게 도달할 수 있다면
-         *     b-1. 플레이어가 위치한 타일로 Astar 알고리즘 실행
-         *     b-2. 3초에 한번씩 1을 재실행
-         *  
-         *  2. 최종적으로 목표지점에 도달한 경우 
-         *    2-1. 타깃을 향해 공격
-         *     2-1-a. 타깃이 플레이어인 경우 (움직일 수 있음). 1을 재실행.
-         *     2-1-b. 타깃이 벽인 경우 (움직일 수 없음). 3초에 한번씩 1을 재실행.
-         * 
-         * 추가)
-         * 벽을 지을 수 있는 공간이 한정되어있을 경우 BFS가 효과적일 것 같음.
-         * 60x60맵을 9분할한 뒤 가운데 공간(플레이어가 벽을 지을 수 있는 공간)에 플레이어가 위치한 경우에만 BFS탐색을 실시.
-         *  - BFS 탐색이 최악에는 끝점을 제외한 맵의 전체를 탐색해야하지만, N^2 
-         *  게임 특성상 벽을 지을 수 있는 공간은 20*20이므로 (N/9)^2 으로 많이 줄일 수 있을 것 같음.
-         *  
-         *  이 또한 최적화가 필요하다면 플레이어 기준으로 레이캐스트를 활용하는 방법을 사용.
-         *   - 이 방법은 벽의 높이가 제 각각일 수 있어 레이가 닿지 않는 경우가 발생할 수 있으므로 최후의 수단으로 보류.
-         *    ? 낮게 쏘면 될 것 같음.
-         *****************************************************************************************************************/
-        #endregion
 
-        // A* 길찾기 알고리즘
-        private Ground PathFinding()
+        // 목적지 세팅
+        // 플레이어가 벽으로 둘러싸여 있는지 체크
+        //  - true : 가장 가까운 벽으로 이동
+        //  - false : 플레이어로 이동
+        private Ground TargetSetting()
         {
-            // 예외처리 : 길찾기를 시작할 위치/맵이 지정되어있지 않은 경우
-            if(onGround == null || playerGround == null ||  gameMap.Count < 1)
+            // 예외처리 : 플레이어가 타일 위에 위치하지않은 경우
+            if (playerGround == null)
             {
-                Debug.Log($"{this.gameObject.name} : 길찾기 오류");
-                Debug.Log($"몬스터 : {onGround}, 플레이어 : {playerGround}, 맵 : {gameMap}");
+                Debug.Log("플레이어가 위치한 타일이 존재하지 않습니다.");
                 return null;
             }
-            // 작업 중단 부분
             return null;
         }
 
-        // 플레이어에게 도착할 수 있는지 체크
-        private bool IsReachable()
+        // 진지를 구축할 수 있는 좌표에서 탐색
+        private Ground CheckPlayerBaseCamp()
         {
-            // 작업 중단 부분
-            return false;
-        }
+            int zPos = playerGround.Pos.z;
+            int xPos = playerGround.Pos.x;
 
-        private void Astar()
-        {
+            // 플레이어가 진지를 구축할 수 없는 영역에 존재하는 경우
+            // -> 목적지를 플레이어가 위치한 타일로 설정.
+            if (zPos > Navi.cornerTL.z || zPos < Navi.cornerBL.z || xPos < Navi.cornerTL.x || xPos > Navi.cornerTR.x)
+                return playerGround;
 
+            // 플레이어가 진지를 구축할 수 있는 영역에 존재하는 경우
+            // -> 체크 : 플레이어가 벽으로 둘러싸여있는지?
+
+            // BFS 탐색
+            Queue<GroundPos> q = new Queue<GroundPos>();
+            // 방문확인 배열 생성 (원점 기준)
+            bool[,] visitied = new bool[Navi.mapZsize/3,Navi.mapXsize/3];
+            int resol = Navi.mapZsize / 3 - 1;
+            // 4방향 탐색할 방향 설정
+            int[] dz = { 0, 0, 1, -1 };
+            int[] dx = { 1, -1, 0, 0 };
+            q.Enqueue(playerGround.Pos);
+            // 방문배열 확인을 위해 그라운드 위치를 원점좌표로 변환
+            visitied[playerGround.Pos.z - resol, playerGround.Pos.x - resol] = true;
+
+            while(q.Count > 0)
+            {
+                GroundPos curPos = q.Dequeue();
+                for(int i =0; i<4; i++)
+                {
+                    int nz = dz[i] + curPos.z;
+                    int nx = dx[i] + curPos.x;
+
+                    // 예외처리 
+                    if (nz > Navi.cornerTL.z || nz < Navi.cornerBL.z || nx < Navi.cornerTL.x || nx > Navi.cornerTR.x) continue;
+                    if (visitied[nz - resol, nx - resol]) continue;
+                    if (Navi.gameMap[nz].groundList[nx].type != GroundType.Buildable) continue;
+
+                    // 벽이 뚫린 경우
+                    if (nz >= Navi.cornerTL.z || nz <= Navi.cornerBL.z || nx <= Navi.cornerTL.x || nx >= Navi.cornerTR.x)
+                        return playerGround;
+
+                    q.Enqueue(new GroundPos(nz, nx));
+                    visitied[nz-resol, nx-resol] = true;
+                }
+            }
+
+            // 벽이 뚫리지 않은 경우 현재 위치에서 가장 가까운 벽을 목적지로 설정
+            // 현재위치 -> 플레이어위치 레이캐스팅
+            Vector3 startPos = new Vector3(onGround.transform.position.x, 0.2f, onGround.transform.position.z);
+            Vector3 endPos = new Vector3(playerGround.transform.position.x, 0.2f, onGround.transform.position.z);
+            Debug.DrawLine(startPos, endPos, Color.red, 0.5f);
+            if (Physics.Raycast(new Ray(startPos, endPos), out RaycastHit hitInfo, (endPos - startPos).magnitude, Manager.Layer.wallLM))
+            {
+                if(hitInfo.transform.GetComponent<Ground>())
+                {
+                    
+                }
+
+                return hitInfo.transform.GetComponent<Ground>();
+            }
+            return null;
         }
     }
 }
