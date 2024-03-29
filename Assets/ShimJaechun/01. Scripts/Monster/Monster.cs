@@ -3,19 +3,33 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
 namespace Jc
 {
-    public class Monster : MonoBehaviour, ITrackable
+    public class Monster : MonoBehaviour, ITileable
     {
+        [Header("Components")]
+        [Space(2)]
+        [SerializeField]
+        private NavMeshAgent agent;
+
+        [SerializeField]
+        private Animator anim;
+
+        [Space(3)]
+        [Header("Balancing")]
+        [Space(2)]
         // 전체적인 게임 맵
         [SerializeField]
         private List<GroundList> gameMap;
 
         // 몬스터가 스폰된 타일
-        public Ground onGround;
+        [SerializeField]
+        private Ground onGround;
+        public Ground OnGround { get { return onGround; } }
 
         private Ground playerGround;
 
@@ -25,41 +39,50 @@ namespace Jc
         private void OnEnable()
         {
             // 플레이어의 타일 위치가 변경될 경우 발생할 액션
-            Manager.Navi.OnChangePlayerGround += OnChangeTarget;
+            Navi.OnChangePlayerGround += OnChangeTarget;
             // 게임맵 할당
-            gameMap = Manager.Navi.gameMap;
+            gameMap = Navi.gameMap;
+            playerGround = Navi.OnPlayerGround;
+            TargetSetting(playerGround);
         }
+
+        private void Update()
+        {
+            anim.SetFloat("MoveSpeed", agent.velocity.magnitude);
+        }
+
         private void OnDisable()
         {
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
 
         // 몬스터가 타일에 진입한 경우 세팅
-        public void OnGround(Ground ground)
+        public void OnTile(Ground ground)
         {
             onGround = ground;
         }
 
         public void OnChangeTarget(Ground playerGround)
         {
-
+            this.playerGround = playerGround;
+            TargetSetting(playerGround);
         }
 
         // 목적지 세팅
         // 플레이어가 벽으로 둘러싸여 있는지 체크
         //  - true : 가장 가까운 벽으로 이동
         //  - false : 플레이어로 이동
-        private Ground TargetSetting()
+        private void TargetSetting(Ground playerGround)
         {
             // 예외처리 : 플레이어가 타일 위에 위치하지않은 경우
             if (playerGround == null)
             {
                 Debug.Log("플레이어가 위치한 타일이 존재하지 않습니다.");
-                return null;
+                return;
             }
-            return null;
-        }
 
+            agent.destination = CheckPlayerBaseCamp().transform.position;
+        }
         // 진지를 구축할 수 있는 좌표에서 탐색
         private Ground CheckPlayerBaseCamp()
         {
@@ -68,7 +91,7 @@ namespace Jc
 
             // 플레이어가 진지를 구축할 수 없는 영역에 존재하는 경우
             // -> 목적지를 플레이어가 위치한 타일로 설정.
-            if (zPos > Navi.cornerTL.z || zPos < Navi.cornerBL.z || xPos < Navi.cornerTL.x || xPos > Navi.cornerTR.x)
+            if (zPos < Navi.cornerTL.z || zPos > Navi.cornerBL.z || xPos < Navi.cornerTL.x || xPos > Navi.cornerTR.x)
                 return playerGround;
 
             // 플레이어가 진지를 구축할 수 있는 영역에 존재하는 경우
@@ -115,12 +138,8 @@ namespace Jc
             Debug.DrawLine(startPos, endPos, Color.red, 0.5f);
             if (Physics.Raycast(new Ray(startPos, endPos), out RaycastHit hitInfo, (endPos - startPos).magnitude, Manager.Layer.wallLM))
             {
-                if(hitInfo.transform.GetComponent<Ground>())
-                {
-                    
-                }
-
-                return hitInfo.transform.GetComponent<Ground>();
+                Wall targetWall = hitInfo.transform.GetComponent<Wall>();
+                return targetWall?.OnGround;
             }
             return null;
         }
