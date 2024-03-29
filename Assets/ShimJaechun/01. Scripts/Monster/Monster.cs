@@ -21,6 +21,7 @@ namespace Jc
 
         [SerializeField]
         private MonsterFSM fsm;
+        public MonsterFSM FSM { get { return fsm; } }
 
         [Header("Specs")]
         [SerializeField]
@@ -29,8 +30,11 @@ namespace Jc
 
         [SerializeField]
         private float hp;
+        // 프로퍼티 추가 예정
+
         [SerializeField]
         private float atk;
+        // 프로퍼티 추가 예정
 
         [Space(3)]
         [Header("Balancing")]
