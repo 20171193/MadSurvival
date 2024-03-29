@@ -59,7 +59,8 @@ namespace Jc
 
         private void OnEnable()
         {
-            pos = new GroundPos((int)(gameObject.name[0] - '0'), (int)(gameObject.name[1] - '0'));
+            string[] position = gameObject.name.Split(',');
+            pos = new GroundPos(int.Parse(position[0]), int.Parse(position[1]));
         }
 
         // 건물을 짓는 경우
@@ -68,22 +69,20 @@ namespace Jc
 
         }
 
-        // 플레이어가 타일에 진입한 경우
-        public void EnterPlayer()
-        {
-        }
-
-        // ITrackable을 지닌 즉,
-        // 추격할 수 있는 동물 혹은 몬스터가 진입한 경우
-        public void EnterTracker(ITrackable tracker)
-        {
-            // 현재 위치한 타일을 전달
-            tracker.OnGround(this);
-        }
-
         private void OnTriggerEnter(Collider other)
         {
-            
+            Debug.Log($"Ground : {other.gameObject} Ground Enter");
+            if(other.gameObject.tag == "Player")
+            {
+                // 플레이어가 현재 위치한 타일을 길찾기 관리자에 할당
+                // 길찾기 관리자에서 플레이어를 탐색하고있는 모든 몬스터 액션을 실행
+                Manager.Navi.EnterPlayerGround(this);
+            }
+
+            // 타일에 위치할 수 있는 오브젝트에 현재 타일을 할당
+            ITileable obj = other.GetComponent<ITileable>();
+            if (obj == null) return;
+            else obj.OnTile(this);
         }
     }
 }

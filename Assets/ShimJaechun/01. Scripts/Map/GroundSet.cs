@@ -28,6 +28,11 @@ namespace Jc
         [SerializeField]
         private MeshRenderer dummyPlaneMr;
 
+        [SerializeField]
+        private Material buildableMt;
+        [SerializeField]
+        private Material waterMt;
+
         //[SerializeField]
         //private List<List<Ground>> groundList = new List<List<Ground>>();
 
@@ -100,7 +105,15 @@ namespace Jc
                     GameObject inst = Instantiate(groundPrefab, groundPos, Quaternion.identity);
                     grounds.groundList.Add(inst.GetComponent<Ground>());
                     inst.transform.parent = transform;
-                    inst.gameObject.name = $"{z}{x}_Ground";
+                    
+                    // Buildable Type ¼¼ÆÃ
+                    if(x >= Manager.Navi.cornerTL.x && x <= Manager.Navi.cornerTR.x &&
+                        z <= Manager.Navi.cornerBL.z && z >= Manager.Navi.cornerTL.z )
+                    {
+                        inst.transform.GetChild(0).GetComponent<MeshRenderer>().materials[0] = buildableMt;
+                    }
+
+                    inst.gameObject.name = $"{z},{x}";
                 }
 
                 groundLists.Add(grounds);
