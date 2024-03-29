@@ -38,6 +38,12 @@ namespace Jc
         {
             this.owner = owner;
         }
+
+        public override void Enter()
+        {
+            // 타겟지점으로 트래킹 실행
+            owner.TargetSetting(owner.PlayerGround);
+        }
     }
 
     public class MonsterAttack : MonsterBaseState
@@ -46,13 +52,22 @@ namespace Jc
         {
             this.owner = owner;
         }
+        public override void Enter()
+        {
+            
+        }
     }
 
     public class MonsterDie : MonsterBaseState
-    {
+    { 
         public MonsterDie(Monster owner)
         {
             this.owner = owner;
+        }
+
+        public override void Enter()
+        {
+            owner.Anim.SetTrigger("OnDie");
         }
     }
 }
