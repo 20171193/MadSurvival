@@ -68,12 +68,12 @@ public class BackPack : MonoBehaviour
 	}
 	public void Close()
 	{
-		transform.parent.GetComponent<RectTransform>().anchoredPosition = hidePos;
+		//transform.parent.GetComponent<RectTransform>().anchoredPosition = hidePos;
 		Ishide = false;
 	}
 	public void Open()
 	{
-		transform.parent.GetComponent<RectTransform>().anchoredPosition = OpenPos;
+		//transform.parent.GetComponent<RectTransform>().anchoredPosition = OpenPos;
 		Ishide = true;
 	}
 	void Craft()
