@@ -33,7 +33,7 @@ namespace Jc
 
         [SerializeField]
         private List<GroundList> groundLists;
-        public List<GroundList> GroundLists { get { return groundLists; } } 
+        public List<GroundList> GroundLists { get { return groundLists; } }
 
         // 프리팹 크기
         [SerializeField]
@@ -55,7 +55,7 @@ namespace Jc
         {
             // 길찾기 매니저에 게임 맵을 할당
             //if (groundLists.Count > 0)
-                //Manager.Navigation.AssginGameMap(groundLists);
+            //Manager.Navigation.AssginGameMap(groundLists);
         }
 
 
@@ -77,6 +77,16 @@ namespace Jc
             xCount = (int)(transform.localScale.x * 10 / prefabXscale);
             zCount = (int)(transform.localScale.z * 10 / prefabZscale);
 
+            // 맵 크기 할당
+            Manager.Navi.mapZsize = zCount;
+            Manager.Navi.mapXsize = xCount;
+
+            // 플레이어 진지 좌표 할당
+            Manager.Navi.cornerTL = new GroundPos(zCount / 3 - 1, xCount / 3 - 1);
+            Manager.Navi.cornerTR = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 - 1);
+            Manager.Navi.cornerBL = new GroundPos(zCount / 3 - 1, xCount / 3 * 2 - 1);
+            Manager.Navi.cornerBR = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 * 2 - 1);
+
             for (int z = 0; z < zCount; z++)
             {
                 GroundList grounds = new GroundList(new List<Ground>());
@@ -90,7 +100,7 @@ namespace Jc
                     GameObject inst = Instantiate(groundPrefab, groundPos, Quaternion.identity);
                     grounds.groundList.Add(inst.GetComponent<Ground>());
                     inst.transform.parent = transform;
-                    inst.gameObject.name = $"{x}{z}_Ground";
+                    inst.gameObject.name = $"{z}{x}_Ground";
                 }
 
                 groundLists.Add(grounds);
