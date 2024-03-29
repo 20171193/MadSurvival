@@ -6,9 +6,5 @@ using UnityEngine;
 [CreateAssetMenu]
 public class itemData : ScriptableObject
 {
-	public string name;
-	public Sprite itemSprite;
-
-
 
 }
