@@ -15,7 +15,7 @@ public class Item : MonoBehaviour
 	{
 		if (other.gameObject.GetComponent<moveing>())
 		{
-			other.gameObject.GetComponent<moveing>().backpack.GetComponent<BackPack>().GetItem(this);
+			other.gameObject.GetComponent<moveing>().Inventory.GetItem(this);
 			gameObject.SetActive(false);
 		}
 

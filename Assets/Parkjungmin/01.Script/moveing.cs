@@ -10,7 +10,12 @@ namespace jungmin
 	{
 		Vector3 dir;
 		[SerializeField] float movespeed;
-		[SerializeField] public GameObject backpack;
+		[SerializeField] public BackPack Inventory;
+		Vector2 ancorPos;
+
+		private void Awake()
+		{
+		}
 
 		private void Update()
 		{
@@ -26,14 +31,16 @@ namespace jungmin
 			dir = new Vector3(dir_.x, 0, dir_.y);
 		}
 
-		void OnBackpack(InputValue value) //¹éÆÑ ¿ÀÇÂ
+		void OnBackpack(InputValue value ) //¹éÆÑ ¿ÀÇÂ
 		{
-			if ( backpack.activeSelf)
+			if ( Inventory.Ishide == false )
 			{
-				backpack.SetActive(false);
-				return;
+				Inventory.Open();
 			}
-			backpack.SetActive(true);
+			else if( Inventory.Ishide == true)
+			{
+				Inventory.Close();
+			}
 
 		}
 
