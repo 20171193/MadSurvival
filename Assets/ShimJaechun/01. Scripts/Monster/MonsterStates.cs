@@ -42,7 +42,13 @@ namespace Jc
         public override void Enter()
         {
             // ≈∏∞Ÿ¡ˆ¡°¿∏∑Œ ∆Æ∑°≈∑ Ω««‡
-            owner.TargetSetting(owner.PlayerGround);
+            owner.Tracking(owner.PlayerGround);
+        }
+
+        public override void Exit()
+        {
+            // ≈ª√‚ Ω√ ∏ÿ√„
+            owner.Agent.isStopped = true;
         }
     }
 
@@ -54,7 +60,7 @@ namespace Jc
         }
         public override void Enter()
         {
-            
+            owner.Anim.SetTrigger("OnAttack");
         }
     }
 

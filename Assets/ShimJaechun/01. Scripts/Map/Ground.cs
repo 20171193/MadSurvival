@@ -71,7 +71,6 @@ namespace Jc
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"Ground : {other.gameObject} Ground Enter");
             if(other.gameObject.tag == "Player")
             {
                 // 플레이어가 현재 위치한 타일을 길찾기 관리자에 할당
