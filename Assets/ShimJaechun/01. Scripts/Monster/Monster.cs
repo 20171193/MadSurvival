@@ -22,11 +22,20 @@ namespace Jc
         private Animator anim;
         public Animator Anim { get { return anim; } }
 
+        [Space(3)]
+        [Header("Linked Class")]
+        [Space(2)]
         [SerializeField]
         private MonsterFSM fsm;
         public MonsterFSM FSM { get { return fsm; } }
 
+        [SerializeField]
+        private MonsterDetecter detecter;
+        public MonsterDetecter Detecter { get { return detecter; } }
+
+        [Space(3)]
         [Header("Specs")]
+        [Space(2)]
         [SerializeField]
         private float speed;
         public float Speed { get { return speed; } set { speed = value; agent.speed = value; } }
@@ -91,17 +100,6 @@ namespace Jc
         {
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if(fsm.FSM.CurState == "Tracking" &&
-                (isTrackingPlayer && other.gameObject.tag == "Player"
-                || !isTrackingPlayer && Manager.Layer.wallLM.Contain(other.gameObject.layer)))
-            {
-                fsm.FSM.ChangeState("Attack");
-            }
-        }
-
 
         // 데미지 처리
         public void TakeDamage(float damage, Vector3 suspectPos)
