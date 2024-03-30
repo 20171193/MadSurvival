@@ -3,9 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using Jc;
 using UnityEngine.Events;
+using UnityEditor.Experimental.GraphView;
+
+public enum DirectionType
+{
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+}
 
 public class NavigationManager : Singleton<NavigationManager>
 {
+    public struct Direction
+    {
+        public int z;
+        public int x;
+        public Direction(int z, int x)
+        {
+            this.z = z;
+            this.x = x;
+        }
+    }
+
     // 전체 게임맵
     public List<GroundList> gameMap;
 
@@ -30,6 +50,11 @@ public class NavigationManager : Singleton<NavigationManager>
     private Ground onPlayerGround;
     public Ground OnPlayerGround { get { return onPlayerGround; } }
 
+    private Direction upTile = new Direction(1, 0);
+    private Direction downTile = new Direction(-1, 0);
+    private Direction leftTile = new Direction(0, -1);
+    private Direction rightTile = new Direction(0, 1);
+
     public void AssginGameMap(List<GroundList> gameMap)
     {
         this.gameMap = gameMap;
@@ -40,5 +65,43 @@ public class NavigationManager : Singleton<NavigationManager>
         onPlayerGround = target;
         // 길찾기를 실시하고있는 몬스터, 동물들이 목표지점을 변경해야 함.
         OnChangePlayerGround?.Invoke(target);
+    }
+
+    /// <summary>
+    /// 현재 위치의 타일과 다음 위치를 받아 다음 위치의 타일을 리턴
+    /// </summary>
+    /// <param name="curGround"></param>
+    /// 현재 위치한 타일
+    /// <param name="dirType"></param>
+    /// 다음 위치를 설정할 방향타입
+    /// <returns></returns>
+    public Ground GetGround(Ground curGround, DirectionType dirType)
+    {
+        Direction dir;
+        switch (dirType)
+        {
+            case DirectionType.UP:
+                dir = upTile;
+                break;
+            case DirectionType.DOWN:
+                dir = downTile;
+                break;
+            case DirectionType.LEFT:
+                dir = leftTile;
+                break;
+            case DirectionType.RIGHT:
+                dir = rightTile;
+                break;
+            default:
+                dir = upTile;
+                break;
+        }
+        int nz = dir.z + curGround.Pos.z;
+        int nx = dir.x + curGround.Pos.x;
+        // 맵을 벗어난 경우
+        if (nz < 0 || nz >= mapZsize || nx < 0 || nx >= mapXsize) 
+            return null;
+
+        return gameMap[nz].groundList[nx];
     }
 }

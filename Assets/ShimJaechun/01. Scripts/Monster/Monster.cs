@@ -101,6 +101,16 @@ namespace Jc
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
 
+        public void DetectTarget(GameObject target)
+        {
+            // 플레이어 탐지
+            if (isTrackingPlayer && target.tag == "Player" ||
+                !isTrackingPlayer && Manager.Layer.wallLM.Contain(target.layer))
+            {
+                fsm.ChangeState("Attack");
+            }
+        }
+
         // 데미지 처리
         public void TakeDamage(float damage, Vector3 suspectPos)
         {

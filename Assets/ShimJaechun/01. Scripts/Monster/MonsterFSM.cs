@@ -10,6 +10,8 @@ namespace Jc
         private StateMachine<Monster> fsm;
         public StateMachine<Monster> FSM { get { return fsm; } }
 
+        public string currentState;
+
         // FSM »ý¼º
         public void CreateFSM(Monster owner)
         {
@@ -31,6 +33,7 @@ namespace Jc
 
         private void Update()
         {
+            currentState = fsm.CurState;
             fsm.Update();
         }
         private void FixedUpdate()
