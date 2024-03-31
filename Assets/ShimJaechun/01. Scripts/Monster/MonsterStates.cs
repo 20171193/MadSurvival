@@ -34,6 +34,7 @@ namespace Jc
 
     public class MonsterTracking : MonsterBaseState
     {
+        private Coroutine trackingRoutine;
         public MonsterTracking(Monster owner)
         {
             this.owner = owner;
@@ -42,18 +43,32 @@ namespace Jc
         public override void Enter()
         {
             // ≈∏∞Ÿ¡ˆ¡°¿∏∑Œ ∆Æ∑°≈∑ Ω««‡
-            owner.Tracking(owner.PlayerGround);
+            trackingRoutine = owner.StartCoroutine(TrackingRoutine());
         }
 
         public override void Exit()
         {
+            if (trackingRoutine != null)
+                owner.StopCoroutine(trackingRoutine);
+
             // ≈ª√‚ Ω√ ∏ÿ√„
             owner.Agent.isStopped = true;
+        }
+
+        IEnumerator TrackingRoutine()
+        {
+            while(true)
+            {
+                yield return new WaitForSeconds(0.1f);
+                owner.Tracking(owner.PlayerGround);
+            }
         }
     }
 
     public class MonsterAttack : MonsterBaseState
     {
+        private Coroutine attackRoutine;
+
         public MonsterAttack(Monster owner)
         {
             this.owner = owner;
@@ -61,6 +76,11 @@ namespace Jc
         public override void Enter()
         {
             owner.Anim.SetTrigger("OnAttack");
+        }
+
+        public override void Update()
+        {
+            
         }
     }
 

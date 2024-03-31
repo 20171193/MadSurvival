@@ -4,18 +4,25 @@ using UnityEngine;
 
 namespace Jc
 {
-    public class Wall : MonoBehaviour, ITileable, IDamageable
+    public class Wall : TiledObject, IDamageable
     {
-        [Header("Specs")]
-        private float amr;
-        private float hp;
-
-        private Ground onGround;
         public Ground OnGround { get { return onGround; } }
 
-        public void OnTile(Ground ground)
+        [Header("Specs")]
+        [Space(2)]
+        [SerializeField]
+        private float amr;
+        [SerializeField]
+        private float hp;
+
+        private void Awake()
         {
-            onGround = ground;
+            groundType = GroundType.Wall;
+        }
+
+        public override void OnTile(Ground ground)
+        {
+            base.OnTile(ground);
         }
 
         public void TakeDamage(float damage, Vector3 suspectPos)

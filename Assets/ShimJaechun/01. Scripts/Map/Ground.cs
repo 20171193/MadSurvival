@@ -78,10 +78,10 @@ namespace Jc
                 Manager.Navi.EnterPlayerGround(this);
             }
 
-            // 타일에 위치할 수 있는 오브젝트에 현재 타일을 할당
-            ITileable obj = other.GetComponent<ITileable>();
-            if (obj == null) return;
-            else obj.OnTile(this);
+            //// 타일에 위치할 수 있는 오브젝트에 현재 타일을 할당
+            //ITileable obj = other.GetComponent<ITileable>();
+            //if (obj == null) return;
+            //else obj.OnTile(this);
         }
     }
 }
