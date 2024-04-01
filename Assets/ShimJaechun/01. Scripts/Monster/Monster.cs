@@ -15,6 +15,9 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
+        private Rigidbody rigid;
+
+        [SerializeField]
         private NavMeshAgent agent;
         public NavMeshAgent Agent { get { return agent; } }
 
@@ -40,6 +43,16 @@ namespace Jc
         [SerializeField]
         private string monsterName;
         public string MonsterName { get { return monsterName; } }
+
+        [SerializeField]
+        private float knockBackPower;
+        public float KnockBackPower { get { return knockBackPower; } }
+
+        [SerializeField]
+        private float knockBackTime;
+        public float KnockBackTime { get { return knockBackTime; } }
+
+        private Coroutine knockBackTimer;
 
         [SerializeField]
         private float speed;
@@ -160,6 +173,10 @@ namespace Jc
                 currentTarget = null;
         }
 
+        public void OnDamage()
+        {
+            TakeDamage(4, Vector3.zero);
+        }
         // 데미지 처리
         public void TakeDamage(float value, Vector3 suspectPos)
         {
@@ -176,7 +193,21 @@ namespace Jc
             else
             {
                 ownHp -= damage;
+                knockBackTimer = StartCoroutine(KnockBackRoutine());
             }
+        }
+        IEnumerator KnockBackRoutine()
+        {
+            // 네비메시 비활성화
+            // 물리 이동으로 전환
+            agent.enabled = false;
+            rigid.AddForce(transform.forward * -knockBackPower, ForceMode.Impulse);
+
+            yield return new WaitForSeconds(KnockBackTime);
+
+            // 원복
+            rigid.velocity = Vector3.zero;
+            agent.enabled = true;
         }
 
         // 몬스터가 타일에 진입한 경우 세팅
@@ -198,6 +229,7 @@ namespace Jc
         //  - false : 플레이어로 이동
         public void Tracking(Ground playerGround)
         {
+            if (agent.enabled == false) return;
             // 예외처리 : 플레이어가 타일 위에 위치하지않은 경우
             if (playerGround == null)
             {
@@ -213,7 +245,6 @@ namespace Jc
             // 탐색 결과가 플레이어일 경우 true
             isTrackingPlayer = originTarget == resultTarget;
         }
-
         private Ground TargetSetting()
         {
             int zPos = playerGround.Pos.z;
@@ -231,7 +262,6 @@ namespace Jc
             // 가장 가까운 벽을 찾아 추격
             return GetNearWall();
         }
-
         // 플레이어가 벽으로 둘러싸여있는지 체크
         // 진지를 구축할 수 있는 좌표에서 탐색 (플레이어 기준 BFS)
         private bool PlayerInBaseCamp()
