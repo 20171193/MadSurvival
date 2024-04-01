@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Extension method
 public static class Extension
@@ -8,5 +9,12 @@ public static class Extension
     public static bool Contain(this LayerMask layerMask, int layer)
     {
         return ((1 << layer) & layerMask) != 0;
+    }
+
+    // 일정시간 딜레이 이후 액션 실행함수
+    public static IEnumerator DelayRoutine(float delayTime, UnityAction action)
+    {
+        yield return new WaitForSeconds(delayTime);
+        action?.Invoke();
     }
 }

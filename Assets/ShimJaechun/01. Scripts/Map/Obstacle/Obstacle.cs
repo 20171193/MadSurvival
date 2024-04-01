@@ -1,0 +1,69 @@
+using Jc;
+using System.Collections;
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using Unity.IO.LowLevel.Unsafe;
+using UnityEngine;
+
+namespace Jc
+{
+    public class Obstacle : PooledObject, IDamageable
+    {
+        [Header("Components")]
+        [Space(2)]
+        [SerializeField]
+        private GameObject prefab;
+
+        [Space(3)]
+        [Header("Editor Setting")]
+        [Space(2)]
+        [SerializeField]
+        protected int spawnCount;
+        public int SpawnCount { get { return spawnCount; } }
+
+        [SerializeField]
+        protected string obstacleName;
+        public string ObstacleName { get { return obstacleName; } }
+
+        [Space(3)]
+        [Header("Specs")]
+        [Space(2)]
+        [SerializeField]
+        protected int level;
+        public int Level { get { return level; } }
+
+        [SerializeField]
+        protected float hp;
+        public float HP { get { return hp; } }
+
+        [SerializeField]
+        protected float ownHp;
+        public float OwnHp { get { return ownHp; } }
+
+        protected virtual void Awake()
+        {
+            InitSetting();
+            spawnCount = spawnCount > size ? size : spawnCount;
+            GameObject inst = Instantiate(prefab, transform);
+        }
+
+        public void InitSetting()
+        {
+            if (!Manager.Data.obstacleDataDic.ContainsKey(obstacleName))
+            {
+                Debug.Log($"{obstacleName} : 의 데이터가 없습니다.");
+                return;
+            }
+
+            ObstacleData loadedData = Manager.Data.obstacleDataDic[obstacleName];
+            level = loadedData.level;
+            hp = loadedData.hp;
+            ownHp = hp;
+        }
+
+        public void TakeDamage(float value, Vector3 position)
+        {
+
+        }
+    }
+}
