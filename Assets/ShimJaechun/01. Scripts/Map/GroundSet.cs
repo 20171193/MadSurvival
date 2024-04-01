@@ -23,6 +23,11 @@ namespace Jc
         [Header("Component")]
         [Space(2)]
         [SerializeField]
+        private WaterSet waterSpawner;
+        [SerializeField]
+        private ObstacleSpawner obstacleSpawner;
+
+        [SerializeField]
         private GameObject groundPrefab;
 
         [SerializeField]
@@ -78,14 +83,16 @@ namespace Jc
             Navi.cornerBL = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 - 1);
             Navi.cornerBR = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 * 2 - 1);
 
-            for (int z = Navi.cornerTL.z; z<=Navi.cornerBL.z; z++)
-            {
-                for(int x = Navi.cornerTL.x; x <= Navi.cornerTR.x; x++)
-                {
-                    groundLists[z].groundList[x].type = GroundType.Buildable;
-                    groundLists[z].groundList[x].transform.GetChild(0).GetComponent<MeshRenderer>().SetMaterials(buildableMt);
-                }
-            }
+            waterSpawner.SettingGroundSize();
+
+            // 오브젝트 생성 순서 
+            // 1. Buildable
+            // 2. Water
+            // 3. Obstacle
+            // 4. Animal
+            DrawBuildableGround();
+            waterSpawner.Spawn();
+            obstacleSpawner.InitSpawn();
         }
 
 
@@ -127,6 +134,17 @@ namespace Jc
             }
         }
 
+        public void DrawBuildableGround()
+        {
+            for (int z = Navi.cornerTL.z; z <= Navi.cornerBL.z; z++)
+            {
+                for (int x = Navi.cornerTL.x; x <= Navi.cornerTR.x; x++)
+                {
+                    groundLists[z].groundList[x].type = GroundType.Buildable;
+                    groundLists[z].groundList[x].transform.GetChild(0).GetComponent<MeshRenderer>().SetMaterials(buildableMt);
+                }
+            }
+        }
         [ContextMenu("ResetGround")]
         public void ResetGround()
         {
