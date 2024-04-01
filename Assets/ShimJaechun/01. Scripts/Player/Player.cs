@@ -71,18 +71,15 @@ namespace Jc
             fsm.CreateFSM(this);
             trigger.OnGround += OnGround;
         }
-
         private void Start()
         {
             SetModel(curModel);
         }
-
         private void Update()
         {
             // 플레이어 이동 
             controller.Move(speed, anim);
         }
-
         public void OnGround(Ground ground)
         {
             currentGround = ground;
@@ -106,6 +103,11 @@ namespace Jc
         private void OnCharacterChange(InputValue value)
         {
             SetModel(value.Get<float>() < 0 ? curModel - 1 : curModel + 1);
+        }
+
+        public void OnClickInteractButton()
+        {
+
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Jc
         public UnityAction<GameObject> OnTrigger;
         public UnityAction<GameObject> OffTrigger;
 
-
         private void OnTriggerEnter(Collider other)
         {
             // 데미지를 입을 수 있는 즉, 공격이 가능한 객체일 경우 액션 
@@ -22,7 +21,8 @@ namespace Jc
         }
         private void OnTriggerExit(Collider other)
         {
-            //if(other.GetComponent<IDamageable>())
+            if (other.GetComponent<IDamageable>() != null)
+                OffTrigger?.Invoke(other.gameObject);
         }
     }
 }

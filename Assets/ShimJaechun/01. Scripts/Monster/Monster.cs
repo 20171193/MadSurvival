@@ -36,6 +36,7 @@ namespace Jc
         [Space(3)]
         [Header("Specs")]
         [Space(2)]
+        [Header("꼭 지정해야하는 부분. 이름으로 Find")]
         [SerializeField]
         private string monsterName;
         public string MonsterName { get { return monsterName; } }
@@ -49,9 +50,14 @@ namespace Jc
         public float ATK { get { return atk; } }
 
         [SerializeField]
+        private float ats;
+        public float ATS { get { return ats; } }
+
+        [SerializeField]
         private float hp;
-        // 프로퍼티 추가 예정
-        public float HP { get { return hp; } }
+        [SerializeField]
+        private float ownHp;
+        public float OwnHp { get { return ownHp; } }
 
 
         [SerializeField]
@@ -72,6 +78,7 @@ namespace Jc
         public Ground OnGround { get { return onGround; } }
 
         // 플레이어가 위치한 타일
+        [SerializeField]
         private Ground playerGround;
         public Ground PlayerGround { get { return playerGround; } }
 
@@ -79,13 +86,18 @@ namespace Jc
         private bool isTrackingPlayer;
         public bool IsTrackingPlayer { get { return isTrackingPlayer; } }
 
+        private GameObject currentTarget = null;
+        public GameObject CurrentTarget { get { return currentTarget; } }
+
         // 간략화
         public NavigationManager Navi => Manager.Navi;
 
         private void Awake()
         {
             fsm.CreateFSM(this);
-            detecter.OnTrigger += DetectTarget;
+            detecter.OnTrigger += FindTarget;
+            detecter.OffTrigger += LoseTarget;
+            InitSetting();
         }
 
         private void OnEnable()
@@ -112,29 +124,59 @@ namespace Jc
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
 
+        // 몬스터 초기설정 (데이터 로딩)
         private void InitSetting()
         {
-            //MonsterData loadedData = 
+            if (!Manager.Data.monsterDataDic.ContainsKey(monsterName))
+            {
+                Debug.Log($"{monsterName} : 의 데이터가 없습니다.");
+                return;
+            }
+
+            MonsterData loadedData = Manager.Data.monsterDataDic[monsterName];
+            speed = loadedData.speed;
+            atk = loadedData.atk;
+            ats = loadedData.ats;
+            hp = loadedData.hp;
+            ownHp = hp; 
+            amr = loadedData.amr;
         }
 
         // 몬스터 전용 트리거의 액션으로 호출
         // 트래킹 중 주변 객체와 닿았을 경우 공격 
-        public void DetectTarget(GameObject target)
+        public void FindTarget(GameObject target)
         {
             // 플레이어 탐지
             if (isTrackingPlayer && target.tag == "Player" ||
                 !isTrackingPlayer && Manager.Layer.wallLM.Contain(target.layer))
             {
+                currentTarget = target;
                 fsm.ChangeState("Attack");
             }
         }
+        public void LoseTarget(GameObject target)
+        {
+            if (target == currentTarget)
+                currentTarget = null;
+        }
 
         // 데미지 처리
-        public void TakeDamage(float damage, Vector3 suspectPos)
+        public void TakeDamage(float value, Vector3 suspectPos)
         {
             // 데미지값 처리
+            float damage = value - amr;
+            if (damage <= 0) return;
 
-            // 넉백 처리
+            // 사망처리
+            if(ownHp < damage)
+            {
+                fsm.ChangeState("Die");
+            }
+            // 데미지 처리, 넉백
+            else
+            {
+                ownHp -= damage;
+            }
         }
 
         // 몬스터가 타일에 진입한 경우 세팅
@@ -142,6 +184,7 @@ namespace Jc
         {
             onGround = ground;
         }
+
         // 플레이어 위치가 변경될 경우 호출될 함수
         public void OnChangeTarget(Ground playerGround)
         {
@@ -199,7 +242,7 @@ namespace Jc
             // BFS 탐색
             Queue<GroundPos> q = new Queue<GroundPos>();
             // 방문확인 배열 생성 (원점 기준)
-            bool[,] visitied = new bool[Navi.mapZsize/3,Navi.mapXsize/3];
+            bool[,] visitied = new bool[Navi.mapZsize/3+1,Navi.mapXsize/3+1];
             int resol = Navi.mapZsize / 3 - 1;
             // 4방향 탐색할 방향 설정
             int[] dz = { 0, 0, 1, -1 };
