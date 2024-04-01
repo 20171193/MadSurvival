@@ -1,13 +1,19 @@
+using RPGCharacterAnims.Actions;
 using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Jc
 {
     public class MonsterBaseState : BaseState
     {
         protected Monster owner;
+        public virtual void OnChangeTarget()
+        {
+
+        }
     }
 
     // 대기 상태
@@ -42,7 +48,9 @@ namespace Jc
 
         public override void Enter()
         {
+            Debug.Log("Tracking Enter");
             // 타겟지점으로 트래킹 실행
+            owner.Agent.isStopped = false;
             trackingRoutine = owner.StartCoroutine(TrackingRoutine());
         }
 
@@ -68,19 +76,44 @@ namespace Jc
     public class MonsterAttack : MonsterBaseState
     {
         private Coroutine attackRoutine;
-
+        private GameObject currentTarget;
         public MonsterAttack(Monster owner)
         {
             this.owner = owner;
         }
         public override void Enter()
         {
+            owner.Agent.isStopped = true;
+
+            currentTarget = owner.CurrentTarget;
+            attackRoutine = owner.StartCoroutine(AttackRoutine());
+        }
+        public override void Exit()
+        {
+            if(attackRoutine != null)
+                owner.StopCoroutine(attackRoutine);
+        }
+        private void Attack()
+        {
+            // 회전
+            owner.transform.forward = (currentTarget.transform.position - owner.transform.position).normalized;
+            // 공격
             owner.Anim.SetTrigger("OnAttack");
         }
 
-        public override void Update()
+        IEnumerator AttackRoutine()
         {
-            
+            Attack();
+            yield return null;
+
+            while (owner.CurrentTarget == currentTarget)
+            {
+                yield return new WaitForSeconds(owner.ATS);
+                Attack();
+            }
+
+            owner.FSM.ChangeState("Tracking");
+            yield return null;
         }
     }
 

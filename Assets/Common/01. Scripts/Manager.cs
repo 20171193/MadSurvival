@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Jc;
 public static class Manager
 {
     // JC - Navigation : 게임맵, 플레이어가 위치한 타일 관리자 (몬스터 길찾기 용도로 활용)
@@ -8,7 +8,8 @@ public static class Manager
     public static LayerManager Layer { get { return LayerManager.Instance; } }
     // JC - Data : 게임 데이터 관리자
     public static DataManager Data {  get { return DataManager.Instance;} }
-
+    // JC - Pool : 오브젝트 풀링
+    public static PoolManager Pool { get { return PoolManager.Instance;} }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initialize()
@@ -17,10 +18,12 @@ public static class Manager
         NavigationManager.ReleaseInstance();
         LayerManager.ReleaseInstance();
         DataManager.ReleaseInstance();
+        PoolManager.ReleaseInstance();
 
         // 싱글턴 객체생성
         NavigationManager.CreateInstance();
         LayerManager.CreateInstance();
         DataManager.CreateInstance();
+        PoolManager.CreateInstance();
     }
 }
