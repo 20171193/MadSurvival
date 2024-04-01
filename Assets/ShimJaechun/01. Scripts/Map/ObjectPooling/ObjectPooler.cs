@@ -43,7 +43,7 @@ public class ObjectPooler : MonoBehaviour
             instance.gameObject.SetActive(true);
             return instance;
         }
-        // if pool has no element, instantiate prefab
+        // 풀에 남은 오브젝트가 없을경우 생성
         else
         {
             PooledObject instance = Instantiate(prefab);
@@ -63,7 +63,7 @@ public class ObjectPooler : MonoBehaviour
             instance.transform.parent = transform;
             objectPool.Push(instance);
         }
-        // if pool is full, destroy created instance
+        // 풀의 용량이 모두 찬경우 해당 오브젝트를 제거
         else
             Destroy(instance.gameObject);
     }

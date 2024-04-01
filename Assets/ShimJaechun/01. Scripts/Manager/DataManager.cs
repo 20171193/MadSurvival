@@ -9,7 +9,9 @@ namespace Jc
 {
     public enum DataType
     {
-        MonsterData
+        MonsterData,
+        ObstacleData,
+        AnimalData
     }
 }
 
@@ -20,79 +22,64 @@ public class DataManager : Singleton<DataManager>
 #else
     private string dataPath => Path.Combine(Application.persistentDataPath, $"Resources/Data");
 #endif
-
     private string monsterDataName = "Data/MonsterData";
+    private string obstacleDataName = "Data/ObstacleData";
+    private string animalDataName = "Data/AnimalData";
+
     public Dictionary<string, MonsterData> monsterDataDic;
+    public Dictionary<string, ObstacleData> obstacleDataDic;
+    public Dictionary<string, AnimalData> animalDataDic;
 
     private void OnEnable()
     {
         monsterDataDic = new Dictionary<string, MonsterData>();
-        LoadMonsterData();
+        obstacleDataDic = new Dictionary<string, ObstacleData>();
+        animalDataDic = new Dictionary<string, AnimalData>();
+
+        LoadData(DataType.MonsterData);
+        LoadData(DataType.ObstacleData);
     }
-    //public void SaveData(DataType type, int index = 0)
-    //{
-    //    string dataPath = "";
-    //    switch(type)
-    //    {
-    //        case DataType.MosterData:
-    //            dataPath = monsterDataPath;
-    //            break;
-    //        default:
-    //            break;
-    //    }
-
-    //    if (Directory.Exists(dataPath) == false)
-    //    {
-    //        Directory.CreateDirectory(dataPath);
-    //    }
-
-    //    string json = JsonUtility.ToJson(dataPath, true);
-    //    File.WriteAllText($"{dataPath}/{index}.txt", json);
-    //}
-    public void LoadMonsterData()
+    public void LoadData(DataType type)
     {
-        //if (File.Exists($"{dataPath}/{monsterDataName}.txt") == false)
-        //{
-        //    Debug.Log($"{dataPath}/{monsterDataName}.txt : 경로에 데이터가 존재하지 않습니다. ");
-        //    return;
-        //}
-
-        //string csv = File.ReadAllText(($"{dataPath}/{monsterDataName}.txt").Replace("Resources",""));
-        
-        try
+        switch (type)
         {
-            CsvToMonsterDataDic(CSVReader.Read(monsterDataName));
-            Debug.Log("Load Success");
-            return;
-        }
-        catch (Exception ex)
-        {
-            Debug.LogWarning($"Load data fail : {ex.Message}");
-            return;
+            case DataType.MonsterData:
+                try
+                {
+                    CSVToMonsterDataDic(CSVReader.Read(monsterDataName));
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Load data fail : {ex.Message}");
+                    return;
+                }
+            case DataType.ObstacleData:
+                try
+                {
+                    CSVToObstacleDataDic(CSVReader.Read(obstacleDataName));
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Load data fail : {ex.Message}");
+                    return;
+                }
+            case DataType.AnimalData:
+                try
+                {
+                    CSVToMonsterDataDic(CSVReader.Read(animalDataName));
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"Load data fail : {ex.Message}");
+                    return;
+                }
+            default:
+                return;
         }
     }
-    private void CsvToMonsterDataDic(List<Dictionary<string, object>> csvData)
-    {
-        for(int i =0; i < csvData.Count; i++)
-        {
-            // 0 monsterName
-            // 1 speed
-            // 2 atk
-            // 3 ats
-            // 4 hp
-            // 5 amr
-            MonsterData loadedData = new MonsterData();
-            loadedData.monsterName = (string)csvData[i]["monsterName"];
-            loadedData.speed = (float)csvData[i]["speed"];
-            loadedData.atk = (float)csvData[i]["atk"];
-            loadedData.ats = (float)csvData[i]["ats"];
-            loadedData.hp = (float)csvData[i]["hp"];
-            loadedData.amr = (float)csvData[i]["amr"];
-            monsterDataDic.Add(loadedData.monsterName, loadedData);
-        }
-    }
-
-
     public bool ExistData(DataType type)
     {
         string dataName = "";
@@ -106,5 +93,41 @@ public class DataManager : Singleton<DataManager>
         }
 
         return File.Exists($"{dataPath}/{dataName}.txt");
+    }
+
+    // 데이터 변환
+    private void CSVToMonsterDataDic(List<Dictionary<string, object>> csvData)
+    {
+        for (int i = 0; i < csvData.Count; i++)
+        {
+            // 0 monsterName
+            // 1 speed
+            // 2 atk
+            // 3 ats
+            // 4 hp
+            // 5 amr
+            MonsterData loadedData = ScriptableObject.CreateInstance<MonsterData>();
+            loadedData.monsterName = (string)csvData[i]["monsterName"];
+            loadedData.speed = (float)csvData[i]["speed"];
+            loadedData.atk = (float)csvData[i]["atk"];
+            loadedData.ats = (float)csvData[i]["ats"];
+            loadedData.hp = (float)csvData[i]["hp"];
+            loadedData.amr = (float)csvData[i]["amr"];
+            monsterDataDic.Add(loadedData.monsterName, loadedData);
+        }
+    }
+    private void CSVToObstacleDataDic(List<Dictionary<string, object>> csvData)
+    {
+        for (int i = 0; i < csvData.Count; i++)
+        {
+            // 0 obstacleName
+            // 1 level
+            // 2 hp
+            ObstacleData loadedData = ScriptableObject.CreateInstance<ObstacleData>();
+            loadedData.obstacleName = (string)csvData[i]["obstacleName"];
+            loadedData.level = (int)csvData[i]["level"];
+            loadedData.hp = (float)csvData[i]["hp"];
+            obstacleDataDic.Add(loadedData.obstacleName, loadedData);
+        }
     }
 }

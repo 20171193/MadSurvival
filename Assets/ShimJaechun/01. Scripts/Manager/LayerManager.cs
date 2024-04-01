@@ -6,4 +6,10 @@ public class LayerManager : Singleton<LayerManager>
 {
     [SerializeField]
     public LayerMask wallLM;
+
+    [SerializeField]
+    public LayerMask obstacleLM;
+
+    [SerializeField]
+    public LayerMask monsterLM;
 }
