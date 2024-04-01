@@ -37,16 +37,26 @@ namespace Jc
         [Header("Specs")]
         [Space(2)]
         [SerializeField]
+        private string monsterName;
+        public string MonsterName { get { return monsterName; } }
+
+        [SerializeField]
         private float speed;
         public float Speed { get { return speed; } set { speed = value; agent.speed = value; } }
+        [SerializeField]
+        private float atk;
+        // 프로퍼티 추가 예정
+        public float ATK { get { return atk; } }
 
         [SerializeField]
         private float hp;
         // 프로퍼티 추가 예정
+        public float HP { get { return hp; } }
+
 
         [SerializeField]
-        private float atk;
-        // 프로퍼티 추가 예정
+        private float amr;
+        public float AMR { get { return amr; } }
 
         [Space(3)]
         [Header("Balancing")]
@@ -100,6 +110,11 @@ namespace Jc
         private void OnDisable()
         {
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
+        }
+
+        private void InitSetting()
+        {
+            //MonsterData loadedData = 
         }
 
         // 몬스터 전용 트리거의 액션으로 호출
