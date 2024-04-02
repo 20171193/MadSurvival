@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 
@@ -101,6 +102,8 @@ namespace Jc
 
         private GameObject currentTarget = null;
         public GameObject CurrentTarget { get { return currentTarget; } }
+
+        public UnityAction<Monster> OnMonsterDie;
 
         // °£·«È­
         public NavigationManager Navi => Manager.Navi;
