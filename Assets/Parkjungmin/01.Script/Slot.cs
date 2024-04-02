@@ -1,0 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class QuickSlot : MonoBehaviour
+{
+	public Item item;
+	[SerializeField] RectTransform baseRect; //ÀÎº¥Åä¸® ¿µ¿ª 
+	[SerializeField] RectTransform quickSlotBaseRect; //Äü½½·Ô
+
+	private void Start()
+	{
+	}
+
+}

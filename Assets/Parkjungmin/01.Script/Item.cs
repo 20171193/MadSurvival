@@ -15,6 +15,8 @@ public class Item : ScriptableObject
 	}
 	[SerializeField] public string name;
 	[SerializeField] public Sprite icon;
+	[SerializeField] public ItemType itemtype;
+	[SerializeField] GameObject DropPrefab;
 	public int Count;
 
 }
