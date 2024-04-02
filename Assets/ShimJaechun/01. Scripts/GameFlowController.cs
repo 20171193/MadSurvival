@@ -19,16 +19,17 @@ namespace Jc
         public void EnterNight()
         {
             // 동물 제거
-
+            //낮-> 밤 변경
+            dayController.ExitDay();
             // 몬스터 스폰
             monsterSpawner.OnSpawn(day);
         }
         public void ExitNight()
         {
-            // 밤 -> 낮 변경
-            dayController.IsNight = true;
-            // 날짜 카운팅
-            day++;
+			// 밤 -> 낮 변경
+			dayController.EnterDay();
+			// 날짜 카운팅
+			day++;
         }
     }
 }
