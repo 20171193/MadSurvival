@@ -131,6 +131,7 @@ namespace Jc
 
         public override void Enter()
         {
+            owner.Agent.isStopped = true;
             //owner.Anim.SetTrigger("OnDie");
             dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }

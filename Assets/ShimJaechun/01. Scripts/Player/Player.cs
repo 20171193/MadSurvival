@@ -18,6 +18,13 @@ namespace Jc
         private Animator anim;
         public Animator Anim { get { return anim; }  }
 
+        [SerializeField]
+        private SkinnedMeshRenderer meshRenderer;
+        [SerializeField]
+        private Material invinsibleMT;
+        [SerializeField]
+        private Material originMT;
+
         [Space(3)]
         [Header("Specs")]
         [Space(2)]
@@ -31,7 +38,7 @@ namespace Jc
 
         [SerializeField]
         private float curHp;
-        public float CurHp { get { return curHp; } }
+        public float CurHp { get { return curHp; } set { curHp = value; } }
 
         [SerializeField]
         private float atk;  // 공격력
@@ -46,6 +53,35 @@ namespace Jc
                 atk = value; 
             } 
         }
+        [SerializeField]
+        private float ats;  // 공격력
+        public float ATS
+        {
+            get
+            {
+                return atk;
+            }
+            set
+            {
+                atk = value;
+            }
+        }
+        [SerializeField]
+        private float amr;  // 방어력
+        public float AMR
+        {
+            get
+            {
+                return amr;
+            }
+            set
+            {
+                amr = value;
+            }
+        }
+
+        [SerializeField]
+        private float invinsibleTime;   // 무적시간 
 
         [Space(3)]
         [Header("Linked Class")]
@@ -74,12 +110,12 @@ namespace Jc
         private PlayerBuilder builder;
         public PlayerBuilder Builder { get { return builder; } }    
 
-        private Ground currentGround;
+        public Ground currentGround;
 
         private void Awake()
         {          
             fsm.CreateFSM(this);
-            trigger.OnGround += OnGround;
+            trigger.owner = this;
         }
         private void Start()
         {
@@ -89,10 +125,6 @@ namespace Jc
         {
             // 플레이어 이동 
             controller.Move(speed, anim);
-        }
-        public void OnGround(Ground ground)
-        {
-            currentGround = ground;
         }
         private void SetModel(int index)
         {
@@ -108,6 +140,7 @@ namespace Jc
             models[curModel].SetActive(true);
             // 애니메이터 변경
             anim = models[curModel].GetComponent<Animator>();
+            meshRenderer = models[curModel].transform.GetChild(2).GetComponent<SkinnedMeshRenderer>();
         }
         // 테스트용 캐릭터 모델 변경
         private void OnCharacterChange(InputValue value)
@@ -119,6 +152,33 @@ namespace Jc
 
         }
 
+        public void OnTakeDamage()
+        {
+
+        }
+        IEnumerator DamageRoutine()
+        {
+            // 일정시간 무적상태 적용
+
+            float time = invinsibleTime;
+            float materialTime = invinsibleTime / 10f;
+            bool isFadeOut = true;
+
+            gameObject.layer = LayerMask.NameToLayer("Invinsible");
+            meshRenderer.material = invinsibleMT;
+            yield return null;
+
+            while(time > 0f)
+            {
+                time -= Time.deltaTime;
+                //if(isFadeOut)
+                yield return null;
+            }
+
+            gameObject.layer = LayerMask.NameToLayer("Player");
+            meshRenderer.material = originMT;
+            yield return null;
+        }
         public void Equip()
         {
         }
