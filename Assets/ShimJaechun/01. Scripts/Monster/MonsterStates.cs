@@ -15,6 +15,12 @@ namespace Jc
         }
     }
 
+    // 풀링된 상태
+    public class MonsterPooled : MonsterBaseState
+    {
+
+    }
+
     // 대기 상태
     public class MonsterIdle : MonsterBaseState
     {
@@ -126,6 +132,9 @@ namespace Jc
         public override void Enter()
         {
             owner.Anim.SetTrigger("OnDie");
+            owner.FSM.ChangeState("Pooled");
         }
+
+        
     }
 }

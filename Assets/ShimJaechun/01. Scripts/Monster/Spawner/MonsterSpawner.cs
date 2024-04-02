@@ -23,14 +23,15 @@ namespace Jc
         private void Awake()
         {
             // 스폰할 수 있는 타일을 찾기위해 bfs 탐색을 시작할 영역들 모음
-            int midPos = Manager.Navi.mapXsize / 3 / 2 - 1;
+            // 맵 크기가 변경될 경우 수정
+            int midPos = 9;
+
             spawnablePos = new GroundPos[8] 
             {
                 new GroundPos(midPos, midPos), new GroundPos(midPos, midPos*2), new GroundPos(midPos,midPos*3),
                 new GroundPos(midPos*2, midPos),new GroundPos(midPos*2, midPos*3),
                 new GroundPos(midPos*3, midPos),new GroundPos(midPos*3, midPos*2),new GroundPos(midPos*3, midPos*3)
             };
-            
         }
 
         public void OnSpawn(int day)
@@ -61,7 +62,7 @@ namespace Jc
 
             foreach(SpawnInfo spawnInfo in waveDataDic[wave].spawnList)
             {
-                Monster monster = spawnInfo.monster;
+                string monsterName = spawnInfo.monsterName;
                 for(int i =0; i<spawnInfo.count; i++)
                 {
                     Ground spawnGround = null;
@@ -69,7 +70,7 @@ namespace Jc
                     {
                         spawnGround = SetSpawnPos();
                     }
-                    Manager.Pool.GetPool(monster, spawnGround.transform.position, Quaternion.identity);
+                    Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
                 }
             }
         }

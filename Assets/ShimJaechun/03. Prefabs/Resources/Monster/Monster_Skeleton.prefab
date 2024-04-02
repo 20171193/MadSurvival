@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296db408b46c2de459863d50e280809d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 15
   rigid: {fileID: 1996272332345754056}
   agent: {fileID: 3724574002126460141}
   anim: {fileID: 5439513441589645589}

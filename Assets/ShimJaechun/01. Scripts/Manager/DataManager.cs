@@ -39,8 +39,6 @@ public class DataManager : Singleton<DataManager>
 
     private void OnEnable()
     {
-        // 몬스터 등록
-        RegistMonster();
 
         monsterDataDic = new Dictionary<string, MonsterData>();
         obstacleDataDic = new Dictionary<string, ObstacleData>();
@@ -49,6 +47,8 @@ public class DataManager : Singleton<DataManager>
 
         LoadData(DataType.MonsterData);
         LoadData(DataType.ObstacleData);
+        // 몬스터 등록
+        RegistMonster();
         LoadData(DataType.DaysWaveData);
     }
 
@@ -63,12 +63,14 @@ public class DataManager : Singleton<DataManager>
             return;
         }
 
-        foreach(Monster monster in monsterPrefabs)
+        foreach (Monster monster in monsterPrefabs)
         {
             string name = monster.MonsterName;
             if (monsterDic.ContainsKey(name)) continue;
 
             monsterDic.Add(name, monster);
+            // 몬스터 등록 시 풀링
+            Manager.Pool.CreatePool(monster, monster.Size, 20);
         }
     }
 
@@ -188,11 +190,11 @@ public class DataManager : Singleton<DataManager>
             if (!daysWaveDataDic[day].ContainsKey(waveNum))
             {
                 WaveData lodedData = ScriptableObject.CreateInstance<WaveData>();
-                lodedData.spawnList.Add(new SpawnInfo(monsterDic[(string)csvData[i]["monsterName"]], (int)csvData[i]["spawnCount"]));
+                lodedData.spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
                 daysWaveDataDic[day].Add(waveNum, lodedData);
             }
             else
-                daysWaveDataDic[day][waveNum].spawnList.Add(new SpawnInfo(monsterDic[(string)csvData[i]["monsterName"]], (int)csvData[i]["spawnCount"]));
+                daysWaveDataDic[day][waveNum].spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
         }
     }
 }
