@@ -12,7 +12,6 @@ namespace jungmin
 	{
 		Vector3 dir;
 		[SerializeField] float movespeed;
-		[SerializeField] public BackPack Inventory;
 		Vector2 ancorPos;
 
 		[SerializeField] GameObject backPackOb;
@@ -41,16 +40,6 @@ namespace jungmin
 
 		void OnBackpack(InputValue value ) //¹éÆÑ ¿ÀÇÂ
 		{
-			if ( Inventory.Ishide == false )
-			{
-				backPackOb.SetActive(true);
-				Inventory.Open();
-			}
-			else if( Inventory.Ishide == true)
-			{
-				backPackOb.SetActive(false);
-				Inventory.Close();
-			}
 
 		}
 
