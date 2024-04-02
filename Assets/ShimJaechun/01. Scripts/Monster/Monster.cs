@@ -169,8 +169,9 @@ namespace Jc
         public void FindTarget(GameObject target)
         {
             // 플레이어 탐지
-            if (isTrackingPlayer && target.tag == "Player" ||
-                !isTrackingPlayer && Manager.Layer.wallLM.Contain(target.layer))
+            if (fsm.FSM.CurState == "Tracking" && 
+                (isTrackingPlayer && target.tag == "Player" ||
+                !isTrackingPlayer && Manager.Layer.wallLM.Contain(target.layer)))
             {
                 currentTarget = target;
                 fsm.ChangeState("Attack");

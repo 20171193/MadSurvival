@@ -9,17 +9,17 @@ namespace Jc
     // 충돌관련 이벤트처리
     public class PlayerTrigger : MonoBehaviour, ITileable, IDamageable
     {
-        public UnityAction OnTakeDamage;
-        public UnityAction<Ground> OnGround;
+        public Player owner;
 
         public void OnTile(Ground ground)
         {
-            OnGround?.Invoke(ground);
+            owner.currentGround = ground;
         }
 
         public void TakeDamage(float damage, Vector3 suspectPos)
         {
-            throw new System.NotImplementedException();
+            owner.CurHp -= damage;
+            owner.OnTakeDamage();
         }
     }
 }
