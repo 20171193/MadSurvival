@@ -20,6 +20,18 @@ namespace Jc
 
         [SerializeField]
         private GroundPos[] spawnablePos;
+        public struct MapThreshold
+        {
+            public GroundPos min;
+            public GroundPos max;
+            public MapThreshold(GroundPos min, GroundPos max)
+            {
+                this.min = min;
+                this.max = max;
+            }
+        }
+        private MapThreshold[] mapThresholds;
+
 
         [SerializeField]
         private int spawnCount;
@@ -36,6 +48,12 @@ namespace Jc
                 new GroundPos(0, 0), new GroundPos(0, 19), new GroundPos(0, 59),
                 new GroundPos(19, 0),new GroundPos(19, 59),
                 new GroundPos(59, 0),new GroundPos(59, 19),new GroundPos(59, 59)
+            };
+            mapThresholds = new MapThreshold[8]
+            {
+                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),new MapThreshold(new GroundPos(0,20), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,40), new GroundPos(19,59)),
+                new MapThreshold(new GroundPos(20,0), new GroundPos(39, 19)),new MapThreshold(new GroundPos(20,40), new GroundPos(39,59)),
+                new MapThreshold(new GroundPos(40, 0), new GroundPos(59, 19)),new MapThreshold(new GroundPos(40, 20), new GroundPos(59,39)),new MapThreshold(new GroundPos(40, 40), new GroundPos(59,59))
             };
         }
 
@@ -89,8 +107,8 @@ namespace Jc
             //   좌하, 중하, 우하
             // 2. 지정된 영역의 중앙부터 bfs 탐색을 하며 비어있는 타일을 찾기
             // 3. 비어있는 타일을 스폰할 타일로 지정
-
-            GroundPos startPos = spawnablePos[UnityEngine.Random.Range(0, 7)];
+            int rand = UnityEngine.Random.Range(0, 7);
+            GroundPos startPos = spawnablePos[rand];
 
             // 비어있는 타일이라면 바로 스폰
             if (Manager.Navi.gameMap[startPos.z].groundList[startPos.x].type == GroundType.Empty)
@@ -104,10 +122,10 @@ namespace Jc
             int resol = Manager.Navi.mapZsize / 3 / 2;
 
             // 탐색범위 설정
-            int minZ = startPos.z - resol+1;
-            int maxZ = startPos.z + resol;
-            int minX = startPos.x - resol + 1;
-            int maxX = startPos.x + resol;
+            int minZ = mapThresholds[rand].min.z;
+            int maxZ = mapThresholds[rand].max.z;
+            int minX = mapThresholds[rand].min.x;
+            int maxX = mapThresholds[rand].max.x;
 
             // 탐색방향 설정
             int[] dz = new int[4] { 0, 0, 1, -1 };
@@ -123,7 +141,7 @@ namespace Jc
                     int nz = dz[i] + curPos.z;
                     int nx = dz[i] + curPos.x;
                     if (nz < minZ || nz > maxZ || nx < minX || nx > maxX) continue;
-                    if (visited[nz, nx]) continue;
+                    if (visited[nz-minZ, nx-minX]) continue;
 
                     if (Manager.Navi.gameMap[nz].groundList[nx].type == GroundType.Empty)
                         return Manager.Navi.gameMap[nz].groundList[nx];

@@ -53,7 +53,6 @@ namespace Jc
 
         public override void Enter()
         {
-            Debug.Log("Tracking Enter");
             // 타겟지점으로 트래킹 실행
             owner.Agent.isStopped = false;
             trackingRoutine = owner.StartCoroutine(TrackingRoutine());

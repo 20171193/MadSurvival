@@ -182,10 +182,6 @@ namespace Jc
                 currentTarget = null;
         }
 
-        public void OnDamage()
-        {
-            TakeDamage(4, Vector3.zero);
-        }
         // 데미지 처리
         public void TakeDamage(float value, Vector3 suspectPos)
         {
