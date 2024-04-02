@@ -122,7 +122,8 @@ namespace Jc
     }
 
     public class MonsterDie : MonsterBaseState
-    { 
+    {
+        private Coroutine dieRoutine;
         public MonsterDie(Monster owner)
         {
             this.owner = owner;
@@ -130,10 +131,13 @@ namespace Jc
 
         public override void Enter()
         {
-            owner.Anim.SetTrigger("OnDie");
-            owner.FSM.ChangeState("Pooled");
+            //owner.Anim.SetTrigger("OnDie");
+            dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }
 
-        
+        public override void Exit()
+        {
+            owner.Release();
+        }
     }
 }
