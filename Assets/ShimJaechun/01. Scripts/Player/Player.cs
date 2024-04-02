@@ -168,7 +168,7 @@ namespace Jc
         {
 
         }
-        public void GetItem(DropItem item)
+        public void GetItem(Item item)
         {
 
         }
