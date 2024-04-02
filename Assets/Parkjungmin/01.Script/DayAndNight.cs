@@ -16,9 +16,11 @@ namespace jungmin
 		[SerializeField] float fogDensityCalc; // Áõ°¨·® ºñ¿ë
 		public bool IsNight = false;
 		[SerializeField] public float dayTimer;
-		[SerializeField] Coroutine coroutine;
-		[SerializeField] Coroutine enterDayRoutine;
-		[SerializeField] Coroutine exitDayRoutine;
+		Coroutine coroutine;
+		Coroutine exitNightRoutine;
+		Coroutine exitFogRoutine;
+		Coroutine enterNightRoutine;
+		Coroutine enterFogRoutine;
 
 		float daytimer_;
 		public int days;
@@ -35,45 +37,40 @@ namespace jungmin
 		 */
 		public UnityAction OnNight;
 
-		IEnumerator DayTimeCoroutine()
+        private void Awake()
+        {
+            daytimer_ = dayTimer;
+            prevDayValue = -1;
+            dayForDensity = RenderSettings.fogDensity;
+        }
+
+        IEnumerator DayTimeCoroutine()
 		{
-			dayTimer -= Time.deltaTime;
-			if ( dayTimer <= 0 )
+			while(dayTimer > 0f)
 			{
-				OnNight?.Invoke();
-				IsNight = true;
-				Debug.Log("its night");
+				dayTimer -= Time.deltaTime;
+				yield return null;
 			}
-			yield return null;
-		}
-		private void Start()
-		{
-			daytimer_ = dayTimer;
-			prevDayValue = -1;
-			dayForDensity = RenderSettings.fogDensity;
+			dayTimer = 0f;
+			OnEnterNight();
+            yield return null;
 		}
 
 		// --------DAY ENTER EXIT
-		public void EnterDay()
+		public void OnExitNight()
 		{
-			// ¹ã -> ³· ·çÆ¾
-			enterDayRoutine = StartCoroutine(EnterDayRoutine());
-		}
-		public void ExitDay()
+			// Å¸ÀÌ¸Ó ÃÊ±âÈ­
+			dayTimer = daytimer_;
+
+            IsNight = false;
+			exitNightRoutine = StartCoroutine(DayTimeCoroutine());
+            exitFogRoutine = StartCoroutine(ExitFogRoutine());
+        }
+		public void OnEnterNight()
 		{
-			// ³· -> ¹ã ·çÆ¾
-			exitDayRoutine = StartCoroutine(ExitDayRoutine());
-		}
-		IEnumerator EnterDayRoutine()
-		{
-			IsNight = false;
-			yield return null;
-		}
-		IEnumerator ExitDayRoutine()
-		{
-			IsNight = true;
-			yield return null;
-		}
+            IsNight = true;
+			OnNight?.Invoke();
+        }
 		// -------FOG ENTER EXIT
 
 		IEnumerator EnterFogRoutine()
@@ -98,7 +95,6 @@ namespace jungmin
 		{
 			currentFogDensity -= 0.1f * fogDensityCalc * Time.deltaTime;
 			RenderSettings.fogDensity = currentFogDensity;
-
 		}
 		void EnterFog()
 		{

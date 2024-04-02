@@ -197,6 +197,7 @@ namespace Jc
             // 데미지 처리, 넉백
             else
             {
+                anim.SetTrigger("OnHit");
                 ownHp -= damage;
                 knockBackTimer = StartCoroutine(KnockBackRoutine());
             }
@@ -225,6 +226,12 @@ namespace Jc
         public void OnChangeTarget(Ground playerGround)
         {
             this.playerGround = playerGround;
+        }
+
+        public override void Release()
+        {
+            base.Release();
+            OnMonsterDie?.Invoke(this);
         }
 
         #region 몬스터 추격 알고리즘
