@@ -47,3 +47,9 @@ MonoBehaviour:
   wallLM:
     serializedVersion: 2
     m_Bits: 524288
+  obstacleLM:
+    serializedVersion: 2
+    m_Bits: 0
+  monsterLM:
+    serializedVersion: 2
+    m_Bits: 1048576
