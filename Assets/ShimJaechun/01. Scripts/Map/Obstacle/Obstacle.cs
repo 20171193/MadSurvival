@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Jc
 {
-    public class Obstacle : PooledObject, IDamageable
+    public class Obstacle : PooledObject, IDiggable
     {
         [Header("Components")]
         [Space(2)]
@@ -24,6 +24,10 @@ namespace Jc
         [SerializeField]
         protected string obstacleName;
         public string ObstacleName { get { return obstacleName; } }
+
+        [SerializeField]
+        protected DigType digType;
+        public DigType DigType { get { return digType; } }
 
         [Space(3)]
         [Header("Specs")]
@@ -46,7 +50,6 @@ namespace Jc
             spawnCount = spawnCount > size ? size : spawnCount;
             GameObject inst = Instantiate(prefab, transform);
         }
-
         public void InitSetting()
         {
             if (!Manager.Data.obstacleDataDic.ContainsKey(obstacleName))
@@ -61,9 +64,19 @@ namespace Jc
             ownHp = hp;
         }
 
-        public void TakeDamage(float value, Vector3 position)
+        protected void DropItem()
         {
 
+        }
+
+        public void DigUp(float value)
+        {
+            //if()
+        }
+
+        public DigType GetDigType()
+        {
+            return digType;
         }
     }
 }

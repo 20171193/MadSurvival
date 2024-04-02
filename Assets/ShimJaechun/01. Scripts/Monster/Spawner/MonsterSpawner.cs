@@ -93,7 +93,8 @@ namespace Jc
                     {
                         spawnGround = SetSpawnPos();
                     }
-                    Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
+                    Monster spawned = (Monster)Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
+                    spawned.OnMonsterDie += MonsterDie;
                     spawnCount++;
                 }
             }

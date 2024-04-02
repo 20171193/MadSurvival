@@ -18,6 +18,7 @@ namespace Jc
 
         private void Awake()
         {
+            monsterSpawner.OnAllMonsterDie += ExitNight;
             dayController.OnNight += EnterNight;
         }
 
@@ -40,5 +41,7 @@ namespace Jc
 			// 날짜 카운팅
 			day++;
         }
+
+        //IEnumerator Sun
     }
 }

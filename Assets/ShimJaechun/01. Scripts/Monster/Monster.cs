@@ -137,7 +137,6 @@ namespace Jc
 
         private void Update()
         {
-            anim.SetFloat("MoveSpeed", agent.velocity.magnitude);
             currentState = fsm.currentState;
         }
 
