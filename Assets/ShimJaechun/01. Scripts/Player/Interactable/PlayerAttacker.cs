@@ -52,16 +52,30 @@ namespace Jc
                 if (Vector3.Dot(transform.forward, dirToTarget) < CosAngle)
                     continue;
 
+                // 공격대상
                 IDamageable damagable = colliders[i].GetComponent<IDamageable>();
-                damagable?.TakeDamage(owner.ATK, transform.position);
+                damagable?.TakeDamage(owner.MonsterATK, transform.position);
+
+                // 채굴대상
+                IDiggable diggable = colliders[i].GetComponent<IDiggable>();
+                if(diggable != null)
+                {
+                    float value = 0f;
+                    switch(diggable.GetDigType())
+                    {
+                        case DigType.Tree:
+                            value = owner.TreeATK;
+                            break;
+                        case DigType.Stone:
+                            value = owner.StoneATK;
+                            break;
+                        default:
+                            break;
+                    }
+                    diggable.DigUp(value);
+                }
             }
         }
-
-        public void OnClickAttackButton()
-        {
-            owner.Anim.SetTrigger("OnAttack");
-        }
-
         private void OnDrawGizmosSelected()
         {
             if (debug == false)

@@ -19,7 +19,10 @@ namespace Jc
         public void TakeDamage(float damage, Vector3 suspectPos)
         {
             owner.CurHp -= damage;
-            owner.OnTakeDamage();
+            if(owner.CurHp <= 0)
+                owner.OnDie();
+            else
+                owner.OnTakeDamage();
         }
     }
 }

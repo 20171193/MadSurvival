@@ -53,3 +53,6 @@ MonoBehaviour:
   monsterLM:
     serializedVersion: 2
     m_Bits: 1048576
+  attackableLM:
+    serializedVersion: 2
+    m_Bits: 4194304

@@ -58,11 +58,17 @@ namespace Jc
             trackingRoutine = owner.StartCoroutine(TrackingRoutine());
         }
 
+        public override void Update()
+        {
+            owner.Anim.SetFloat("MoveSpeed", owner.Agent.velocity.magnitude);
+        }
+
         public override void Exit()
         {
             if (trackingRoutine != null)
                 owner.StopCoroutine(trackingRoutine);
 
+            owner.Anim.SetFloat("MoveSpeed", 0f);
             // ≈ª√‚ Ω√ ∏ÿ√„
             owner.Agent.isStopped = true;
         }

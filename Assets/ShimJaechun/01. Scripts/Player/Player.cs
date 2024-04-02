@@ -41,31 +41,32 @@ namespace Jc
         public float CurHp { get { return curHp; } set { curHp = value; } }
 
         [SerializeField]
-        private float atk;  // 공격력
-        public float ATK
-        {
-            get
-            {
-                return atk;
-            }
-            set
-            {
-                atk = value;
-            }
-        }
+        private float monsterAtk;  // 공격력
+        public float MonsterATK
+        {get{return monsterAtk;}set{monsterAtk = value;}}
+
+        [SerializeField]        // 트리 대상 공격력
+        private float treeAtk;
+        public float TreeATK { get { return treeAtk; } set { treeAtk = value; } }
+
         [SerializeField]
-        private float ats;  // 공격력
+        private float stoneAtk; // 바위 대상 공격력
+        public float StoneATK { get { return stoneAtk;}set { stoneAtk = value; } }
+
+        [SerializeField]
+        private float ats;  // 공격속도
         public float ATS
         {
             get
             {
-                return atk;
+                return ats;
             }
             set
             {
-                atk = value;
+                ats = value;
             }
         }
+
         [SerializeField]
         private float amr;  // 방어력
         public float AMR
@@ -116,42 +117,14 @@ namespace Jc
         {
             fsm.CreateFSM(this);
             trigger.owner = this;
-        }
-        private void Start()
-        {
-            SetModel(curModel);
+            CurHp = maxHp;
         }
         private void Update()
         {
             // 플레이어 이동 
             controller.Move(speed, anim);
         }
-        private void SetModel(int index)
-        {
-            // 모델 변경함수
-            // 예외처리 : 인덱스 범위를 벗어난 경우
-            if (index >= models.Length || index < 0) return;
-
-            // 현재 모델을 비활성화
-            models[curModel]?.SetActive(false);
-
-            // 모델 변경 후 활성화
-            curModel = index;
-            models[curModel].SetActive(true);
-            // 애니메이터 변경
-            anim = models[curModel].GetComponent<Animator>();
-            meshRenderer = models[curModel].transform.GetChild(2).GetComponent<SkinnedMeshRenderer>();
-        }
-        // 테스트용 캐릭터 모델 변경
-        private void OnCharacterChange(InputValue value)
-        {
-            SetModel(value.Get<float>() < 0 ? curModel - 1 : curModel + 1);
-        }
-        public void OnClickInteractButton()
-        {
-
-        }
-
+        
         public void OnTakeDamage()
         {
             damageRoutine = StartCoroutine(DamageRoutine());
@@ -164,7 +137,7 @@ namespace Jc
             float materialTime = invinsibleTime / 10f;
             bool isFadeOut = true;
 
-            gameObject.layer = LayerMask.NameToLayer("Invinsible");
+            trigger.gameObject.layer = LayerMask.NameToLayer("Invinsible");
             meshRenderer.material = invinsibleMT;
             yield return null;
 
@@ -187,10 +160,19 @@ namespace Jc
                 yield return null;
             }
 
-            gameObject.layer = LayerMask.NameToLayer("Player");
+            trigger.gameObject.layer = LayerMask.NameToLayer("Player");
             meshRenderer.material = originMT;
             yield return null;
         }
+        public void OnDie()
+        {
+
+        }
+        public void GetItem(DropItem item)
+        {
+
+        }
+
         public void Equip()
         {
         }

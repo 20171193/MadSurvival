@@ -12,4 +12,7 @@ public class LayerManager : Singleton<LayerManager>
 
     [SerializeField]
     public LayerMask monsterLM;
+
+    [SerializeField]
+    public LayerMask attackableLM;
 }
