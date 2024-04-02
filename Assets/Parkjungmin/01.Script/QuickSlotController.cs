@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuickSlotManage : MonoBehaviour
+public class SlotManage : MonoBehaviour
 {
-	[SerializeField] QuickSlot [] quickSlots; 
+	[SerializeField] Slot [] quickSlots; 
 	[SerializeField] Transform tf_parent; //퀵스롯의 부모 오브젝트
 	public GameObject SlotSet;
 
@@ -19,7 +19,7 @@ public class QuickSlotManage : MonoBehaviour
 
 	private void Start()
 	{
-		quickSlots = SlotSet.GetComponentsInChildren<QuickSlot>();
+		quickSlots = SlotSet.GetComponentsInChildren<Slot>();
 		selectSlot = 0;
 	}
 	private void Update()

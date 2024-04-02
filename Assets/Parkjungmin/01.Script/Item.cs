@@ -1,6 +1,7 @@
 using jungmin;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,10 +14,9 @@ public class Item : ScriptableObject
 		Countable, //소모 아이템
 		ingredient, //재료
 	}
-	[SerializeField] public string name;
-	[SerializeField] public Sprite icon;
+	[SerializeField] public string itemName;
+	[SerializeField] public Sprite itemImage;
 	[SerializeField] public ItemType itemtype;
-	[SerializeField] GameObject DropPrefab;
-	public int Count;
+	//[SerializeField] GameObject DropPrefab;
 
 }
