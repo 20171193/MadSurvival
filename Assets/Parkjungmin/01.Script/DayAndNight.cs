@@ -73,11 +73,8 @@ namespace jungmin
 		public void OnEnterNight()
 		{
 			IsNight = true;
-			Debug.Log("π„¿Ã µÀ¥œ¥Ÿ.1");
 			prevDayValue = IsNight ? 1 : 0;
-			Debug.Log("π„¿Ã µÀ¥œ¥Ÿ.2");
 			OnNight?.Invoke();
-			Debug.Log("π„¿Ã µÀ¥œ¥Ÿ.3");
 			enterFogRoutine = StartCoroutine(EnterFogRoutine());
 		}
 		// -------FOG ENTER EXIT
@@ -87,7 +84,6 @@ namespace jungmin
 			while (currentFogDensity <= nightFogDensity )
 			{
 				EnterFog();
-				Debug.Log("enterfog");
 				yield return null;
 			}
 		}
@@ -96,7 +92,6 @@ namespace jungmin
 			while ( currentFogDensity > dayForDensity )
 			{
 				ExitFog();
-				Debug.Log("exitfog");
 				yield return null;
 			}
 		}

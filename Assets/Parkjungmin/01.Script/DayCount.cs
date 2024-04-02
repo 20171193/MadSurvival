@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DayCountUI : MonoBehaviour
 {
-	[SerializeField] GameObject timer;
+	[SerializeField] GameObject SunObject;
 	TMP_Text text;
 
 	private void Start()
@@ -16,6 +16,6 @@ public class DayCountUI : MonoBehaviour
 
 	private void Update()
 	{
-		text.text = ( ( int ) ( timer.GetComponent<DayAndNight>().days ) ).ToString();
+		text.text = ( ( int ) ( SunObject.GetComponent<DayAndNight>().days ) ).ToString();
 	}
 }
