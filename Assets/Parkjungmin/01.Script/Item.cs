@@ -1,23 +1,20 @@
 using jungmin;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+[CreateAssetMenu(fileName ="NewItem",menuName ="NewItem/item")]
+public class Item : ScriptableObject
 {
-
+	public enum ItemType
+	{
+		Equipment, // 장비
+		Countable, //소모 아이템
+		ingredient, //재료
+	}
 	[SerializeField] public string name;
 	[SerializeField] public Sprite icon;
-	[SerializeField] itemData itemdata;
+	public int Count;
 
-
-	private void OnTriggerEnter( Collider other )
-	{
-		if (other.gameObject.GetComponent<moveing>())
-		{
-			other.gameObject.GetComponent<moveing>().Inventory.GetItem(this);
-			gameObject.SetActive(false);
-		}
-
-	}
 }
