@@ -22,7 +22,7 @@ namespace jungmin
 		Coroutine enterNightRoutine;
 		Coroutine enterFogRoutine;
 
-		float daytimer_;
+		float resetTimeValue;
 		public int days;
 		int prevDayValue;
 		bool checkday; //일몰시 한번만 Days를 증감시키는 메소드를 한번만 시도하게 하는 메소드
@@ -39,7 +39,7 @@ namespace jungmin
 
         private void Awake()
         {
-            daytimer_ = dayTimer;
+            resetTimeValue = dayTimer;
             prevDayValue = -1;
             dayForDensity = RenderSettings.fogDensity;
         }
@@ -60,17 +60,26 @@ namespace jungmin
 		public void OnExitNight()
 		{
 			// 타이머 초기화
-			dayTimer = daytimer_;
-
-            IsNight = false;
+			if(prevDayValue == 1)
+			{ //Day 0에서는 타임이 초기화되지 않음.
+				dayTimer = resetTimeValue;
+			}
+			Debug.Log("지금은 낮입니다.");
+			IsNight = false;
 			exitNightRoutine = StartCoroutine(DayTimeCoroutine());
             exitFogRoutine = StartCoroutine(ExitFogRoutine());
-        }
+			prevDayValue = IsNight ? 1 : 0;
+		}
 		public void OnEnterNight()
 		{
-            IsNight = true;
+			IsNight = true;
+			Debug.Log("밤이 됩니다.1");
+			prevDayValue = IsNight ? 1 : 0;
+			Debug.Log("밤이 됩니다.2");
 			OnNight?.Invoke();
-        }
+			Debug.Log("밤이 됩니다.3");
+			enterFogRoutine = StartCoroutine(EnterFogRoutine());
+		}
 		// -------FOG ENTER EXIT
 
 		IEnumerator EnterFogRoutine()
