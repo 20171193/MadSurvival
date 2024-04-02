@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace Jc
 {
-    public class Monster : MonoBehaviour, ITileable, IDamageable
+    public class Monster : PooledObject, ITileable, IDamageable
     {
         [Header("Components")]
         [Space(2)]

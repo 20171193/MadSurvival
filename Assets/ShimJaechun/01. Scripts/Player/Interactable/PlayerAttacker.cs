@@ -7,10 +7,12 @@ namespace Jc
 {
     public class PlayerAttacker : MonoBehaviour
     {
+        [SerializeField]
+        private Player owner;
+
         [SerializeField] 
         private bool debug; // 디버그 모드 Gizmos
-        [SerializeField]
-        private float atk;
+       
         [SerializeField] 
         private float range;
         [SerializeField, Range(0, 360)]
@@ -33,7 +35,14 @@ namespace Jc
 
         // 범위내 적들을 모두 공격
         Collider[] colliders = new Collider[10];
-        private void AttackTiming()
+
+        private void Awake()
+        {
+            owner = GetComponent<Player>();
+        }
+
+        // 애니메이션 이벤트를 통한 공격처리
+        public void AttackTiming()
         {
             int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.monsterLM);
             for (int i = 0; i < size; i++)
@@ -43,16 +52,13 @@ namespace Jc
                     continue;
 
                 IDamageable damagable = colliders[i].GetComponent<IDamageable>();
-                damagable?.TakeDamage(atk, transform.position);
+                damagable?.TakeDamage(owner.ATK, transform.position);
             }
         }
 
-        // 애니메이션 이벤트를 통한 공격처리
-        public void Attack(float atk, Animator anim)
+        public void OnClickAttackButton()
         {
-            // 공격력 세팅
-            this.atk = atk;
-            anim.SetTrigger("OnAttack");
+            owner.Anim.SetTrigger("OnAttack");
         }
 
         private void OnDrawGizmosSelected()

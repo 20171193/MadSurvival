@@ -35,7 +35,17 @@ namespace Jc
 
         [SerializeField]
         private float atk;  // °ø°Ý·Â
-        public float ATK { get { return atk; } }
+        public float ATK 
+        {
+            get 
+            {
+                return atk; 
+            } 
+            set 
+            { 
+                atk = value; 
+            } 
+        }
 
         [Space(3)]
         [Header("Linked Class")]
@@ -67,7 +77,7 @@ namespace Jc
         private Ground currentGround;
 
         private void Awake()
-        {
+        {          
             fsm.CreateFSM(this);
             trigger.OnGround += OnGround;
         }
@@ -104,10 +114,16 @@ namespace Jc
         {
             SetModel(value.Get<float>() < 0 ? curModel - 1 : curModel + 1);
         }
-
         public void OnClickInteractButton()
         {
 
+        }
+
+        public void Equip()
+        {
+        }
+        public void UnEquip()
+        { 
         }
     }
 }
