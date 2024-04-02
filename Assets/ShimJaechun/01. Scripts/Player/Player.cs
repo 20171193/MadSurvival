@@ -16,7 +16,7 @@ namespace Jc
 
         [SerializeField]
         private Animator anim;
-        public Animator Anim { get { return anim; }  }
+        public Animator Anim { get { return anim; } }
 
         [SerializeField]
         private SkinnedMeshRenderer meshRenderer;
@@ -42,16 +42,16 @@ namespace Jc
 
         [SerializeField]
         private float atk;  // 공격력
-        public float ATK 
+        public float ATK
         {
-            get 
+            get
             {
-                return atk; 
-            } 
-            set 
-            { 
-                atk = value; 
-            } 
+                return atk;
+            }
+            set
+            {
+                atk = value;
+            }
         }
         [SerializeField]
         private float ats;  // 공격력
@@ -108,12 +108,12 @@ namespace Jc
 
         [SerializeField]
         private PlayerBuilder builder;
-        public PlayerBuilder Builder { get { return builder; } }    
+        public PlayerBuilder Builder { get { return builder; } }
 
         public Ground currentGround;
-
+        private Coroutine damageRoutine;
         private void Awake()
-        {          
+        {
             fsm.CreateFSM(this);
             trigger.owner = this;
         }
@@ -154,7 +154,7 @@ namespace Jc
 
         public void OnTakeDamage()
         {
-
+            damageRoutine = StartCoroutine(DamageRoutine());
         }
         IEnumerator DamageRoutine()
         {
@@ -168,10 +168,22 @@ namespace Jc
             meshRenderer.material = invinsibleMT;
             yield return null;
 
-            while(time > 0f)
+            while (time > 0f)
             {
                 time -= Time.deltaTime;
-                //if(isFadeOut)
+
+                meshRenderer.material.color = new Color(
+                meshRenderer.material.color.r,
+                meshRenderer.material.color.g,
+                meshRenderer.material.color.b,
+                meshRenderer.material.color.a + (isFadeOut ? -Time.deltaTime : Time.deltaTime));
+
+                materialTime -= Time.deltaTime;
+                if (materialTime <= 0f)
+                {
+                    isFadeOut = !isFadeOut;
+                    materialTime = invinsibleTime / 10f;
+                }
                 yield return null;
             }
 
@@ -183,7 +195,7 @@ namespace Jc
         {
         }
         public void UnEquip()
-        { 
+        {
         }
     }
 }
