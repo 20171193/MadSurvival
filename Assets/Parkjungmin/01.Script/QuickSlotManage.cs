@@ -7,10 +7,14 @@ public class QuickSlotManage : MonoBehaviour
 	Item[] itemlist = new Item [6];
 
 
-	private void Start()
+	private void Awake()
 	{
 		
 	}
 
+	void ChangeItem()
+	{
+
+	}
 
 }
