@@ -8,11 +8,11 @@ namespace Jc
     [Serializable]
     public struct SpawnInfo
     {
-        public Monster monster;
+        public string monsterName;
         public int count;
-        public SpawnInfo(Monster monster, int count)
+        public SpawnInfo(string monsterName, int count)
         {
-            this.monster = monster;
+            this.monsterName = monsterName;
             this.count = count;
         }
     }
