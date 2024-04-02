@@ -15,15 +15,15 @@ public static class Manager
     private static void Initialize()
     {
         // 教臂畔 按眉秦力
+        PoolManager.ReleaseInstance();
         NavigationManager.ReleaseInstance();
         LayerManager.ReleaseInstance();
         DataManager.ReleaseInstance();
-        PoolManager.ReleaseInstance();
 
         // 教臂畔 按眉积己
+        PoolManager.CreateInstance();
         NavigationManager.CreateInstance();
         LayerManager.CreateInstance();
         DataManager.CreateInstance();
-        PoolManager.CreateInstance();
     }
 }

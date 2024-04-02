@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace Jc
 {
-    public class Monster : MonoBehaviour, ITileable, IDamageable
+    public class Monster : PooledObject, ITileable, IDamageable
     {
         [Header("Components")]
         [Space(2)]
@@ -105,12 +105,13 @@ namespace Jc
         // 간략화
         public NavigationManager Navi => Manager.Navi;
 
+        public string currentState;
+
         private void Awake()
         {
             fsm.CreateFSM(this);
             detecter.OnTrigger += FindTarget;
             detecter.OffTrigger += LoseTarget;
-            InitSetting();
         }
 
         private void OnEnable()
@@ -125,11 +126,16 @@ namespace Jc
             // 게임맵 할당
             gameMap = Navi.gameMap;
             playerGround = Navi.OnPlayerGround;
+            InitSetting();
+
+            // 상태변경
+            fsm.ChangeState("Idle");
         }
 
         private void Update()
         {
             anim.SetFloat("MoveSpeed", agent.velocity.magnitude);
+            currentState = fsm.currentState;
         }
 
         private void OnDisable()
@@ -147,7 +153,7 @@ namespace Jc
             }
 
             MonsterData loadedData = Manager.Data.monsterDataDic[monsterName];
-            speed = loadedData.speed;
+            Speed = loadedData.speed;
             atk = loadedData.atk;
             ats = loadedData.ats;
             hp = loadedData.hp;
