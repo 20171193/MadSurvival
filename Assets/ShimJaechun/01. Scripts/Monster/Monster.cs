@@ -214,6 +214,11 @@ namespace Jc
             // 원복
             rigid.velocity = Vector3.zero;
             agent.enabled = true;
+
+            // 넉백 후 딜ㄹㅔㅇㅣ
+            agent.isStopped = true;
+            yield return new WaitForSeconds(0.2f);
+            agent.isStopped = false;
         }
 
         // 몬스터가 타일에 진입한 경우 세팅

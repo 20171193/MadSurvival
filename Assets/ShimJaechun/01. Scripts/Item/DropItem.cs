@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Transactions;
 using UnityEngine;
+using jungmin;
+
 namespace Jc
 {
-    public class DropItem : MonoBehaviour
+    public class DropItem : PooledObject
     {
+        [Header("Components")]
+        [Space(2)]
         [SerializeField]
         private Item itemData;
 
+        [SerializeField]
+        private bool autoRotate;
         [SerializeField]
         private float rotSpeed;
 
@@ -22,7 +28,14 @@ namespace Jc
 
         private void Update()
         {
-            obTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime);
+            // 아이템 회전 적용
+            if (autoRotate)
+                obTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime);
+        }
+
+        public void OnDropItem()
+        {
+
         }
 
         private void OnTriggerEnter(Collider other)

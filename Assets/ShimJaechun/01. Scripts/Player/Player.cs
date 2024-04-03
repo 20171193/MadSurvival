@@ -15,6 +15,9 @@ namespace Jc
         private int curModel = 0;
 
         [SerializeField]
+        private BackPackController backPack;
+
+        [SerializeField]
         private Animator anim;
         public Animator Anim { get { return anim; } }
 
@@ -170,7 +173,7 @@ namespace Jc
         }
         public void GetItem(Item item)
         {
-
+            backPack.AcquireItem(item);
         }
 
         public void Equip()

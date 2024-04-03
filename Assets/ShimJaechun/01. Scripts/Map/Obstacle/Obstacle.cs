@@ -14,6 +14,9 @@ namespace Jc
         [SerializeField]
         private GameObject prefab;
 
+        [SerializeField]
+        private DropItem dropItem;
+
         [Space(3)]
         [Header("Editor Setting")]
         [Space(2)]
@@ -66,7 +69,7 @@ namespace Jc
 
         protected void DropItem()
         {
-
+            dropItem.OnDropItem();
         }
 
         public void DigUp(float value)
