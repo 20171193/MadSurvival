@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Jc
 {
@@ -26,16 +27,12 @@ namespace Jc
         private WaterSet waterSpawner;
         [SerializeField]
         private ObstacleSpawner obstacleSpawner;
-
         [SerializeField]
         private GameObject groundPrefab;
-
         [SerializeField]
         private MeshRenderer dummyPlaneMr;
-
         [SerializeField]
         private List<Material> buildableMt;
-
         [SerializeField]
         private Material waterMt;
 
@@ -67,6 +64,9 @@ namespace Jc
         // 간략화
         private NavigationManager Navi => Manager.Navi;
 
+        // 그라운드 세팅이 끝난경우 Invoke
+        public UnityAction OnEndGroundSet;
+
         private void Start()
         {
             // 길찾기 매니저에 게임 맵을 할당
@@ -85,14 +85,9 @@ namespace Jc
 
             waterSpawner.SettingGroundSize();
 
-            // 오브젝트 생성 순서 
-            // 1. Buildable
-            // 2. Water
-            // 3. Obstacle
-            // 4. Animal
             DrawBuildableGround();
             waterSpawner.Spawn();
-            obstacleSpawner.InitSpawn();
+            OnEndGroundSet?.Invoke();
         }
 
 
@@ -125,7 +120,9 @@ namespace Jc
                         transform.position.y,
                         transform.position.z - zStartPos + z * prefabZscale);
                     GameObject inst = Instantiate(groundPrefab, groundPos, Quaternion.identity);
-                    grounds.groundList.Add(inst.GetComponent<Ground>());
+                    Ground groundInst = inst.GetComponent<Ground>();
+                    groundInst.OriginType = GroundType.Empty;
+                    grounds.groundList.Add(groundInst);
                     inst.transform.parent = transform;
                     inst.gameObject.name = $"{z},{x}";
                 }
@@ -141,10 +138,12 @@ namespace Jc
                 for (int x = Navi.cornerTL.x; x <= Navi.cornerTR.x; x++)
                 {
                     groundLists[z].groundList[x].type = GroundType.Buildable;
+                    groundLists[z].groundList[x].OriginType = GroundType.Buildable;
                     groundLists[z].groundList[x].transform.GetChild(0).GetComponent<MeshRenderer>().SetMaterials(buildableMt);
                 }
             }
         }
+
         [ContextMenu("ResetGround")]
         public void ResetGround()
         {

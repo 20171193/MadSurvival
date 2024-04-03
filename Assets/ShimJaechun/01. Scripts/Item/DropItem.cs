@@ -14,17 +14,32 @@ namespace Jc
         private Item itemData;
 
         [SerializeField]
-        private bool autoRotate;
-        [SerializeField]
-        private float rotSpeed;
-
-        [SerializeField]
-        private float getSpeed;
+        private Rigidbody rigid;
+        public Rigidbody Rigid { get { return rigid; } }
 
         [SerializeField]
         private Transform obTr;
+        [SerializeField]
+        private Collider ownerCol;
+        [SerializeField]
+        private Collider obCol;
+
+        [Space(3)]
+        [Header("Specs")]
+        [Space(2)]
+        [SerializeField]
+        private bool autoRotate = false;
+        [SerializeField]
+        private float rotSpeed;
+        [SerializeField]
+        private float getSpeed;
 
         private Coroutine getItemRoutine;
+
+        private void OnEnable()
+        {
+            InitSetting();
+        }
 
         private void Update()
         {
@@ -33,9 +48,25 @@ namespace Jc
                 obTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime);
         }
 
-        public void OnDropItem()
+        private void InitSetting()
         {
+            ownerCol.enabled = false;
+            obCol.enabled = true;
+            autoRotate = false;
+            rigid.useGravity = false;
+        }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!Manager.Layer.groundLM.Contain(collision.gameObject.layer)) 
+                return;
+            
+            rigid.velocity = Vector3.zero;
+            rigid.velocity = Vector3.zero;
+            rigid.useGravity = false;
+            autoRotate = true;
+            obCol.enabled = false;
+            ownerCol.enabled = true;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -52,10 +83,10 @@ namespace Jc
         IEnumerator GetItemRoutine(Player player)
         {
             Vector3[] points = new Vector3[3];
-            // 아이템 위치와 플레이어 사이의 1/10 지점을 경유할 포인트로 지정
+            // 아이템 위치와 플레이어 사이의 1/5 지점 뒤를 경유할 포인트로 지정
             Vector3 vec = player.transform.position - transform.position;
             float dist = vec.magnitude / 8f;
-            points[0] = transform.position + -vec.normalized * dist;
+            points[0] = transform.position -vec.normalized * dist;
 
             float time = 0f;
             yield return null;

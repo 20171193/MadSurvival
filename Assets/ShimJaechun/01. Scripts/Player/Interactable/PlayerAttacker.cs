@@ -45,7 +45,7 @@ namespace Jc
         public void AttackTiming()
         {
             Debug.Log("Attack Timing");
-            int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.monsterLM);
+            int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.damageableLM);
             for (int i = 0; i < size; i++)
             {
                 Vector3 dirToTarget = (colliders[i].transform.position - transform.position).normalized;
@@ -61,12 +61,12 @@ namespace Jc
                 if(diggable != null)
                 {
                     float value = 0f;
-                    switch(diggable.GetDigType())
+                    switch(diggable.GetObstacleType())
                     {
-                        case DigType.Tree:
+                        case ObstacleType.Tree:
                             value = owner.TreeATK;
                             break;
-                        case DigType.Stone:
+                        case ObstacleType.Stone:
                             value = owner.StoneATK;
                             break;
                         default:

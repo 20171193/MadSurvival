@@ -4,40 +4,47 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Jc
 {
-    public class Obstacle : PooledObject, IDiggable
+    public class Obstacle : PooledObject, IDiggable, ITileable
     {
         [Header("Components")]
         [Space(2)]
         [SerializeField]
-        private GameObject prefab;
+        private GameObject[] levelSpecificModel;
 
         [SerializeField]
-        private DropItem dropItem;
+        private ExplosionInvoker explosionInvoker;
 
         [Space(3)]
         [Header("Editor Setting")]
         [Space(2)]
+        [SerializeField]
+        private float popItemPower;
+        [Range(0, 10f)]
+        [SerializeField]
+        private float popItemRange;
+
         [SerializeField]
         protected int spawnCount;
         public int SpawnCount { get { return spawnCount; } }
 
         [SerializeField]
         protected string obstacleName;
-        public string ObstacleName { get { return obstacleName; } }
+        public string ObstacleName { get { return obstacleName; } set { obstacleName = value; } }
 
         [SerializeField]
-        protected DigType digType;
-        public DigType DigType { get { return digType; } }
+        protected ObstacleType obstacleType;
+        public ObstacleType ObstacleType { get { return obstacleType; } }
 
         [Space(3)]
         [Header("Specs")]
         [Space(2)]
         [SerializeField]
         protected int level;
-        public int Level { get { return level; } }
+        public int Level { get { return level; } set { level = value; } }
 
         [SerializeField]
         protected float hp;
@@ -47,39 +54,83 @@ namespace Jc
         protected float ownHp;
         public float OwnHp { get { return ownHp; } }
 
+        public UnityAction<Obstacle> OnDigged;
+
+        [Space(3)]
+        [Header("Balancing")]
+        [Space(2)]
+        [SerializeField]
+        private Ground onGround;
+
         protected virtual void Awake()
         {
-            InitSetting();
             spawnCount = spawnCount > size ? size : spawnCount;
-            GameObject inst = Instantiate(prefab, transform);
         }
-        public void InitSetting()
+
+        public void InitSetting(string name)
         {
-            if (!Manager.Data.obstacleDataDic.ContainsKey(obstacleName))
+            Debug.Log(name);
+            if (!Manager.Data.obstacleDataDic.ContainsKey(name))
             {
-                Debug.Log($"{obstacleName} : 의 데이터가 없습니다.");
+                Debug.Log($"{name} : 의 데이터가 없습니다.");
                 return;
             }
 
             ObstacleData loadedData = Manager.Data.obstacleDataDic[obstacleName];
+            obstacleName = name;
             level = loadedData.level;
             hp = loadedData.hp;
             ownHp = hp;
+            levelSpecificModel[level].SetActive(true);
         }
 
-        protected void DropItem()
+        public void OnTile(Ground ground)
         {
-            dropItem.OnDropItem();
+            onGround = ground;
         }
 
+        protected virtual void Digged()
+        {
+            // 파괴 처리
+            DropItem();
+            OnDigged?.Invoke(this);
+            levelSpecificModel[level].SetActive(false);
+            Release();
+        }
+        protected virtual void DropItem()
+        {
+            ItemData data = Manager.Data.itemDataDic[obstacleType];
+            if(level < 0 || level >= data.level_SpecificItemLists.Count)
+            {
+                Debug.Log($"{obstacleType} : 레벨{level} 아이템 리스트가 존재하지 않습니다.");
+                return;
+            }
+
+            // 드랍할 아이템 리스트 할당
+            List<DropItem> dropItems = data.level_SpecificItemLists[level].dropItems;
+            foreach(DropItem item in dropItems)
+            {
+                Vector2 rand = UnityEngine.Random.insideUnitCircle;
+                Vector3 spawnPos = new Vector3(transform.position.x + rand.x, transform.position.y + 0.1f, transform.position.z + rand.y);
+                DropItem getItem = (DropItem)Manager.Pool.GetPool(item, spawnPos, Quaternion.identity);
+            }
+            ExplosionInvoker invoker = (ExplosionInvoker)Manager.Pool.GetPool(explosionInvoker, transform.position, Quaternion.identity);
+            invoker.OnExplosion();
+        }
         public void DigUp(float value)
         {
-            //if()
+            Debug.Log($"{gameObject.name} DigUp");
+            // 데미지 처리
+            ownHp -= 10f;
+            if (ownHp <= 0f)
+            {
+                Digged();
+            }
         }
 
-        public DigType GetDigType()
+        public ObstacleType GetObstacleType()
         {
-            return digType;
+            return obstacleType;
         }
     }
 }

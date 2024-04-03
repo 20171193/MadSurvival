@@ -35,14 +35,31 @@ namespace Jc
 
             Manager.Pool.CreatePool(tree, tree.Size, tree.Size + 10);
             Manager.Pool.CreatePool(stone, stone.Size, stone.Size + 10);
+
+            // 로드 장애물 데이터
+            Manager.Data.LoadData(DataType.ObstacleData);
+            // 로드 장애물 스폰 데이터 
+            Manager.Data.LoadData(DataType.DaysObstacleData);
         }
-        public void InitSpawn()
+
+        public void OnDestroyObstacle()
         {
-            SpawnObstacle(tree, tree.SpawnCount, 2);
-            SpawnObstacle(stone, stone.SpawnCount, 1);
+          
         }
+
+        // 하루가 지나고 스폰
+        public void SpawnObstacle(int day)
+        {
+            DaysObstacleData daysObstacleData = Manager.Data.daysObstacleDataDic[day];
+            for(int i=0; i<3; i++)
+            {
+                SpawnObstacle(tree, daysObstacleData.trees[i], 1, $"tree{i}");
+                SpawnObstacle(stone, daysObstacleData.stones[i], 1, $"stone{i}");
+            }
+        }
+
         // 총 size 개수의 장애물을 9칸 당 count 개수만큼 모든 맵에 생성 
-        public void SpawnObstacle(Obstacle obstacle, int size, int count)
+        public void SpawnObstacle(Obstacle obstacle, int size, int count, string name)
         {
             // 구역의 개수는 총 20x20
             List<int> areaList = Enumerable.Range(1, 400).ToList();
@@ -56,6 +73,7 @@ namespace Jc
 
                 List<int> spawnableIDX = new List<int>();
 
+                // 스폰할 수 있는 구역 선별
                 for(int i =0; i<spawnDirections.Count; i++)
                 {
                     int nz = z + spawnDirections[i].z;
@@ -76,7 +94,9 @@ namespace Jc
                     int rand = UnityEngine.Random.Range(0, spawnableIDX.Count - 1);
                     Ground getGround = 
                         Manager.Navi.gameMap[z + spawnDirections[spawnableIDX[rand]].z].groundList[x + spawnDirections[spawnableIDX[rand]].x];
-                    Manager.Pool.GetPool(obstacle, getGround.transform.position, getGround.transform.rotation);
+                    Obstacle inst = (Obstacle)Manager.Pool.GetPool(obstacle, getGround.transform.position, getGround.transform.rotation);
+                    // 레벨 지정
+                    inst.InitSetting(name);
                     // 그라운드 타입 변경
                     getGround.type = GroundType.Object;
                     spawnableIDX.RemoveAt(rand);

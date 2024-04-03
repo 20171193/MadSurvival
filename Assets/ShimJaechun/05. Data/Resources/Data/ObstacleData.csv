@@ -1,3 +1,7 @@
 obstacleName,level,hp
-Tree,0,30.0
-Stone,0,50.0
+tree0,0,30
+stone0,0,50
+tree1,1,60
+stone1,1,100
+tree2,2,100
+stone2,2,150
