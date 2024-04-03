@@ -33,7 +33,7 @@ namespace Jc
 
         [SerializeField]
         protected string obstacleName;
-        public string ObstacleName { get { return obstacleName; } }
+        public string ObstacleName { get { return obstacleName; } set { obstacleName = value; } }
 
         [SerializeField]
         protected ObstacleType obstacleType;
@@ -44,7 +44,7 @@ namespace Jc
         [Space(2)]
         [SerializeField]
         protected int level;
-        public int Level { get { return level; } }
+        public int Level { get { return level; } set { level = value; } }
 
         [SerializeField]
         protected float hp;
@@ -66,20 +66,18 @@ namespace Jc
         {
             spawnCount = spawnCount > size ? size : spawnCount;
         }
-        protected virtual void OnEnable()
-        {
-            InitSetting();
-        }
 
-        public void InitSetting()
+        public void InitSetting(string name)
         {
-            if (!Manager.Data.obstacleDataDic.ContainsKey(obstacleName))
+            Debug.Log(name);
+            if (!Manager.Data.obstacleDataDic.ContainsKey(name))
             {
-                Debug.Log($"{obstacleName} : 의 데이터가 없습니다.");
+                Debug.Log($"{name} : 의 데이터가 없습니다.");
                 return;
             }
 
             ObstacleData loadedData = Manager.Data.obstacleDataDic[obstacleName];
+            obstacleName = name;
             level = loadedData.level;
             hp = loadedData.hp;
             ownHp = hp;

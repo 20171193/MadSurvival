@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Jc
 {
@@ -26,16 +27,12 @@ namespace Jc
         private WaterSet waterSpawner;
         [SerializeField]
         private ObstacleSpawner obstacleSpawner;
-
         [SerializeField]
         private GameObject groundPrefab;
-
         [SerializeField]
         private MeshRenderer dummyPlaneMr;
-
         [SerializeField]
         private List<Material> buildableMt;
-
         [SerializeField]
         private Material waterMt;
 
@@ -67,6 +64,9 @@ namespace Jc
         // 간략화
         private NavigationManager Navi => Manager.Navi;
 
+        // 그라운드 세팅이 끝난경우 Invoke
+        public UnityAction OnEndGroundSet;
+
         private void Start()
         {
             // 길찾기 매니저에 게임 맵을 할당
@@ -85,14 +85,9 @@ namespace Jc
 
             waterSpawner.SettingGroundSize();
 
-            // 오브젝트 생성 순서 
-            // 1. Buildable
-            // 2. Water
-            // 3. Obstacle
-            // 4. Animal
             DrawBuildableGround();
             waterSpawner.Spawn();
-            obstacleSpawner.InitSpawn();
+            OnEndGroundSet?.Invoke();
         }
 
 

@@ -19,3 +19,8 @@ MonoBehaviour:
     - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}
     - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}
     - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}
+  - dropItems:
+    - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}
+    - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}
+    - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}
+    - {fileID: 5530291736414995612, guid: 56a4367c6bf34014ebe119c3b9d891d2, type: 3}

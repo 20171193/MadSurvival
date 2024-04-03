@@ -118,6 +118,7 @@ MonoBehaviour:
   levelSpecificModel:
   - {fileID: 996394466746872233}
   - {fileID: 6866568133371551485}
+  - {fileID: 9041086598877987319, guid: cfe914d52aa78a445b8a0f50c6590802, type: 3}
   explosionInvoker: {fileID: 7579299635910308337, guid: 504e6e517fb46094fa09da03d2fd1126, type: 3}
   popItemPower: 10
   popItemRange: 3
@@ -127,6 +128,7 @@ MonoBehaviour:
   level: 0
   hp: 0
   ownHp: 0
+  onGround: {fileID: 0}
 --- !u!114 &5976871407157995029
 MonoBehaviour:
   m_ObjectHideFlags: 0

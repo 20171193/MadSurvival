@@ -24,7 +24,7 @@ namespace Jc
         [Header("장애물 타입")]
         public ObstacleType obstacleType;
 
-        [Header("레벨 별 장애물")]
+        [Header("레벨 별 드랍 아이템")]
         public List<Level_SpecificItemList> level_SpecificItemLists = new List<Level_SpecificItemList>();
     }
 }

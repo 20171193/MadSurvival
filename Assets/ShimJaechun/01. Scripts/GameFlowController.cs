@@ -13,6 +13,17 @@ namespace Jc
 
         [SerializeField]
         private DayAndNight dayController;
+
+        // 오브젝트 생성 순서 
+        // 1. Buildable
+        // 2. Water
+        [SerializeField]
+        private GroundSet groundSet;
+        // 3. Obstacle
+        [SerializeField]
+        private ObstacleSpawner obstacleSpawner;
+        // 4. Animal
+        // 5. Monster
         [SerializeField]
         private MonsterSpawner monsterSpawner;
 
@@ -20,11 +31,8 @@ namespace Jc
         {
             monsterSpawner.OnAllMonsterDie += ExitNight;
             dayController.OnNight += EnterNight;
-        }
-
-        private void OnEnable()
-        {
-            ExitNight();
+            // 그라운드 세팅이 끝난경우
+            groundSet.OnEndGroundSet += ExitNight;
         }
 
         public void EnterNight()
@@ -40,8 +48,7 @@ namespace Jc
 			dayController.OnExitNight();
 			// 날짜 카운팅
 			day++;
+            obstacleSpawner.SpawnObstacle(day);
         }
-
-        //IEnumerator Sun
     }
 }
