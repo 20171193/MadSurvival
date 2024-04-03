@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Progress;
+using jungmin;
 
 public class PickUpItem : MonoBehaviour
 {

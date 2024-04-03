@@ -2,66 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlotManage : MonoBehaviour
+
+namespace jungmin
 {
-	[SerializeField] Slot [] quickSlots; 
-	[SerializeField] Transform tf_parent; //퀵스롯의 부모 오브젝트
-	public GameObject SlotSet;
-
-	int selectSlot; //선택된 퀵슬롯의 인덱스 ( 0~7)
-	[SerializeField] GameObject go_SelectImage;
-
-	[SerializeField]
-	WeaponManager theWeaponManager;
-
-	
-
-
-	private void Start()
+	public class QuickSlotController : MonoBehaviour
 	{
-		quickSlots = SlotSet.GetComponentsInChildren<Slot>();
-		selectSlot = 0;
-	}
-	private void Update()
-	{
-
-	}
-	private void TryInputNumber()
-	{
-		if ( Input.GetKeyDown(KeyCode.Alpha1) )
-			ChangeSlot(0);
-		else if ( Input.GetKeyDown(KeyCode.Alpha2) )
-			ChangeSlot(1);
-		else if ( Input.GetKeyDown(KeyCode.Alpha3) )
-			ChangeSlot(2);
-		else if ( Input.GetKeyDown(KeyCode.Alpha4) )
-			ChangeSlot(3);
-		else if ( Input.GetKeyDown(KeyCode.Alpha5) )
-			ChangeSlot(4);
-		else if ( Input.GetKeyDown(KeyCode.Alpha6) )
-			ChangeSlot(5);
-	}
-	void ChangeSlot(int _num )
-	{
-		SelectedSlot(_num);
-		
-	}
-	void SelectedSlot(int _num )
-	{
-		//선택된 슬롯 활성화.
-		selectSlot = _num;
-
-		go_SelectImage.transform.position = quickSlots [selectSlot].transform.position;
-
-	}
-	void Execute()
-	{
-		if( quickSlots[selectSlot].item != null )
+		/*
+		 * 인벤토리가 켜져 있을 경우는 슬롯 간 상호 작용 가능 
+		 * 
+		 * 인벤토리가 꺼져 있을 경우는 퀵슬롯 안의 무기를 선택하여 사용하기만 가능.
+		 * 
+		 * 
+		 */
+		[SerializeField] Slot[] slots;
+		[SerializeField] GameObject Slot_parent;
+		[SerializeField] GameObject quickSlot_Base;
+		private void Start()
 		{
-			if(quickSlots[selectSlot].item.itemtype == Item.ItemType.Equipment )
-			{
-			} 
+			slots = Slot_parent.GetComponentsInChildren<Slot>();
 		}
-	}
+		void Execute()
+		{
+			//선택된 슬롯에 있는 아이템을 사용하기.
+		}
 
+	}
 }

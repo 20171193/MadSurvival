@@ -150,7 +150,7 @@ namespace Jc
         {
             if (!Manager.Data.monsterDataDic.ContainsKey(monsterName))
             {
-                Debug.Log($"{monsterName} : 의 데이터가 없습니다.");
+                //Debug.Log($"{monsterName} : 의 데이터가 없습니다.");
                 return;
             }
 
