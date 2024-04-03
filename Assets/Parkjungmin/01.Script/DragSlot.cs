@@ -25,4 +25,8 @@ public class DragSlot : MonoBehaviour
 		color.a = alpha;
 		imageItem.color = color;
 	}
+    private void OnDrawGizmos()
+    {
+        
+    }
 }

@@ -60,11 +60,10 @@ namespace jungmin
 		public void OnExitNight()
 		{
 			// 타이머 초기화
-			if(prevDayValue == 1)
+			if (prevDayValue == 1)
 			{ //Day 0에서는 타임이 초기화되지 않음.
 				dayTimer = resetTimeValue;
 			}
-			Debug.Log("지금은 낮입니다.");
 			IsNight = false;
 			exitNightRoutine = StartCoroutine(DayTimeCoroutine());
             exitFogRoutine = StartCoroutine(ExitFogRoutine());
@@ -106,35 +105,6 @@ namespace jungmin
 			RenderSettings.fogDensity = currentFogDensity;
 		}
 
-		//void ChangeFog()
-		//{
-		//	//if ( IsNight ) //일몰 시 (검은 안개)포그 늘어남. 
-		//	//{
-		//	//	StopCoroutine(coroutine);
-		//	//	dayTimer = daytimer_;
-		//	//	if ( currentFogDensity <= nightFogDensity )
-		//	//	{
-		//	//		currentFogDensity += 0.1f * fogDensityCalc * Time.deltaTime;
-		//	//		RenderSettings.fogDensity = currentFogDensity;
-		//	//	}
-		//	//	checkday = true;
-		//	//}
-		//	//else //일출 시 포그 줄어듬
-		//	//{
-		//	//	if ( checkday )
-		//	//	{
-		//	//		prevDayValue = IsNight ? 1 : 0;
-		//	//		if ( prevDayValue == 0 && !IsNight )
-		//	//		{
-		//	//			days++;
-		//	//			checkday = false;
-		//	//		}
-
-		//	//	}
-		//	//	coroutine = StartCoroutine(DayTimeCoroutine());
-
-		//	//}
-		//}
 		//void MovingSun()
 		//{
 		//	if ( IsNight )
