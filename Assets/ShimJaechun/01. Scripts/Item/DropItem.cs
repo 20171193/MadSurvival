@@ -10,9 +10,20 @@ namespace Jc
         private Item itemData;
 
         [SerializeField]
+        private float rotSpeed;
+
+        [SerializeField]
         private float getSpeed;
 
+        [SerializeField]
+        private Transform obTr;
+
         private Coroutine getItemRoutine;
+
+        private void Update()
+        {
+            obTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime);
+        }
 
         private void OnTriggerEnter(Collider other)
         {
