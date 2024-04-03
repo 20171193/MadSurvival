@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using System.Collections.Generic;
 using Jc;
+using System.Linq;
 
 namespace Jc
 {
@@ -12,7 +13,8 @@ namespace Jc
         MonsterData,
         ObstacleData,
         AnimalData,
-        DaysWaveData
+        DaysWaveData,
+        ItemData
     }
 }
 
@@ -36,20 +38,22 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<string, ObstacleData> obstacleDataDic;
     public Dictionary<int, Dictionary<int, WaveData>> daysWaveDataDic;
     public Dictionary<string, AnimalData> animalDataDic;
+    public Dictionary<ObstacleType, ItemData> itemDataDic;
 
     private void OnEnable()
     {
-
         monsterDataDic = new Dictionary<string, MonsterData>();
         obstacleDataDic = new Dictionary<string, ObstacleData>();
         daysWaveDataDic = new Dictionary<int, Dictionary<int, WaveData>>();
         animalDataDic = new Dictionary<string, AnimalData>();
+        itemDataDic = new Dictionary<ObstacleType, ItemData>();
 
         LoadData(DataType.MonsterData);
         LoadData(DataType.ObstacleData);
         // 몬스터 등록
         RegistMonster();
         LoadData(DataType.DaysWaveData);
+        LoadData(DataType.ItemData);
     }
 
     private void RegistMonster()
@@ -122,6 +126,17 @@ public class DataManager : Singleton<DataManager>
                     Debug.LogWarning($"Load data fail : {ex.Message}");
                     return;
                 }
+            case DataType.ItemData:
+                try
+                {
+                    ScriptableToItemDataDic(Resources.LoadAll<ItemData>("Scriptable"));
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log("아이템 데이터가 존재하지 않습니다.");
+                    return;
+                }
             default:
                 return;
         }
@@ -176,7 +191,6 @@ public class DataManager : Singleton<DataManager>
             obstacleDataDic.Add(loadedData.obstacleName, loadedData);
         }
     }
-
     private void CSVToDaysWaveDataDic(List<Dictionary<string, object>> csvData)
     {
         for(int i =0; i<csvData.Count; i++)
@@ -195,6 +209,14 @@ public class DataManager : Singleton<DataManager>
             }
             else
                 daysWaveDataDic[day][waveNum].spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
+        }
+    }
+    private void ScriptableToItemDataDic(ItemData[] datas)
+    {
+        foreach(ItemData data in datas)
+        {
+            if (!itemDataDic.ContainsKey(data.obstacleType))
+                itemDataDic.Add(data.obstacleType, data);
         }
     }
 }

@@ -41,6 +41,18 @@ namespace Jc
             SpawnObstacle(tree, tree.SpawnCount, 2);
             SpawnObstacle(stone, stone.SpawnCount, 1);
         }
+
+        public void OnDestroyObstacle()
+        {
+          
+        }
+
+        // 하루가 지나고 스폰
+        public void DaysSpawn()
+        {
+
+        }
+
         // 총 size 개수의 장애물을 9칸 당 count 개수만큼 모든 맵에 생성 
         public void SpawnObstacle(Obstacle obstacle, int size, int count)
         {

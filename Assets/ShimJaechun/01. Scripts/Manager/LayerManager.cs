@@ -8,11 +8,17 @@ public class LayerManager : Singleton<LayerManager>
     public LayerMask wallLM;
 
     [SerializeField]
-    public LayerMask obstacleLM;
+    public LayerMask damageableLM;
 
     [SerializeField]
     public LayerMask monsterLM;
 
     [SerializeField]
-    public LayerMask attackableLM;
+    public LayerMask playerLM;
+
+    [SerializeField]
+    public LayerMask dropItemLM;
+
+    [SerializeField]
+    public LayerMask groundLM;
 }

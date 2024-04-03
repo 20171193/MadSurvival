@@ -116,6 +116,7 @@ namespace Jc
 
         public Ground currentGround;
         private Coroutine damageRoutine;
+
         private void Awake()
         {
             fsm.CreateFSM(this);
@@ -128,6 +129,11 @@ namespace Jc
             controller.Move(speed, anim);
         }
         
+        public void OnClickInteractButton()
+        {
+            anim.SetTrigger("OnAttack");
+        }
+
         public void OnTakeDamage()
         {
             damageRoutine = StartCoroutine(DamageRoutine());

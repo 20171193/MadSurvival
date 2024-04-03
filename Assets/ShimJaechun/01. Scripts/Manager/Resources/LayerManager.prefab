@@ -47,12 +47,18 @@ MonoBehaviour:
   wallLM:
     serializedVersion: 2
     m_Bits: 524288
-  obstacleLM:
+  damageableLM:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 34603008
   monsterLM:
     serializedVersion: 2
     m_Bits: 1048576
-  attackableLM:
+  playerLM:
     serializedVersion: 2
     m_Bits: 4194304
+  dropItemLM:
+    serializedVersion: 2
+    m_Bits: 67108864
+  groundLM:
+    serializedVersion: 2
+    m_Bits: 16777216

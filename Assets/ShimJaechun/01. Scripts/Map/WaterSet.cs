@@ -61,6 +61,7 @@ namespace Jc
                     cnt--;
                 }
             }
+            // 랜덤스폰이 아닌경우 스폰할 수 있는 모든 지역에 스폰
             else
             {
                 for(int i =0; i<groundList.Count; i++)
@@ -89,6 +90,7 @@ namespace Jc
                     water.transform.parent = transform;
                     water.name = $"{z},{x}_Water";
                     ground.type = GroundType.Water;
+                    ground.OriginType = GroundType.Water;
                 }
             }
         }

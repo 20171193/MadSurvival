@@ -125,7 +125,9 @@ namespace Jc
                         transform.position.y,
                         transform.position.z - zStartPos + z * prefabZscale);
                     GameObject inst = Instantiate(groundPrefab, groundPos, Quaternion.identity);
-                    grounds.groundList.Add(inst.GetComponent<Ground>());
+                    Ground groundInst = inst.GetComponent<Ground>();
+                    groundInst.OriginType = GroundType.Empty;
+                    grounds.groundList.Add(groundInst);
                     inst.transform.parent = transform;
                     inst.gameObject.name = $"{z},{x}";
                 }
@@ -141,10 +143,12 @@ namespace Jc
                 for (int x = Navi.cornerTL.x; x <= Navi.cornerTR.x; x++)
                 {
                     groundLists[z].groundList[x].type = GroundType.Buildable;
+                    groundLists[z].groundList[x].OriginType = GroundType.Buildable;
                     groundLists[z].groundList[x].transform.GetChild(0).GetComponent<MeshRenderer>().SetMaterials(buildableMt);
                 }
             }
         }
+
         [ContextMenu("ResetGround")]
         public void ResetGround()
         {

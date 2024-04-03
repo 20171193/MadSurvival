@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Jc
 {
-    public enum DigType
+    public enum ObstacleType
     {
         Tree,
         Stone
@@ -12,6 +12,6 @@ namespace Jc
     public interface IDiggable
     {
         public void DigUp(float value);
-        public DigType GetDigType();
+        public ObstacleType GetObstacleType();
     }
 }

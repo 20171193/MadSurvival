@@ -38,7 +38,7 @@ public class MonsterAttacker : MonoBehaviour
     public void AttackTiming()
     {
         Debug.Log("Attack Timing");
-        int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.attackableLM);
+        int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.playerLM);
         for (int i = 0; i < size; i++)
         {
             Vector3 dirToTarget = (colliders[i].transform.position - transform.position).normalized;
