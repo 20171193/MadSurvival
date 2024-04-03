@@ -65,7 +65,7 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 
 	public void OnBeginDrag( PointerEventData eventData )
 	{
-		Debug.Log("Call beginDrag");
+
 		if(item != null)
 		{
 			DragSlot.instance.transform.position = eventData.position;
@@ -75,7 +75,7 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 	}
 	public void OnDrag( PointerEventData eventData )
 	{
-		Debug.Log("Call Drag");
+
 		if (item != null )
 		{
 			DragSlot.instance.transform.position = eventData.position;
@@ -88,10 +88,10 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 	}
 	public void OnDrop( PointerEventData eventData )
 	{
-		Debug.Log("OnDrop");
+
 		if ( DragSlot.instance.dragSlot != null )
 		{
-			Debug.Log("Changing Slot");
+
 			ChangeSlot();
 		}
 		else
@@ -112,7 +112,7 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 		}
 		else
 		{
-			Debug.Log("2");
+
 			DragSlot.instance.dragSlot.ClearSlot();
 		}
 	}
