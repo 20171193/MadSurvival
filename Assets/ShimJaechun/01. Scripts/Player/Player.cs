@@ -30,70 +30,15 @@ namespace Jc
         private Material originMT;
 
         [Space(3)]
-        [Header("Specs")]
-        [Space(2)]
-        [SerializeField]
-        private float speed;
-        public float Speed { get { return speed; } }
-
-        [SerializeField]
-        private float maxHp;
-        public float MaxHp { get { return maxHp; } }
-
-        [SerializeField]
-        private float curHp;
-        public float CurHp { get { return curHp; } set { curHp = value; } }
-
-        [SerializeField]
-        private float monsterAtk;  // 공격력
-        public float MonsterATK
-        {get{return monsterAtk;}set{monsterAtk = value;}}
-
-        [SerializeField]        // 트리 대상 공격력
-        private float treeAtk;
-        public float TreeATK { get { return treeAtk; } set { treeAtk = value; } }
-
-        [SerializeField]
-        private float stoneAtk; // 바위 대상 공격력
-        public float StoneATK { get { return stoneAtk;}set { stoneAtk = value; } }
-
-        [SerializeField]
-        private float ats;  // 공격속도
-        public float ATS
-        {
-            get
-            {
-                return ats;
-            }
-            set
-            {
-                ats = value;
-            }
-        }
-
-        [SerializeField]
-        private float amr;  // 방어력
-        public float AMR
-        {
-            get
-            {
-                return amr;
-            }
-            set
-            {
-                amr = value;
-            }
-        }
-
-        [SerializeField]
-        private float invinsibleTime;   // 무적시간 
-
-        [Space(3)]
         [Header("Linked Class")]
         [Space(2)]
         [SerializeField]
         private PlayerFSM fsm;
         public PlayerFSM FSM { get { return fsm; } }
+
+        [SerializeField]
+        private PlayerStat stat;
+        public PlayerStat Stat { get { return stat; } }
 
         [SerializeField]
         private PlayerTrigger trigger;
@@ -115,26 +60,76 @@ namespace Jc
         private PlayerBuilder builder;
         public PlayerBuilder Builder { get { return builder; } }
 
+        [Space(3)]
+        [Header("Balancing")]
+        [Space(2)]
         public Ground currentGround;
+        [SerializeField]
+        private bool isAttackCoolTime = false;
+        [SerializeField]
+        private float curSpeed;
+
         private Coroutine damageRoutine;
+        private Coroutine atsRoutine;
 
         private void Awake()
         {
             fsm.CreateFSM(this);
             trigger.owner = this;
-            CurHp = maxHp;
         }
         private void Update()
         {
-            // 플레이어 이동 
-            controller.Move(speed, anim);
+            Move();
         }
-        
+        private void Move()
+        {
+            // 플레이어 이동 
+            controller.Move(Stat.MaxSpeed, ref curSpeed, anim);
+            // 스테미너 처리
+            if (curSpeed >= stat.speedThreshold)
+            {
+                if (stat.OwnStamina > 0)
+                    stat.OwnStamina -= stat.staminaDecValue * Time.deltaTime;
+            }
+            else
+            {
+                if (stat.OwnStamina < stat.MaxStamina)
+                    stat.OwnStamina += stat.staminaIncValue * Time.deltaTime;
+            }
+        }
         public void OnClickInteractButton()
         {
+            if (isAttackCoolTime) return;
+            
             anim.SetTrigger("OnAttack");
+
+            if (atsRoutine != null)
+                StopCoroutine(atsRoutine);
+            // 공격 쿨타임 적용
+            isAttackCoolTime = true;
+            atsRoutine = StartCoroutine(AttackSpeedRoutine());
+        }
+        IEnumerator AttackSpeedRoutine()
+        {
+            yield return new WaitForSeconds(stat.ATS);
+            isAttackCoolTime = false;
+            atsRoutine = null;
         }
 
+        #region 낮 / 밤 관련 이벤트처리
+        public void OnEnterNight()
+        {
+            stat.StopTimer(CoreStatType.Hunger, false);
+            stat.StopTimer(CoreStatType.Thirst, false);
+        }
+        public void OnEnterDay()
+        {
+            stat.StartTimer(false, CoreStatType.Hunger, 1f);
+            stat.StartTimer(false, CoreStatType.Thirst, 1f);
+        }
+        #endregion
+
+        #region 데미지 처리
         public void OnTakeDamage()
         {
             damageRoutine = StartCoroutine(DamageRoutine());
@@ -143,8 +138,8 @@ namespace Jc
         {
             // 일정시간 무적상태 적용
 
-            float time = invinsibleTime;
-            float materialTime = invinsibleTime / 10f;
+            float time = Stat.InvinsibleTime;
+            float materialTime = Stat.InvinsibleTime / 10f;
             bool isFadeOut = true;
 
             trigger.gameObject.layer = LayerMask.NameToLayer("Invinsible");
@@ -165,7 +160,7 @@ namespace Jc
                 if (materialTime <= 0f)
                 {
                     isFadeOut = !isFadeOut;
-                    materialTime = invinsibleTime / 10f;
+                    materialTime = Stat.InvinsibleTime / 10f;
                 }
                 yield return null;
             }
@@ -178,16 +173,24 @@ namespace Jc
         {
 
         }
+        #endregion
+
+        #region 아이템 사용 / 장비
         public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
         }
+        public void Use(Item item)
+        {
 
+        }
         public void Equip()
         {
+
         }
         public void UnEquip()
         {
         }
+        #endregion
     }
 }

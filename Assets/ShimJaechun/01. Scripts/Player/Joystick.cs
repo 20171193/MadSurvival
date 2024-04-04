@@ -19,6 +19,7 @@ namespace Jc
         [SerializeField]
         private RectTransform lever;
         private RectTransform back;
+        [SerializeField]
         private Vector2 originPos;
         [SerializeField]
         private OnScreenStick leverStick;
@@ -42,6 +43,8 @@ namespace Jc
         private Vector3 moveDir;
         public Vector3 MoveDir { get { return moveDir; } }
 
+        private Vector2 sizeDelta;
+
         // 활성화 / 비활성화 상태체크
         bool isEnable = false;
 
@@ -50,6 +53,7 @@ namespace Jc
             back = GetComponent<RectTransform>();
             originPos = back.anchoredPosition;
 
+            sizeDelta = new Vector2(back.sizeDelta.x / 2f, back.sizeDelta.y / 2f);
             leverStick.movementRange = leverRange;
         }
 
@@ -70,7 +74,7 @@ namespace Jc
         public void EnableJoystick(Vector2 mousePos)
         {
             isEnable = true;
-            back.anchoredPosition = mousePos - originPos;
+            back.anchoredPosition = mousePos - sizeDelta;
             // 이미지 알파값 +
             backGroundImage.color = new Color32(255, 255, 255, 150);
             leverImage.color = new Color32(255, 255, 255, 255);
@@ -89,25 +93,5 @@ namespace Jc
             backGroundImage.color = new Color32(255, 255, 255, 80);
             leverImage.color = new Color32(255, 255, 255, 120);
         }
-
-        //public void OnBeginDrag(PointerEventData eventData)
-        //{
-        //    //Debug.Log("이벤트 데이터 " + eventData.position);
-        //    //var inputPos = eventData.position - rectTransform.anchoredPosition - originPos - originScale/2;
-        //    // 조이스틱의 이동범위 제한
-        //    //var inputVector = inputPos.magnitude < stickRange ? inputPos : inputPos.normalized * stickRange;
-        //    //lever.anchoredPosition = inputVector;
-        //}
-        //public void OnDrag(PointerEventData eventData)
-        //{
-        //    var inputPos = eventData.position - rectTransform.anchoredPosition - originPos - originScale/2;
-        //    // 조이스틱의 이동범위 제한
-        //    var inputVector = inputPos.magnitude < leverRange ? inputPos : inputPos.normalized * leverRange;
-        //    lever.anchoredPosition = inputVector;
-        //}
-        //public void OnEndDrag(PointerEventData eventData)
-        //{
-        //    DisableJoystick();
-        //}
     }
 }
