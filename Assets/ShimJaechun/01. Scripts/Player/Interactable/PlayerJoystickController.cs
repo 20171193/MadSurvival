@@ -12,6 +12,7 @@ namespace Jc
         [Space(2)]
         [SerializeField]
         private CharacterController controller;
+        public CharacterController Controller { get { return controller; } }
         [SerializeField]
         private Canvas joystickCanvas;
         [SerializeField]
@@ -39,11 +40,12 @@ namespace Jc
             }
         }
 
-        public void Move(float MaxMoveSpeed, Animator anim)
+        public void Move(float maxSpeed, ref float curSpeed, Animator anim)
         {
             // 입력이 없는 경우 예외처리
             if (joystick.MoveDir == Vector3.zero)
             {
+                curSpeed = 0f;
                 anim.SetFloat("LeverLength", 0);
                 return;
             }
@@ -54,10 +56,11 @@ namespace Jc
             // 캐릭터 전면 방향 설정
             Vector3 moveDir = new Vector3(joystick.MoveDir.x, 0, joystick.MoveDir.y);
 
+            curSpeed = maxSpeed * leverRatio;
             // 이동방향으로 바로 회전하기위한 회전 선 세팅 
             transform.forward = moveDir;
             // 레버의 위치에 따른 이동속도 적용
-            controller.Move(transform.forward * MaxMoveSpeed * leverRatio * Time.deltaTime);
+            controller.Move(transform.forward * curSpeed * Time.deltaTime);
         }
     }
 }

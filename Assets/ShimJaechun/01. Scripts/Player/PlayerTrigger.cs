@@ -18,8 +18,8 @@ namespace Jc
 
         public void TakeDamage(float damage, Vector3 suspectPos)
         {
-            owner.CurHp -= damage;
-            if(owner.CurHp <= 0)
+            owner.Stat.OwnHp -= damage;
+            if(owner.Stat.OwnHp <= 0)
                 owner.OnDie();
             else
                 owner.OnTakeDamage();
