@@ -31,33 +31,31 @@ public class DataManager : Singleton<DataManager>
     private string animalDataName = "Data/AnimalData";
     private string daysWaveDataName = "Data/DaysWaveData";
     private string daysObstacleDataName = "Data/DaysObstacleData";
+    private string itemPrefabName = "Item/Item_";
 
     // key : 몬스터 이름 / value : 몬스터 프리팹
     public Dictionary<string, Monster> monsterDic;
 
     // 로드해서 관리될 Dictionary
     public Dictionary<string, MonsterData> monsterDataDic;
-    public Dictionary<string, ObstacleData> obstacleDataDic;
+    public Dictionary<string, Dictionary<int,ObstacleData>> obstacleDataDic;
     public Dictionary<int, Dictionary<int, WaveData>> daysWaveDataDic;
     public Dictionary<int, DaysObstacleData> daysObstacleDataDic;
     public Dictionary<string, AnimalData> animalDataDic;
-    public Dictionary<ObstacleType, ItemData> itemDataDic;
 
     private void OnEnable()
     {
         monsterDataDic = new Dictionary<string, MonsterData>();
-        obstacleDataDic = new Dictionary<string, ObstacleData>();
+        obstacleDataDic = new Dictionary<string, Dictionary<int, ObstacleData>>();
         daysWaveDataDic = new Dictionary<int, Dictionary<int, WaveData>>();
         daysObstacleDataDic = new Dictionary<int, DaysObstacleData>();
         animalDataDic = new Dictionary<string, AnimalData>();
-        itemDataDic = new Dictionary<ObstacleType, ItemData>();
 
         LoadData(DataType.MonsterData);
         // 몬스터 등록
         RegistMonster();
         
         LoadData(DataType.DaysWaveData);
-        LoadData(DataType.ItemData);
     }
 
     private void RegistMonster()
@@ -130,17 +128,6 @@ public class DataManager : Singleton<DataManager>
                     Debug.LogWarning($"Load data fail : {ex.Message}");
                     return;
                 }
-            case DataType.ItemData:
-                try
-                {
-                    ScriptableToItemDataDic(Resources.LoadAll<ItemData>("Scriptable"));
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    Debug.Log("아이템 데이터가 존재하지 않습니다.");
-                    return;
-                }
             case DataType.DaysObstacleData:
                 try
                 {
@@ -203,7 +190,36 @@ public class DataManager : Singleton<DataManager>
             loadedData.obstacleName = (string)csvData[i]["obstacleName"];
             loadedData.level = (int)csvData[i]["level"];
             loadedData.hp = (float)csvData[i]["hp"];
-            obstacleDataDic.Add(loadedData.obstacleName, loadedData);
+            loadedData.amr = (float)csvData[i]["amr"];
+
+            for(int j =0; j<3; j++)
+            {
+                string itemString = (string)csvData[i][$"drop{j}"];
+                // 아이템 정보가 없을 경우 continue
+                if (itemString.Length < 1) continue;
+
+                // 받아온 정보를 아이템이름_개수로 분할
+                string[] itemInfo = itemString.Split('_');
+                DropItem prefab = Resources.Load<DropItem>($"{itemPrefabName}{itemInfo[0]}");
+                int count = int.Parse(itemInfo[1]);
+                loadedData.dropItems.Add(new DropItemInfo(prefab,count));
+            }
+
+            // 해당 분류의 장애물이 사전에 존재하지 않는경우
+            if (!obstacleDataDic.ContainsKey(loadedData.obstacleName))
+            {
+                obstacleDataDic.Add(loadedData.obstacleName, new Dictionary<int, ObstacleData>());
+                // 해당 레벨에 대한 정보 또한 생성
+                obstacleDataDic[loadedData.obstacleName].Add(loadedData.level, loadedData);
+            }
+            else
+            {
+                // 해당 레벨의 정보가 존재하지 않는 경우
+                if (!obstacleDataDic[loadedData.obstacleName].ContainsKey(loadedData.level))
+                {
+                    obstacleDataDic[loadedData.obstacleName].Add(loadedData.level, loadedData);
+                }
+            }
         }
     }
     private void CSVToDaysWaveDataDic(List<Dictionary<string, object>> csvData)
@@ -230,27 +246,19 @@ public class DataManager : Singleton<DataManager>
     {
         for (int i = 0; i < csvData.Count; i++)
         {
-            if (!daysObstacleDataDic.ContainsKey((int)csvData[i]["day"]))
+            if (!daysObstacleDataDic.ContainsKey((int)csvData[i]["Day"]))
             {
                 DaysObstacleData inst = ScriptableObject.CreateInstance<DaysObstacleData>();
 
                 for(int j=0; j<3;j++)
                 {
-                    inst.trees[j] = (int)csvData[i][$"tree{j}"];
-                    inst.stones[j] = (int)csvData[i][$"stone{j}"];
+                    inst.trees[j] = (int)csvData[i][$"Tree_{j}"];
+                    inst.stones[j] = (int)csvData[i][$"Stone_{j}"];
                 }
 
-                daysObstacleDataDic.Add((int)csvData[i]["day"], inst);
+                daysObstacleDataDic.Add((int)csvData[i]["Day"], inst);
             }
         }
 
-    }
-    private void ScriptableToItemDataDic(ItemData[] datas)
-    {
-        foreach(ItemData data in datas)
-        {
-            if (!itemDataDic.ContainsKey(data.obstacleType))
-                itemDataDic.Add(data.obstacleType, data);
-        }
     }
 }

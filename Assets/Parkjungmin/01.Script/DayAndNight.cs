@@ -105,53 +105,5 @@ namespace jungmin
 			currentFogDensity += 0.1f * fogDensityCalc * Time.deltaTime;
 			RenderSettings.fogDensity = currentFogDensity;
 		}
-
-		//void ChangeFog()
-		//{
-		//	//if ( IsNight ) //일몰 시 (검은 안개)포그 늘어남. 
-		//	//{
-		//	//	StopCoroutine(coroutine);
-		//	//	dayTimer = daytimer_;
-		//	//	if ( currentFogDensity <= nightFogDensity )
-		//	//	{
-		//	//		currentFogDensity += 0.1f * fogDensityCalc * Time.deltaTime;
-		//	//		RenderSettings.fogDensity = currentFogDensity;
-		//	//	}
-		//	//	checkday = true;
-		//	//}
-		//	//else //일출 시 포그 줄어듬
-		//	//{
-		//	//	if ( checkday )
-		//	//	{
-		//	//		prevDayValue = IsNight ? 1 : 0;
-		//	//		if ( prevDayValue == 0 && !IsNight )
-		//	//		{
-		//	//			days++;
-		//	//			checkday = false;
-		//	//		}
-
-		//	//	}
-		//	//	coroutine = StartCoroutine(DayTimeCoroutine());
-
-		//	//}
-		//}
-		//void MovingSun()
-		//{
-		//	if ( IsNight )
-		//	{
-		//		//if ( transform.rotation.eulerAngles.x != 70f ) //70도 일때 자정
-		//		//	transform.Rotate(Vector3.right, 0.1f * secondPerRealTimeSecond * Time.deltaTime);
-		//		ChangeFog();
-		//	}
-		//	else
-		//	{
-		//		//if ( transform.rotation.eulerAngles.x != 270 ) //270도 일때 자정이 됨.
-		//		//{
-		//		//	transform.Rotate(Vector3.right, 0.1f * secondPerRealTimeSecond * Time.deltaTime);
-		//		//}
-		//		ChangeFog();
-		//	}
-
-		//}
 	}
 }

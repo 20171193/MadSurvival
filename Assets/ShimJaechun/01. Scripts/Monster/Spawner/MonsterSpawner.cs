@@ -32,7 +32,6 @@ namespace Jc
         }
         private MapThreshold[] mapThresholds;
 
-
         [SerializeField]
         private int spawnCount;
 
@@ -62,6 +61,8 @@ namespace Jc
             if (spawnRoutine != null)
                 StopCoroutine(spawnRoutine);
 
+            if (!Manager.Data.daysWaveDataDic.ContainsKey(day))
+                return;
             waveDataDic = Manager.Data.daysWaveDataDic[day];
             spawnRoutine = StartCoroutine(SpawnRoutine());
         }
@@ -77,7 +78,6 @@ namespace Jc
                 yield return new WaitForSeconds(waveSpawnTime);
             }
         }
-
         private void Spawn(int wave)
         {
             if (waveDataDic == null) return;
@@ -99,7 +99,6 @@ namespace Jc
                 }
             }
         }
-
         private Ground SetSpawnPos()
         {
             // 1. 맵 기준 8개 영역을 뽑고 랜덤으로 한 영역을 지정
@@ -153,7 +152,6 @@ namespace Jc
             }
             return null;
         }
-
         public void MonsterDie(Monster monster)
         {
             monster.OnMonsterDie -= MonsterDie;

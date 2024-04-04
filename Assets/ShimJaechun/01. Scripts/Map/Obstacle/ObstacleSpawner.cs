@@ -20,6 +20,8 @@ namespace Jc
         [SerializeField]
         private List<GroundPos> spawnDirections;
 
+        public UnityAction OnEnterNextDay;
+
         private void Awake()
         {
             spawnDirections = new List<GroundPos>();
@@ -44,22 +46,25 @@ namespace Jc
 
         public void OnDestroyObstacle()
         {
-          
+            
         }
 
         // 하루가 지나고 스폰
         public void SpawnObstacle(int day)
         {
+            // 기존에 스폰되었던 장애물 제거
+            OnEnterNextDay?.Invoke();
+
             DaysObstacleData daysObstacleData = Manager.Data.daysObstacleDataDic[day];
             for(int i=0; i<3; i++)
             {
-                SpawnObstacle(tree, daysObstacleData.trees[i], 1, $"tree{i}");
-                SpawnObstacle(stone, daysObstacleData.stones[i], 1, $"stone{i}");
+                SpawnObstacle(tree, daysObstacleData.trees[i], 1, "Tree", i);
+                SpawnObstacle(stone, daysObstacleData.stones[i], 1, "Stone", i);
             }
         }
 
         // 총 size 개수의 장애물을 9칸 당 count 개수만큼 모든 맵에 생성 
-        public void SpawnObstacle(Obstacle obstacle, int size, int count, string name)
+        public void SpawnObstacle(Obstacle obstacle, int size, int count, string name, int level)
         {
             // 구역의 개수는 총 20x20
             List<int> areaList = Enumerable.Range(1, 400).ToList();
@@ -96,7 +101,7 @@ namespace Jc
                         Manager.Navi.gameMap[z + spawnDirections[spawnableIDX[rand]].z].groundList[x + spawnDirections[spawnableIDX[rand]].x];
                     Obstacle inst = (Obstacle)Manager.Pool.GetPool(obstacle, getGround.transform.position, getGround.transform.rotation);
                     // 레벨 지정
-                    inst.InitSetting(name);
+                    inst.InitSetting(name, level, this);
                     // 그라운드 타입 변경
                     getGround.type = GroundType.Object;
                     spawnableIDX.RemoveAt(rand);
