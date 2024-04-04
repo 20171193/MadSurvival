@@ -10,10 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8258771126104689715}
   - component: {fileID: 3724574002126460141}
-  - component: {fileID: 6486381725030028855}
-  - component: {fileID: 3982216081018918420}
   - component: {fileID: 3965935120065420674}
   - component: {fileID: 1996272332345754056}
+  - component: {fileID: 6486381725030028855}
+  - component: {fileID: 3982216081018918420}
+  - component: {fileID: -3050584068223075259}
   m_Layer: 20
   m_Name: Monster_Skeleton
   m_TagString: Untagged
@@ -60,50 +61,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &6486381725030028855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6047920945414391479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 296db408b46c2de459863d50e280809d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  size: 15
-  rigid: {fileID: 1996272332345754056}
-  agent: {fileID: 3724574002126460141}
-  anim: {fileID: 5439513441589645589}
-  fsm: {fileID: 3982216081018918420}
-  detecter: {fileID: 485027754624369353}
-  monsterName: Skeleton
-  knockBackPower: 5
-  knockBackTime: 0.1
-  speed: 0
-  atk: 0
-  ats: 0
-  hp: 0
-  ownHp: 0
-  amr: 0
-  gameMap: []
-  onGround: {fileID: 0}
-  playerGround: {fileID: 0}
-  currentState: 
---- !u!114 &3982216081018918420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6047920945414391479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0cc17c5cb9f5c74bb04932a6b95deb7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 
 --- !u!136 &3965935120065420674
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -154,6 +111,60 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!114 &6486381725030028855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047920945414391479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 296db408b46c2de459863d50e280809d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 15
+  rigid: {fileID: 1996272332345754056}
+  agent: {fileID: 3724574002126460141}
+  anim: {fileID: 5439513441589645589}
+  fsm: {fileID: 3982216081018918420}
+  detecter: {fileID: 485027754624369353}
+  monsterName: Skeleton
+  knockBackPower: 5
+  knockBackTime: 0.1
+  currentState: 
+--- !u!114 &3982216081018918420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047920945414391479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0cc17c5cb9f5c74bb04932a6b95deb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentState: 
+--- !u!114 &-3050584068223075259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6047920945414391479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb542f66ffc4c74a884a6b66d94e371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 6486381725030028855}
+  speed: 0
+  atk: 0
+  ats: 0
+  maxHp: 0
+  ownHp: 0
+  amr: 0
 --- !u!1 &6144684991630148318
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +259,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05051cd917421e045a3d4f42471e2636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 6486381725030028855}
+  gameMap: []
+  onGround: {fileID: 0}
+  playerGround: {fileID: 0}
 --- !u!1001 &4900812441886419525
 PrefabInstance:
   m_ObjectHideFlags: 0
