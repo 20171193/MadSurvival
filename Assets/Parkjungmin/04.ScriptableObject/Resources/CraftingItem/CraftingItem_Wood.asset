@@ -12,6 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: CraftingItem_Wood
   m_EditorClassIdentifier: 
-  itemName: wood
+  itemName: Wood
   itemImage: {fileID: 21300000, guid: db427fab3e94daf4caa704d9314a77a1, type: 3}
   itemtype: 1
+  recipe:
+    name: 
+    IGD_1:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_2:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_3:
+      IGD_Name: 
+      IGD_Count: 0

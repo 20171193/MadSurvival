@@ -8,7 +8,7 @@ using UnityEngine;
 public class Recipe
 {
 
-    public string name;
+    public string name; //만들 물건의 이름.
     [SerializeField] public IGD IGD_1; //이 아이템을 만들 재료 1
     [SerializeField] public IGD IGD_2; //이 아이템을 만들 재료 2
     [SerializeField] public IGD IGD_3; //이 아이템을 만들 재료 3

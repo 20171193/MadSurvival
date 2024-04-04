@@ -14,18 +14,24 @@ public class ItemManager : Singleton<ItemManager>
 {
     public Dictionary<string, Item> craftingItemDic = new Dictionary<string, Item>();
     public Dictionary<string, Item> ingredientItemDic = new Dictionary<string, Item>();
-
     private void OnEnable()
     {
         LoadItem(ItemType.Ingredient);
         LoadItem(ItemType.Crafting);
-    }    
+    }
     private void LoadItem(ItemType type)
     {
-        switch(type)
+        switch (type)
         {
             case ItemType.Crafting:
                 Item[] items = Resources.LoadAll<Item>("CraftingItem");
+                foreach (Item i in items)
+                {
+                    string name = i.itemName;
+                    Debug.Log($"{i.itemName}");
+                    craftingItemDic.Add(name, i);
+                    Debug.Log($"{craftingItemDic[name].itemName} is Add Dic");
+                }
                 break;
             case ItemType.Ingredient:
                 break;
@@ -33,7 +39,7 @@ public class ItemManager : Singleton<ItemManager>
     }
 
     public void CraftItem()
-        //아이템의 만드는 기능,인벤토리 창의 Craft 버튼 이벤트가 여기로 연결된다.
+    //아이템의 만드는 기능,인벤토리 창의 Craft 버튼 이벤트가 여기로 연결된다.
     {
         /* 0. 설계도 슬롯의 특정 슬롯 선택
          * 1. Craft 버튼 누름
@@ -42,15 +48,4 @@ public class ItemManager : Singleton<ItemManager>
          * 4. 성공한다면 해당 아이템이 AcquireItem 함수를 통해 인벤토리에 추가됨
          */
     }
-
-    //public void ShowRecipeInfo()
-    //{
-    //    if (SelectedSlot_Recipe.instance.slot != null)
-    //    {
-    //        Recipe_Info.text =
-    //        SelectedSlot_Recipe.instance.slot.recipe
-
-
-    //    }
-    //}
 }
