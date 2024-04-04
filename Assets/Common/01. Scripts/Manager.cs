@@ -10,6 +10,8 @@ public static class Manager
     public static DataManager Data {  get { return DataManager.Instance;} }
     // JC - Pool : 오브젝트 풀링
     public static PoolManager Pool { get { return PoolManager.Instance;} }
+    // JM - 
+    public static ItemManager Item { get { return ItemManager.Instance; } }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initialize()
@@ -19,11 +21,13 @@ public static class Manager
         NavigationManager.ReleaseInstance();
         LayerManager.ReleaseInstance();
         DataManager.ReleaseInstance();
+        ItemManager.ReleaseInstance();
 
         // 싱글턴 객체생성
         PoolManager.CreateInstance();
         NavigationManager.CreateInstance();
         LayerManager.CreateInstance();
         DataManager.CreateInstance();
+        ItemManager.CreateInstance();
     }
 }

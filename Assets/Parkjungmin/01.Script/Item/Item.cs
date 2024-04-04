@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using jungmin;
 using System;
 using System.Collections;
@@ -16,9 +17,9 @@ public class Item : ScriptableObject
 		Used, // 소비 아이템
 		ingredient, //재료
 	}
+
 	[SerializeField] public string itemName;
 	[SerializeField] public Sprite itemImage;
 	[SerializeField] public ItemType itemtype;
-	//[SerializeField] GameObject DropPrefab;
-
+	[SerializeField] public Recipe recipe; //재료의 레시피
 }

@@ -1,0 +1,4 @@
+id,result,IGD_1,IGD_1_Count,IGD_2,IGD_2_Count,IGD_3,IGD_3_Count
+0,Postion,Wood,1,Knife,1,Wood,1
+1,Knife,Postion,1,Wood,1,,
+2,Wood,Postion,1,,,,
