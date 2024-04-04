@@ -9,11 +9,11 @@ namespace jungmin
 	{
 		[SerializeField] Gradient colorGradation;
 
-		[SerializeField] float secondPerRealTimeSecond; // °ÔÀÓ ¼¼°èÀÇ 1ÃÊ´Â 
-		[SerializeField] float nightFogDensity; //¹ã »óÅÂ¿¡¼­ Fog ¹Ğµµ
-		float dayForDensity; // ³· »óÅÂ¿¡¼­ Fog ¹Ğµµ 
-		[SerializeField] float currentFogDensity; //°è»ê
-		[SerializeField] float fogDensityCalc; // Áõ°¨·® ºñ¿ë
+		[SerializeField] float secondPerRealTimeSecond; // ê²Œì„ ì„¸ê³„ì˜ 1ì´ˆëŠ” 
+		[SerializeField] float nightFogDensity; //ë°¤ ìƒíƒœì—ì„œ Fog ë°€ë„
+		float dayForDensity; // ë‚® ìƒíƒœì—ì„œ Fog ë°€ë„ 
+		[SerializeField] float currentFogDensity; //ê³„ì‚°
+		[SerializeField] float fogDensityCalc; // ì¦ê°ëŸ‰ ë¹„ìš©
 		public bool IsNight = false;
 		[SerializeField] public float dayTimer;
 		Coroutine coroutine;
@@ -25,13 +25,13 @@ namespace jungmin
 		float resetTimeValue;
 		public int days;
 		int prevDayValue;
-		bool checkday; //ÀÏ¸ô½Ã ÇÑ¹ø¸¸ Days¸¦ Áõ°¨½ÃÅ°´Â ¸Ş¼Òµå¸¦ ÇÑ¹ø¸¸ ½ÃµµÇÏ°Ô ÇÏ´Â ¸Ş¼Òµå
+		bool checkday; //ì¼ëª°ì‹œ í•œë²ˆë§Œ Daysë¥¼ ì¦ê°ì‹œí‚¤ëŠ” ë©”ì†Œë“œë¥¼ í•œë²ˆë§Œ ì‹œë„í•˜ê²Œ í•˜ëŠ” ë©”ì†Œë“œ
 		/* 
-		 * ÇØ°¡ ¶ã¶§ isnight = false; ¹× ¶óÀÌÆ® À§Ä¡ ¼­¼­È÷ Á¶Á¤ ¸Ş¼Òµå
-		 * ³· Ä«¿îÆ® ´Ù¿î ½ÃÀÛ. ³· µ¿¾ÈÀº ÇØ°¡ ¿òÁ÷ÀÌÁö ¾ÊÀ½.
-		 * ³· Ä«¿îÆ® ´Ù¿îÀÌ ³¡³¯ °æ¿ì
-		 * isnight = false·Î º¯°æ
-		 * ¹ãÀ¸·Î ¶óÀÌÆ® À§Ä¡ Á¶Á¤ ¸Ş¼Òµå
+		 * í•´ê°€ ëœ°ë•Œ isnight = false; ë° ë¼ì´íŠ¸ ìœ„ì¹˜ ì„œì„œíˆ ì¡°ì • ë©”ì†Œë“œ
+		 * ë‚® ì¹´ìš´íŠ¸ ë‹¤ìš´ ì‹œì‘. ë‚® ë™ì•ˆì€ í•´ê°€ ì›€ì§ì´ì§€ ì•ŠìŒ.
+		 * ë‚® ì¹´ìš´íŠ¸ ë‹¤ìš´ì´ ëë‚  ê²½ìš°
+		 * isnight = falseë¡œ ë³€ê²½
+		 * ë°¤ìœ¼ë¡œ ë¼ì´íŠ¸ ìœ„ì¹˜ ì¡°ì • ë©”ì†Œë“œ
 		 * 
 		 * 
 		 */
@@ -59,9 +59,9 @@ namespace jungmin
 		// --------DAY ENTER EXIT
 		public void OnExitNight()
 		{
-			// Å¸ÀÌ¸Ó ÃÊ±âÈ­
+			// íƒ€ì´ë¨¸ ì´ˆê¸°í™”
 			if (prevDayValue == 1)
-			{ //Day 0¿¡¼­´Â Å¸ÀÓÀÌ ÃÊ±âÈ­µÇÁö ¾ÊÀ½.
+			{ //Day 0ì—ì„œëŠ” íƒ€ì„ì´ ì´ˆê¸°í™”ë˜ì§€ ì•ŠìŒ.
 				dayTimer = resetTimeValue;
 			}
 			IsNight = false;
@@ -104,24 +104,5 @@ namespace jungmin
 			currentFogDensity += 0.1f * fogDensityCalc * Time.deltaTime;
 			RenderSettings.fogDensity = currentFogDensity;
 		}
-
-		//void MovingSun()
-		//{
-		//	if ( IsNight )
-		//	{
-		//		//if ( transform.rotation.eulerAngles.x != 70f ) //70µµ ÀÏ¶§ ÀÚÁ¤
-		//		//	transform.Rotate(Vector3.right, 0.1f * secondPerRealTimeSecond * Time.deltaTime);
-		//		ChangeFog();
-		//	}
-		//	else
-		//	{
-		//		//if ( transform.rotation.eulerAngles.x != 270 ) //270µµ ÀÏ¶§ ÀÚÁ¤ÀÌ µÊ.
-		//		//{
-		//		//	transform.Rotate(Vector3.right, 0.1f * secondPerRealTimeSecond * Time.deltaTime);
-		//		//}
-		//		ChangeFog();
-		//	}
-
-		//}
 	}
 }

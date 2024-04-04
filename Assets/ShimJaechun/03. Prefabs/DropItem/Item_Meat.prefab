@@ -1,58 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3920729604610103433
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7047267056242629840}
-  - component: {fileID: 3820336743518973741}
-  m_Layer: 26
-  m_Name: ExplosionChecker
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7047267056242629840
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3920729604610103433}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6384262976343313801}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &3820336743518973741
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3920729604610103433}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 83886080
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
-  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &6553831269702482808
 GameObject:
   m_ObjectHideFlags: 0
@@ -65,8 +12,8 @@ GameObject:
   - component: {fileID: 462675362554930891}
   - component: {fileID: 5169645174889809706}
   - component: {fileID: 5530291736414995612}
-  m_Layer: 26
-  m_Name: Drop_StoneShard
+  m_Layer: 0
+  m_Name: Item_Meat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +33,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7005000834214821678}
-  - {fileID: 7047267056242629840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &462675362554930891
@@ -105,13 +51,13 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
@@ -126,7 +72,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4194304
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -149,15 +95,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8d13b22b3dd91748a68504d357b7114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 30
+  size: 0
   itemData: {fileID: 11400000, guid: 51a503be6279e5b44bc6cae3157acf21, type: 2}
-  rigid: {fileID: 462675362554930891}
-  obTr: {fileID: 7005000834214821678}
-  ownerCol: {fileID: 5169645174889809706}
+  rigid: {fileID: 0}
+  obTr: {fileID: 0}
   obCol: {fileID: 8675061976809851401}
   autoRotate: 0
   rotSpeed: 30
-  getSpeed: 0.9
+  getSpeed: 1
+  isEnable: 0
 --- !u!1001 &3452980765095238152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -238,17 +184,17 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 16777216
+    m_Bits: 1
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 7864374
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.6893244, y: 0.22060996, z: 0.64078707}
-  m_Center: {x: 0, y: 0.69069505, z: 0}
+  m_Size: {x: 0.6893244, y: 0.2019999, z: 0.64078707}
+  m_Center: {x: 0, y: 0.70000005, z: 0}
 --- !u!4 &7005000834214821678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5682892450376607014, guid: 65395e6db4f0cc0498e44f0efd7db3b1, type: 3}

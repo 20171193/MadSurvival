@@ -18,12 +18,8 @@ namespace Jc
         }
     }
 
-    [CreateAssetMenu(fileName = "ObstacleItem_", menuName = "Scriptable Object/ItemData", order = int.MaxValue)]
     public class ItemData : ScriptableObject
     {
-        [Header("장애물 타입")]
-        public ObstacleType obstacleType;
-
         [Header("레벨 별 드랍 아이템")]
         public List<Level_SpecificItemList> level_SpecificItemLists = new List<Level_SpecificItemList>();
     }

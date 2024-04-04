@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using jungmin;
+using System.Runtime.CompilerServices;
 
 namespace Jc
 {
     public class GameFlowController : MonoBehaviour
     {
+        [SerializeField]
+        private int maxDay;
+
         [SerializeField]
         private int day = 0;
         public int Day { get { return day; } set { day = value; } }
@@ -44,10 +48,13 @@ namespace Jc
         }
         public void ExitNight()
         {
-			// ¹ã -> ³· º¯°æ
-			dayController.OnExitNight();
-			// ³¯Â¥ Ä«¿îÆÃ
-			day++;
+            // ¹ã -> ³· º¯°æ
+            dayController.OnExitNight();
+
+            // ³¯Â¥ Ä«¿îÆÃ
+            if (maxDay > day)
+                day++;
+
             obstacleSpawner.SpawnObstacle(day);
         }
     }
