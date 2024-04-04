@@ -2,63 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackPackController: MonoBehaviour
+
+namespace jungmin
 {
-	public static bool isActivated = false;
-	[SerializeField] Slot[] slots;
-	[SerializeField] GameObject Slot_parent;
-	[SerializeField] GameObject inventoryBase;
-
-	private void Start()
+	public class BackPackController : MonoBehaviour
 	{
-		slots = Slot_parent.GetComponentsInChildren<Slot>();
-	}
-	public void TryOpenInventory()
-	{
+		public static bool inventory_Activated = false;
+		[SerializeField] Slot[] slots;
+		[SerializeField] GameObject Slot_parent;
+		[SerializeField] GameObject inventory_Base;
 
-		isActivated = !isActivated;
-
-		if ( isActivated )
+		private void Start()
 		{
-			OpenInventory();
+			slots = Slot_parent.GetComponentsInChildren<Slot>();
 		}
-		else
+		public void TryOpenInventory()
 		{
-			CloseInventory();
-		}
 
-	}
-	void OpenInventory()
-	{
-		inventoryBase.SetActive(true);
-	}
-	void CloseInventory()
-	{
-		inventoryBase.SetActive(false);
-	}
-	public void AcquireItem(Item _item,int _count = 1)
-	{
-		if(_item.itemtype != Item.ItemType.Equipment)
-		{
-			for(int i=0;i<slots.Length;i++ )
+			inventory_Activated = !inventory_Activated;
+
+			if (inventory_Activated)
 			{
-				if(slots[i].item != null)
-				{ 
-					if (slots[i].item.itemName == _item.itemName )
+				OpenInventory();
+			}
+			else
+			{
+				CloseInventory();
+			}
+
+		}
+		void OpenInventory()
+		{
+			inventory_Base.SetActive(true);
+		}
+		void CloseInventory()
+		{
+			inventory_Base.SetActive(false);
+		}
+		public void AcquireItem(Item _item, int _count = 1)
+		{
+			if (_item.itemtype != Item.ItemType.Equipment)
+			{
+				for (int i = 0; i < slots.Length; i++)
+				{
+					if (slots[i].item != null)
 					{
-						slots [i].SetSlotCount(_count);
-						return;
+						if (slots[i].item.itemName == _item.itemName)
+						{
+							slots[i].SetSlotCount(_count);
+							return;
+						}
 					}
 				}
 			}
-		}
-			for ( int i = 0; i < slots.Length; i++ )
+			for (int i = 0; i < slots.Length; i++)
 			{
 				if (slots[i].item == null)
 				{
-					slots [i].AddItem(_item, _count);
+					slots[i].AddItem(_item, _count);
 					return;
 				}
 			}
+		}
 	}
 }
