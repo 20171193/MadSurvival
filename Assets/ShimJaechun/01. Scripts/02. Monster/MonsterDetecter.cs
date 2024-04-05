@@ -156,12 +156,26 @@ namespace Jc
         {
             // 데미지를 입을 수 있는 즉, 공격이 가능한 객체일 경우 액션 
             if (other.GetComponent<IDamageable>() != null)
-                OnTrigger?.Invoke(other.gameObject);
+            {
+                if (owner.FSM.FSM.CurState == "Tracking" &&
+                (isTrackingPlayer && other.gameObject.tag == "Player" ||
+                !isTrackingPlayer && Manager.Layer.wallLM.Contain(other.gameObject.layer)))
+                {
+                    // 타깃으로 지정
+                    currentTarget = other.gameObject;
+
+                    owner.FSM.ChangeState("Attack");
+                }
+            }
         }
         private void OnTriggerExit(Collider other)
         {
             if (other.GetComponent<IDamageable>() != null)
-                OffTrigger?.Invoke(other.gameObject);
+            {
+                // 지정된 타깃 해제
+                if (other.gameObject == currentTarget)
+                    currentTarget = null;
+            }
         }
     }
 }

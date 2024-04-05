@@ -33,6 +33,7 @@ namespace Jc
         private MonsterFSM fsm;
         public MonsterFSM FSM { get { return fsm; } }
 
+        [SerializeField]
         private MonsterStat stat;
         public MonsterStat Stat { get { return stat; } }
 
@@ -71,8 +72,6 @@ namespace Jc
         private void Awake()
         {
             fsm.CreateFSM(this);
-            detecter.OnTrigger += FindTarget;
-            detecter.OffTrigger += LoseTarget;
         }
 
         private void OnEnable()
@@ -94,25 +93,6 @@ namespace Jc
         private void OnDisable()
         {
             Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
-        }
-
-        // 몬스터 전용 트리거의 액션으로 호출
-        // 트래킹 중 주변 객체와 닿았을 경우 공격 
-        public void FindTarget(GameObject target)
-        {
-            // 플레이어 탐지
-            if (fsm.FSM.CurState == "Tracking" &&
-                (detecter.IsTrackingPlayer && target.tag == "Player" ||
-                !detecter.IsTrackingPlayer && Manager.Layer.wallLM.Contain(target.layer)))
-            {
-                detecter.CurrentTarget = target;
-                fsm.ChangeState("Attack");
-            }
-        }
-        public void LoseTarget(GameObject target)
-        {
-            if (target == detecter.CurrentTarget)
-                detecter.CurrentTarget = null;
         }
 
         #region 데미지 처리
@@ -169,6 +149,7 @@ namespace Jc
             detecter.PlayerGround = playerGround;
         }
         #endregion
+
         public override void Release()
         {
             base.Release();
