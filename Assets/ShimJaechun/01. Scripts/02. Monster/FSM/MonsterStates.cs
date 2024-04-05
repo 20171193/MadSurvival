@@ -122,6 +122,7 @@ namespace Jc
                 Attack();
             }
 
+            attackRoutine = null;
             owner.FSM.ChangeState("Tracking");
             yield return null;
         }
