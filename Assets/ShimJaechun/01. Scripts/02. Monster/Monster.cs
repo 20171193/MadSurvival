@@ -129,7 +129,7 @@ namespace Jc
             rigid.velocity = Vector3.zero;
             agent.enabled = true;
 
-            // ³Ë¹é ÈÄ µô¤©¤Ä¤·¤Ó
+            // ³Ë¹é ÈÄ µô·¹ÀÌ
             agent.isStopped = true;
             yield return new WaitForSeconds(0.2f);
             agent.isStopped = false;

@@ -9,10 +9,6 @@ namespace Jc
     public class MonsterBaseState : BaseState
     {
         protected Monster owner;
-        public virtual void OnChangeTarget()
-        {
-
-        }
     }
 
     // 풀링된 상태

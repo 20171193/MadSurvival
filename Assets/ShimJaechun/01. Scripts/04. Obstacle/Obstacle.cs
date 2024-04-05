@@ -144,7 +144,7 @@ namespace Jc
                     // 반지름이 1인 원 내부의 임의의 점을 도출
                     Vector2 rand = UnityEngine.Random.insideUnitCircle;
                     // 해당 아이템의 스폰위치 지정
-                    Vector3 spawnPos = new Vector3(transform.position.x + rand.x / 2f, transform.position.y + 0.1f, transform.position.z + rand.y / 2f);
+                    Vector3 spawnPos = new Vector3(transform.position.x + rand.x, transform.position.y + 0.1f, transform.position.z + rand.y);
 
                     DropItem getItem = (DropItem)Manager.Pool.GetPool(prefab, spawnPos, Quaternion.identity);
                 }

@@ -17,6 +17,9 @@ public class LayerManager : Singleton<LayerManager>
     public LayerMask playerLM;
 
     [SerializeField]
+    public LayerMask playerableLM;
+
+    [SerializeField]
     public LayerMask dropItemLM;
 
     [SerializeField]

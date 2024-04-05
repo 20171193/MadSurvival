@@ -10,6 +10,7 @@ namespace Jc
         private StateMachine<Monster> fsm;
         public StateMachine<Monster> FSM { get { return fsm; } }
 
+        // 디버깅용
         public string currentState;
 
         // FSM 생성
