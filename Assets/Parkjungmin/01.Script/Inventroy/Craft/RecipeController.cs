@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -13,8 +14,7 @@ namespace jungmin
        * 
        * 이 오브젝트는 무조건 씬에 있어야 레시피를 불러 올 수 있음.
        */
-
-        public Dictionary<string, Item> craftingItemDic;
+        public static RecipeController instance;
         List<Dictionary<string, object>> reader;
         public List<Recipe> recipeList = new List<Recipe>(); //레시피 리스트
 
@@ -22,22 +22,12 @@ namespace jungmin
         [SerializeField] GameObject Slot_parent;
         public TMP_Text Recipe_Info;
 
-        private void Awake()
-        {
-            
-        }
-
-        private void LoadItem()
-        {
-
-        }
-
         private void Start()
         {
+            instance = this;
             reader = CSVReader.Read("CraftingItem/RecipeData");
             ReadRecipeCSV();
             recipe_slots = Slot_parent.GetComponentsInChildren<RecipeSlot>();
-
             PutRecipeInSlot();
         }
 
@@ -46,6 +36,7 @@ namespace jungmin
             for(int x = 0; x < recipeList.Count; x++)
             {
                 recipe_slots[x].recipe = recipeList[x];
+               
             }
         }
         void ReadRecipeCSV()
@@ -83,6 +74,29 @@ namespace jungmin
         }
 
 
+        public void ShowRecipeInfo()
+        {
+            if (SelectedSlot_Recipe.instance.slot != null)
+            {
+                StringBuilder text = new StringBuilder($"{SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name}*{SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count}");
+                if (SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name != null)
+                { //SelectedSlot_Recipe.instance.slot.recipe.IGD_2 == 연산자 오버로딩 재복습 필요.
+
+                    text.Append($"+{SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name}*{SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count}");
+                }
+                if (SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name != null)
+                {
+                    text.Append($"+{SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name}*{SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count}");
+                }
+
+                Debug.Log(text);
+
+                Recipe_Info.text = text.ToString();
+            }
+        
+
+        }
     }
+
 }
 
