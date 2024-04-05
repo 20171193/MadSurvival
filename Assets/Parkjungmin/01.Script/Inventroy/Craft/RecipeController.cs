@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -21,28 +22,67 @@ namespace jungmin
         [SerializeField] RecipeSlot[] recipe_slots; //레시피 슬롯들
         [SerializeField] GameObject Slot_parent;
         public TMP_Text Recipe_Info;
-
+        public int Page_index;
+        /*
+         *0~5 1페이지.
+         *6~10 2페이지.
+         * 
+         * 
+         * 
+         */
         private void Start()
         {
             instance = this;
             reader = CSVReader.Read("CraftingItem/RecipeData");
             ReadRecipeCSV();
             recipe_slots = Slot_parent.GetComponentsInChildren<RecipeSlot>();
+            Page_index = 0;
             PutRecipeInSlot();
         }
 
         void PutRecipeInSlot()
         { //레시피 리스트 -> 레시피 슬롯
-            for(int x = 0; x < recipeList.Count; x++)
+            for(int x = 0; x < 6; x++)
             {
-                recipe_slots[x].recipe = recipeList[x];
-               
+                recipe_slots[x].recipe = recipeList[x + (5 * Page_index)];
+            }
+
+        }
+
+        public void NextRecipePage()
+        {
+            Debug.Log("NEXT");
+            if(Page_index <= 0)
+            {
+                Debug.Log($"{Page_index}");
+                Page_index++;
+                PutRecipeInSlot();
+                foreach (RecipeSlot slot in recipe_slots)
+                {
+                    slot.ResetSlot();
+                }
             }
         }
+        public void PastRecipePage()
+        {
+            Debug.Log("Past");
+            if (Page_index >= 0)
+            {
+                Debug.Log($"{Page_index}");
+                Page_index--;
+                PutRecipeInSlot();
+                foreach (RecipeSlot slot in recipe_slots)
+                {
+                    slot.ResetSlot();
+                }
+            }
+        }
+
         void ReadRecipeCSV()
         {
+            Debug.Log($"전체 레시피 갯수: {ItemManager.Instance.craftingItemDic.Count}");
 
-            for(int x=0;x<3;x++) //크래프팅 아이템의 최대 종류를 3개라고 가정하고
+            for(int x=0;x<ItemManager.Instance.craftingItemDic.Count; x++) //크래프팅 아이템의 최대 종류를 6개라고 가정하고
             {
                 Recipe recipe = new Recipe();
 

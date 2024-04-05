@@ -1,0 +1,21 @@
+using Jc;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName ="PickAxe", menuName = "Item/EquipItem/PickAxe")]
+public class PickAxe : Equip_Item //°î±ªÀÌ
+{
+    [Header("°î±ªÀÌ °ø°Ý·Â")]
+    [SerializeField] float atk; //°ø°Ý·Â
+
+    public override void Equip(Player player)
+    {
+        player.Stat.MonsterATK += atk;
+    }
+
+    public override void UnEquip(Player player)
+    {
+        player.Stat.MonsterATK -= atk;
+    }
+}

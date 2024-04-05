@@ -11,7 +11,7 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
-        private Item itemData;
+        private global::ItemData itemData;
 
         [SerializeField]
         private Rigidbody rigid;

@@ -176,11 +176,11 @@ namespace Jc
         #endregion
 
         #region 아이템 사용 / 장비
-        public void GetItem(Item item)
+        public void GetItem(global::ItemData item)
         {
             backPack.AcquireItem(item);
         }
-        public void Use(Item item)
+        public void Use(global::ItemData item)
         {
 
         }

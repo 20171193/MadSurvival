@@ -9,7 +9,7 @@ namespace jungmin
 	{
 		static bool isChangeWeapon;
 		[SerializeField] public Transform currentWeapon;
-		[SerializeField] Dictionary<string, Item> ItemDictionary = new Dictionary<string, Item>();
+		[SerializeField] Dictionary<string, ItemData> ItemDictionary = new Dictionary<string, ItemData>();
 		[SerializeField] string curItemType;
 
 		[SerializeField] BuildController buildController;
