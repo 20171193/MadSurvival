@@ -11,7 +11,7 @@ namespace Jc
         [SerializeField]
         private Animal owner;
 
-        public UnityAction OnTakeDamage;
+        public UnityAction OnTakeDamage;        
 
         public void TakeDamage(float value, Vector3 suspectPos)
         {

@@ -19,7 +19,6 @@ namespace Jc
 
         public override void Enter()
         {
-            evadeDir = (owner.transform.position - owner.Detecter.CurrentTarget.transform.position).normalized;
         }
         public override void Update()
         {
@@ -33,13 +32,18 @@ namespace Jc
         }
         private void Evade()
         {
+            // 방향 설정
+            if(owner.Detecter.CurrentTarget != null)
+                evadeDir = (owner.transform.position - owner.Detecter.CurrentTarget.transform.position).normalized;
+
+            // rotation
             owner.transform.forward = evadeDir;
             owner.Agent.Move(evadeDir * owner.Stat.Speed * Time.deltaTime);
 
             if(owner.Detecter.CurrentTarget == null
                 && evadeRoutine == null)
             {
-                owner.StartCoroutine(EvadeRoutine());
+                evadeRoutine = owner.StartCoroutine(EvadeRoutine());
             }
         }
         IEnumerator EvadeRoutine()

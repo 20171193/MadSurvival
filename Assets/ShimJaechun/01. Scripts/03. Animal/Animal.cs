@@ -15,6 +15,10 @@ namespace Jc
         public string AnimalName { get { return animalName; } }
 
         [SerializeField]
+        protected Rigidbody rigid;
+        public Rigidbody Rigid { get { return rigid; } }
+
+        [SerializeField]
         protected NavMeshAgent agent;
         public NavMeshAgent Agent { get { return agent; } }
 

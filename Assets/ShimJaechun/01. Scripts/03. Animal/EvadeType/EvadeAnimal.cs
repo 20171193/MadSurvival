@@ -13,6 +13,10 @@ namespace Jc
         private float loseDelayTime;
         public float LoseDelayTime { get { return loseDelayTime; } }
 
+        [SerializeField]
+        private float evadeDistance;
+        public float EvadeDistance { get { return evadeDistance; } }
+
         protected override void Awake()
         {
             base.Awake();
