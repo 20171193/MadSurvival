@@ -84,6 +84,9 @@ namespace Jc
 
         private void Awake()
         {
+            dayController.resetTimeValue = dayChangeTime;
+            dayController.dayTimer = dayChangeTime;
+
             monsterSpawner.OnAllMonsterDie += ExitNight;
             dayController.OnNight += EnterNight;
             // 그라운드 세팅이 끝난경우

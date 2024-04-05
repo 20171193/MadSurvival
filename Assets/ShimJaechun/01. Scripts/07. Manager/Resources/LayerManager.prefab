@@ -49,13 +49,16 @@ MonoBehaviour:
     m_Bits: 524288
   damageableLM:
     serializedVersion: 2
-    m_Bits: 34603008
+    m_Bits: 168820736
   monsterLM:
     serializedVersion: 2
     m_Bits: 1048576
   playerLM:
     serializedVersion: 2
     m_Bits: 4194304
+  playerableLM:
+    serializedVersion: 2
+    m_Bits: 6291456
   dropItemLM:
     serializedVersion: 2
     m_Bits: 67108864

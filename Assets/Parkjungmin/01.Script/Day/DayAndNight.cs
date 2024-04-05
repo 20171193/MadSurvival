@@ -22,7 +22,7 @@ namespace jungmin
 		Coroutine enterNightRoutine;
 		Coroutine enterFogRoutine;
 
-		float resetTimeValue;
+		public float resetTimeValue;
 		public int days;
 		int prevDayValue;
 		bool checkday; //일몰시 한번만 Days를 증감시키는 메소드를 한번만 시도하게 하는 메소드
