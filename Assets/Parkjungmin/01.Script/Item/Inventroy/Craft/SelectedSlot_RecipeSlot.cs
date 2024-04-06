@@ -10,4 +10,4 @@ public class SelectedSlot_Recipe : MonoBehaviour
     {
         instance = this;
     }
-}
+} 

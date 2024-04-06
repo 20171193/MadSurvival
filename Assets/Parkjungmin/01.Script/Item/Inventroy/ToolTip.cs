@@ -56,16 +56,16 @@ namespace jungmin
         {
             if (SelectedSlot_Inventory.instance.SelectedSlot.item is Used_Item)
             {
-                Used_Item used_Item = (Used_Item)SelectedSlot_Inventory.instance.SelectedSlot.item;
+                //Used_Item used_Item = (Used_Item)SelectedSlot_Inventory.instance.SelectedSlot.item;
 
-                if (used_Item is HP_Potion)
-                {
-                    //(HP_Potion)used_Item.Use(Player player); // 플레이어를 가리키는 instance 없음
-                }
-                if (used_Item is Stamina_Potion)
-                {
-                    //(HP_Potion)used_Item.Use(Player player); 
-                }
+                //if (used_Item is HP_Potion)
+                //{
+                //    //(HP_Potion)used_Item.Use(Player player); // 플레이어를 가리키는 instance 없음
+                //}
+                //if (used_Item is Stamina_Potion)
+                //{
+                //    //(HP_Potion)used_Item.Use(Player player); 
+                //}
 
             }
         }
