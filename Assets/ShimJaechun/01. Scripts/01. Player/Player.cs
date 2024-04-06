@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using jungmin;
-using static Equip_Item;
+
 
 namespace Jc
 {
@@ -258,24 +258,24 @@ namespace Jc
             UnEquip(item.equipType);
             switch (item.equipType)
             {
-                case EquipType.Weapon:
+                case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
                     break;
-                case EquipType.Armor:
+                case Equip_Item.EquipType.Armor:
                     curArmorItem = item;
                     break;
             }
             // 새 아이템 장착
             item.Equip(this);
         }
-        public void UnEquip(EquipType type)
+        public void UnEquip(Equip_Item.EquipType type)
         {
             switch(type)
             {
-                case EquipType.Weapon:
+                case Equip_Item.EquipType.Weapon:
                     curWeaponItem.UnEquip(this);
                     break;
-                case EquipType.Armor:
+                case Equip_Item.EquipType.Armor:
                     curArmorItem.UnEquip(this);
                     break;
             }
