@@ -9,7 +9,7 @@ namespace jungmin
     public class Stamina_Potion : Used_Item
     {
         [SerializeField] float staminaIncValue;
-
+        public Stamina_Potion(ItemData itemdata_) : base(itemdata_) { }
         public override void Use(Player player)
         {
             player.Stat.OwnStamina += staminaIncValue;

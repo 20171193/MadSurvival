@@ -29,18 +29,20 @@ namespace jungmin
 		public void AddItem(Item _item, int itemCount = 1) //슬롯 상의 아이템 UI 업데이트
 		{
 			item = _item;
-			this.itemCount = itemCount;
+			this.itemCount += itemCount;
 
 			itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 			{
+				Debug.Log("123");
 				go_CountImage.SetActive(true);
-				text_Count.text = this.itemCount.ToString();
+                Debug.Log("zzz");
+                text_Count.text = this.itemCount.ToString();
 			}
 			else
 			{
-				text_Count.text = "0";
+                text_Count.text = "0";
 				go_CountImage.SetActive(false);
 			}
 
@@ -49,6 +51,7 @@ namespace jungmin
 		public void SetSlotCount(int _count)
 		{
 			itemCount += _count;
+			Debug.Log($"{itemCount}");
 			text_Count.text = itemCount.ToString();
 
 			if (itemCount <= 0)

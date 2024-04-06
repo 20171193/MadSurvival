@@ -27,5 +27,8 @@ namespace jungmin
         public ATKType atkType; //어떤 타입에게 공격을 할지.
         public abstract void Equip(Player player);
         public abstract void UnEquip(Player player);
+
+
+        public Equip_Item(ItemData itemdata_) : base(itemdata_) { }
     }
 }
