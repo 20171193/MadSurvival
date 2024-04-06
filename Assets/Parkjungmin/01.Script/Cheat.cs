@@ -8,7 +8,9 @@ public class Cheat : MonoBehaviour
     private void OnEnable()
     {
         BackPackController.instance.AcquireItem(ItemManager.Instance.craftingItemDic["Potion"], 10);
-    
+        BackPackController.instance.AcquireItem(ItemManager.Instance.craftingItemDic["Knife"], 1);
+        BackPackController.instance.AcquireItem(ItemManager.Instance.craftingItemDic["Potion2"], 1);
+
 
     }
 }
