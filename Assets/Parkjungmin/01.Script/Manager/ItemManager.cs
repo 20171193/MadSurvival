@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using jungmin;
+using System.Linq;
+using Unity.VisualScripting;
 namespace jungmin
 {
     public enum ItemType
@@ -12,9 +14,11 @@ namespace jungmin
 }
 public class ItemManager : Singleton<ItemManager>
 {
-    public Dictionary<string, Item> craftingItemDic = new Dictionary<string, Item>();
-    public Dictionary<string, Item> ingredientItemDic = new Dictionary<string, Item>();
-    private void OnEnable()
+ 
+    public Dictionary<string, ItemData> craftingItemDic = new Dictionary<string, ItemData>();
+    public Dictionary<string, ItemData> ingredientItemDic = new Dictionary<string, ItemData>();
+    bool ready_Craft;
+    private void Start()
     {
         LoadItem(ItemType.Ingredient);
         LoadItem(ItemType.Crafting);
@@ -24,28 +28,161 @@ public class ItemManager : Singleton<ItemManager>
         switch (type)
         {
             case ItemType.Crafting:
-                Item[] items = Resources.LoadAll<Item>("CraftingItem");
-                foreach (Item i in items)
-                {
+                ItemData[] items = Resources.LoadAll<ItemData>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
+                foreach (ItemData i in items) // 05.Scriptable Object에서 검색해서 할당함
+                { // 정상적으로 작동하기 위해선, 
                     string name = i.itemName;
-                    Debug.Log($"{i.itemName}");
                     craftingItemDic.Add(name, i);
-                    Debug.Log($"{craftingItemDic[name].itemName} is Add Dic");
+
                 }
                 break;
             case ItemType.Ingredient:
                 break;
         }
     }
+    void SearchForCraft()
+    { //어떤 재료 아이템이 있는지 여부 한종류만 체크
+        bool IGD_1_Check = false;
+        bool IGD_2_Check = false;
+        ready_Craft = false;
+        for (int x = 0; x < BackPackController.instance.slots.Length; x++) // 백팩 슬롯의 갯수 만큼
+        {
+            
+            Debug.Log($"첫번째 재료 탐색");
+            if(BackPackController.instance.slots[x].item == null)
+            {
+                Debug.Log("이 슬롯엔 그 아이템이 없습니다.");
+                continue;
+            }
+            if (BackPackController.instance.slots[x].item != null)
+            {
+                if (BackPackController.instance.slots[x].item.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name)
+                {
+                    if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count)
+                    {
 
+                        IGD_1_Check = true;
+                        if(SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name != null)
+                        {
+                            break;
+                        }
+                        else if(SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name == null && SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name == null )
+                        { //조합식 항이 1개밖에 없을 경우.
+                            ready_Craft = true;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        IGD_1_Check = false;
+                        break;
+                    }
+                }
+            }
+            
+        }
+
+        if (SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name != null && IGD_1_Check)
+        {
+            for (int x = 0; x < BackPackController.instance.slots.Length; x++) // 백팩 슬롯의 갯수 만큼
+            {
+
+                Debug.Log($"두번째 재료 탐색");
+                if (BackPackController.instance.slots[x].item == null)
+                {
+                    Debug.Log("이 슬롯엔 그 아이템이 없습니다.");
+                    continue;
+                }
+
+                if (BackPackController.instance.slots[x].item != null)
+                {
+                    if (BackPackController.instance.slots[x].item.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name)
+                    {
+                        if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count)
+                        {
+                            Debug.Log("재료 아이템이 충분합니다.");
+                            IGD_2_Check = true;
+                            if (SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name != null)
+                            { 
+                                break;
+                            }
+                            else if (SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name == null)
+                            { //조합식 항이 2개뿐일 경우.
+                                ready_Craft = true;
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            IGD_2_Check = false;
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+        if (SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name != null && IGD_1_Check && IGD_2_Check)
+        {
+            for (int x = 0; x < BackPackController.instance.slots.Length; x++) // 백팩 슬롯의 갯수 만큼
+            {
+
+                Debug.Log($"세번째 재료 탐색");
+                if (BackPackController.instance.slots[x].item == null)
+                {
+                    Debug.Log("이 슬롯엔 그 아이템이 없습니다.");
+                    continue;
+                }
+                if (BackPackController.instance.slots[x].item != null)
+                {
+                    if (BackPackController.instance.slots[x].item.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name)
+                    {
+                        if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count)
+                        {
+
+                            ready_Craft = true;
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        return;
+    }
     public void CraftItem()
-    //아이템의 만드는 기능,인벤토리 창의 Craft 버튼 이벤트가 여기로 연결된다.
     {
-        /* 0. 설계도 슬롯의 특정 슬롯 선택
-         * 1. Craft 버튼 누름
-         * 2. 슬롯 배열을 확인하면서, 만들려는 아이템의 재료들을 전부 가지고 있는지 확인
-         * 3. 없었다면, 실패를 띄우거나 그냥 무시되도록
-         * 4. 성공한다면 해당 아이템이 AcquireItem 함수를 통해 인벤토리에 추가됨
-         */
+
+        if (SelectedSlot_Recipe.instance.slot != null) //레시피의 슬롯을 선택했을 때
+        {
+            SearchForCraft();
+
+            if (ready_Craft)
+            {
+                BackPackController.instance.AcquireItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe_name]);
+                Debug.Log("크래프팅 생성");
+
+                BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+                
+                if (SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name != null)
+                {
+                    BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+                }
+                if (SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name != null)
+                {
+                    BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+                }
+
+                //아이템을 생성한 기능
+
+                //재료로 소모한 아이템의 개수 줄이는 기능 추가
+            }
+            else
+            {
+                Debug.Log("재료 부족");
+            }
+
+        }
     }
 }
