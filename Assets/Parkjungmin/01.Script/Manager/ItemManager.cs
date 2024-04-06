@@ -15,8 +15,8 @@ namespace jungmin
 public class ItemManager : Singleton<ItemManager>
 {
  
-    public Dictionary<string, ItemData> craftingItemDic = new Dictionary<string, ItemData>();
-    public Dictionary<string, ItemData> ingredientItemDic = new Dictionary<string, ItemData>();
+    public Dictionary<string, Item> craftingItemDic = new Dictionary<string, Item>();
+    public Dictionary<string, Item> ingredientItemDic = new Dictionary<string, Item>();
     bool ready_Craft;
     private void Start()
     {
@@ -28,10 +28,10 @@ public class ItemManager : Singleton<ItemManager>
         switch (type)
         {
             case ItemType.Crafting:
-                ItemData[] items = Resources.LoadAll<ItemData>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
-                foreach (ItemData i in items) // 05.Scriptable Object에서 검색해서 할당함
+                Item[] items = Resources.LoadAll<Item>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
+                foreach(Item i in items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
-                    string name = i.itemName;
+                    string name = i.itemdata.itemName;
                     craftingItemDic.Add(name, i);
 
                 }
@@ -56,7 +56,7 @@ public class ItemManager : Singleton<ItemManager>
             }
             if (BackPackController.instance.slots[x].item != null)
             {
-                if (BackPackController.instance.slots[x].item.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name)
+                if (BackPackController.instance.slots[x].item.itemdata.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name)
                 {
                     if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count)
                     {
@@ -96,7 +96,7 @@ public class ItemManager : Singleton<ItemManager>
 
                 if (BackPackController.instance.slots[x].item != null)
                 {
-                    if (BackPackController.instance.slots[x].item.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name)
+                    if (BackPackController.instance.slots[x].item.itemdata.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name)
                     {
                         if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count)
                         {
@@ -135,7 +135,7 @@ public class ItemManager : Singleton<ItemManager>
                 }
                 if (BackPackController.instance.slots[x].item != null)
                 {
-                    if (BackPackController.instance.slots[x].item.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name)
+                    if (BackPackController.instance.slots[x].item.itemdata.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name)
                     {
                         if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count)
                         {

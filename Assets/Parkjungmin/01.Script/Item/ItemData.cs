@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="ItemBase",menuName ="ItemBase/BaseItem")]
+
 [Serializable]
 public class ItemData : ScriptableObject
 {

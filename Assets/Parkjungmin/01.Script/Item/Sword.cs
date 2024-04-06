@@ -12,6 +12,7 @@ public class Sword : Equip_Item
     public override void Equip(Player player)
     {
         player.Stat.MonsterATK += atk;
+        Debug.Log($"{atk}이 올라갔습니다.");
     }
 
     public override void UnEquip(Player player)

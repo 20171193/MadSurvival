@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class RecipeSlot : MonoBehaviour, IPointerClickHandler
 {
-    public ItemData resultItem; //결과 아이템
+    public Item resultItem; //결과 아이템
     public Recipe recipe;
     public string recipe_name;
     public Image bg_image;
@@ -20,7 +20,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
         Debug.Log("123");
         resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
         bg_image = GetComponent<Image>();
-        item_image.sprite = resultItem.itemImage;
+        item_image.sprite = resultItem.itemdata.itemImage;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -37,7 +37,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     public void ResetSlot()
     {
         resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
-        item_image.sprite = resultItem.itemImage;
+        item_image.sprite = resultItem.itemdata.itemImage;
         recipe_name = recipe.name;
     }
     void SelectSlot()

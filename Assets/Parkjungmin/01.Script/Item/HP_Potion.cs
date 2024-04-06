@@ -10,6 +10,7 @@ public class HP_Potion : Used_Item
     
     public override void Use(Player player)
     {
+
         player.Stat.OwnHp += IncreaseValue;
     }
 }
