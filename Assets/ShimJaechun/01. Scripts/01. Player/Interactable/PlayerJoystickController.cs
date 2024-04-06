@@ -18,6 +18,9 @@ namespace Jc
         [SerializeField]
         private Joystick joystick;
 
+        [SerializeField]
+        private Player owner;
+
         [Space(3)]
         [Header("Balancing")]
         [Space(2)]
@@ -27,6 +30,10 @@ namespace Jc
         // 마우스 입력 시 조이스틱 위치 설정
         private void OnMouseClick(InputValue value)
         {
+            if (owner.IsOnBackpack) return;
+            if (Input.mousePosition.y < 120F) return;
+
+
             if (value.isPressed)
             {
                 Vector2 mousePos = Input.mousePosition / joystickCanvas.scaleFactor;

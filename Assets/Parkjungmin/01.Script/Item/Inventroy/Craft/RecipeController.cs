@@ -46,7 +46,6 @@ namespace jungmin
             {
                 recipe_slots[x].recipe = recipeList[x + (5 * Page_index)];
             }
-
         }
 
         public void NextRecipePage()
