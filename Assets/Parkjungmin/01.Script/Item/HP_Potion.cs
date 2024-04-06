@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HP_Potion", menuName = "Item/Used_Item/Potion/HP_Potion")]
-public class HP_Potion : Used_Item
+namespace jungmin
 {
-    [SerializeField] float IncreaseValue;
-    
-    public override void Use(Player player)
+    [CreateAssetMenu(fileName = "HP_Potion", menuName = "Item/Used_Item/Potion/HP_Potion")]
+    public class HP_Potion : Used_Item
     {
-        player.Stat.OwnHp += IncreaseValue;
+        [SerializeField] float IncreaseValue;
+
+        public override void Use(Player player)
+        {
+            player.Stat.OwnHp += IncreaseValue;
+        }
     }
 }

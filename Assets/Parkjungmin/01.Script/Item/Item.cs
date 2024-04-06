@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+namespace jungmin
 {
-    [SerializeField] public ItemData itemdata;
+    public class Item : MonoBehaviour
+    {
+        [SerializeField] public ItemData itemdata;
+    }
 }
