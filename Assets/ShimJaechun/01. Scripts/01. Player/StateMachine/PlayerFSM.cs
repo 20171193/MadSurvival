@@ -24,14 +24,14 @@ public class PlayerFSM : MonoBehaviour
 
         // 각 상태별 버튼 UI에 표시할 이미지 할당
         PlayerDiggable diggable = new PlayerDiggable(owner);
-        diggable.diggingImage = diggingImage;
+        //diggable.diggingImage = diggingImage;
         fsm.AddState("Diggable", diggable);
         PlayerAttackable attackable = new PlayerAttackable(owner);
-        attackable.attackImage = attackImage;   
+        //attackable.attackImage = attackImage;   
         fsm.AddState("Attackable", attackable);
 
         PlayerBuildable buildable = new PlayerBuildable(owner);
-        buildable.buildingImage = buildingImage;
+        //buildable.buildingImage = buildingImage;
         fsm.AddState("Buildable", buildable);
 
         // 초기 상태를 Diggable상태로 지정
