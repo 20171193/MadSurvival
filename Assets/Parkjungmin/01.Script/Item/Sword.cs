@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace jungmin
 {
-    [CreateAssetMenu(fileName = "Sword", menuName = "Item/EquipItem/Sword")]
     public class Sword : Equip_Item
     {
         [Header("검 공격력")]
@@ -21,5 +20,6 @@ namespace jungmin
         {
             player.Stat.MonsterATK -= atk;
         }
+        public Sword(ItemData itemdata_) : base(itemdata_) { }
     }
 }

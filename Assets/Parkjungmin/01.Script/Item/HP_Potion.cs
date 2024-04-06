@@ -1,13 +1,16 @@
 using Jc;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace jungmin
 {
-    [CreateAssetMenu(fileName = "HP_Potion", menuName = "Item/Used_Item/Potion/HP_Potion")]
+    [Serializable]
     public class HP_Potion : Used_Item
     {
+        public HP_Potion(ItemData itemdata_) : base(itemdata_) { }
+
         [SerializeField] float IncreaseValue;
 
         public override void Use(Player player)

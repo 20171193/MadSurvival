@@ -10,7 +10,7 @@ namespace jungmin
     {
         [Header("°î±ªÀÌ °ø°Ý·Â")]
         [SerializeField] float atk; //°ø°Ý·Â
-
+        public PickAxe(ItemData itemdata_) : base(itemdata_) { }
         public override void Equip(Player player)
         {
             player.Stat.MonsterATK += atk;

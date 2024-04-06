@@ -10,6 +10,7 @@ using UnityEngine;
 
 namespace jungmin
 {
+	[CreateAssetMenu(fileName ="ItemData",menuName ="ItemData/ItemdData_Base")]
 	[Serializable]
 	public class ItemData : ScriptableObject
 	{
