@@ -64,7 +64,6 @@ namespace Jc
         protected PlayerTrigger curTarget;
         public PlayerTrigger CurTarget { get { return curTarget; } }
 
-
         protected virtual void Awake()
         {
             // 탐지범위 세팅

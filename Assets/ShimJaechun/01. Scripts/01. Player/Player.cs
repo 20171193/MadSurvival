@@ -89,13 +89,21 @@ namespace Jc
         [SerializeField]
         private Equip_Item curArmorItem;
 
-        [Header("아이템 이미지")]
+        [Header("버튼 적용 아이템 이미지")]
         [SerializeField]
         private GameObject weaponImage;
         [SerializeField]
         private GameObject potionImage;
-        
         private GameObject curImage;
+
+        [Header("캐릭터 무기 모델")]
+        [SerializeField]
+        private GameObject monsterWeaponModel;
+        [SerializeField]
+        private GameObject treeWeaponModel;
+        [SerializeField]
+        private GameObject stoneWeaponModel;
+        private GameObject curWeaponModel;
 
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
@@ -127,24 +135,26 @@ namespace Jc
         }
         public void OnClickInteractButton()
         {
-            if (curSlot == null) return;
-
-            switch(curSlot.item.itemdata.itemtype)
+            // 공격
+            if (curSlot == null || curSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
             {
-                case ItemData.ItemType.Used:
-                    Use();
-                    break;
-                case ItemData.ItemType.Equipment:
-                    if (isAttackCoolTime) return;
+                if (isAttackCoolTime) return;
 
-                    anim.SetTrigger("OnAttack");
+                anim.SetTrigger("OnAttack");
 
-                    if (atsRoutine != null)
-                        StopCoroutine(atsRoutine);
-                    // 공격 쿨타임 적용
-                    isAttackCoolTime = true;
-                    atsRoutine = StartCoroutine(AttackSpeedRoutine());
-                    break;
+                if (atsRoutine != null)
+                    StopCoroutine(atsRoutine);
+                // 공격 쿨타임 적용
+                isAttackCoolTime = true;
+                atsRoutine = StartCoroutine(AttackSpeedRoutine());
+
+                return;
+            }
+            // 사용
+            if (curSlot != null && curSlot.item.itemdata.itemtype == ItemData.ItemType.Used)
+            {
+                Use();
+                return;
             }
         }
         IEnumerator AttackSpeedRoutine()
@@ -273,6 +283,7 @@ namespace Jc
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
                     anim.SetBool("IsTwoHand", true);
+                    SetEquipModel(curWeaponItem.atkType);
                     break;
                 case Equip_Item.EquipType.Armor:
                     curArmorItem = item;
@@ -284,8 +295,10 @@ namespace Jc
         public void UnEquip(Equip_Item.EquipType type)
         {
             if (curWeaponItem == null) return;
+            // 무기 모델 해제
+            curWeaponModel?.SetActive(false);
 
-            switch(type)
+            switch (type)
             {
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem.UnEquip(this);
@@ -297,17 +310,26 @@ namespace Jc
             }
             curWeaponItem = null;
         }
-        private void EquipModel(Equip_Item.ATKType atkType)
+        
+
+        // 무기 모델적용
+        private void SetEquipModel(Equip_Item.ATKType atkType)
         {
+            curWeaponModel?.SetActive(false);
+
             switch(atkType)
             {
                 case Equip_Item.ATKType.Monster:
+                    curWeaponModel = monsterWeaponModel;
                     break;
                 case Equip_Item.ATKType.Tree:
+                    curWeaponModel = treeWeaponModel;
                     break;
                 case Equip_Item.ATKType.Stone:
+                    curWeaponModel = stoneWeaponModel;
                     break;
             }
+            curWeaponModel?.SetActive(true);
         }
         #endregion
     }

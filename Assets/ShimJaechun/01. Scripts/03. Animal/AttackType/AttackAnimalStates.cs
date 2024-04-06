@@ -17,10 +17,8 @@ namespace Jc
         }
         public override void Enter()
         {
-            if(owner.CurTarget == null)
-
-
             owner.AttackTrigger.OnAttackTrigger += GetPlayer;
+
             // 타겟지점으로 트래킹 실행
             owner.Agent.isStopped = false;
             trackingRoutine = owner.StartCoroutine(TrackingRoutine());
@@ -60,6 +58,7 @@ namespace Jc
                 {
                     curTime = 0f;
                 }
+                owner.Tracker.Tracking(owner.playerGround);
                 yield return new WaitForSeconds(0.1f);
             }
 
@@ -80,12 +79,16 @@ namespace Jc
 
         public override void Enter()
         {
+            owner.Agent.isStopped = true;
+
             owner.Anim.SetTrigger("OnAttack");
             attackRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.5f, () => owner.FSM.ChangeState("Tracking")));
         }
 
         public override void Exit()
         {
+            owner.Agent.isStopped = false;
+
             if (attackRoutine != null)
                 owner.StopCoroutine(attackRoutine);
         }
