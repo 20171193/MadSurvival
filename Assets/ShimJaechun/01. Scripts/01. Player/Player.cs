@@ -30,6 +30,11 @@ namespace Jc
         [SerializeField]
         private Material originMT;
 
+        [SerializeField]
+        private GameObject joystick;
+        [SerializeField]
+        private GameObject interactButton;
+
         [Space(3)]
         [Header("Linked Class")]
         [Space(2)]
@@ -69,7 +74,10 @@ namespace Jc
         private bool isAttackCoolTime = false;
         [SerializeField]
         private float curSpeed;
-
+        [SerializeField]
+        private bool isOnBackpack = false;
+        public bool IsOnBackpack { get { return isOnBackpack; } }
+        
         [Space(3)]
         [Header("플레이어 아이템")]
         [Space(2)]
@@ -206,6 +214,14 @@ namespace Jc
         #endregion
 
         #region 아이템 사용 / 장비
+        public void OpenBackPack()
+        {
+            backPack.TryOpenInventory();
+            isOnBackpack = BackPackController.inventory_Activated;
+            interactButton.SetActive(!isOnBackpack);
+            joystick.SetActive(!isOnBackpack);
+        }
+
         public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
@@ -226,7 +242,7 @@ namespace Jc
         {
             if (curSlot == null) return;
 
-            curImage.SetActive(false);
+            curImage?.SetActive(false);
 
             switch (curSlot.item.itemdata.itemtype)
             {

@@ -28,12 +28,12 @@ public class ItemManager : Singleton<ItemManager>
         switch (type)
         {
             case ItemType.Crafting:
-                ItemData[] items = Resources.LoadAll<ItemData>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
-                foreach(ItemData itemdata in items) // 05.Scriptable Object에서 검색해서 할당함
+                Item[] items = Resources.LoadAll<Item>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
+                foreach(Item item in items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
-                    string name = itemdata.itemName;
+                    string name = item.itemdata.itemName;
                     Debug.Log($"{name}");
-                    craftingItemDic.Add(name,new Item(itemdata));
+                    craftingItemDic.Add(name, item);
 
                 }
                 break;
