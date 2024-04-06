@@ -112,6 +112,15 @@ namespace Jc
             }
         }
 
+        [Header("넉백")]
+        [SerializeField]
+        private float knockbackPower;
+        public float KnockbackPower { get { return knockbackPower; } }
+
+        [SerializeField]
+        private float knockbackTime;
+        public float KnockbackTime { get { return knockbackTime; } }
+
         [Header("방어력")]
         [SerializeField]
         private float amr;  // 방어력

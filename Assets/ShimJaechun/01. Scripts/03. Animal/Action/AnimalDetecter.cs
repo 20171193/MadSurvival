@@ -8,14 +8,7 @@ namespace Jc
 {
     public class AnimalDetecter : MonoBehaviour
     {
-        [Space(3)]
-        [Header("Balancing")]
-        [Space(2)]
-        [SerializeField]
-        private PlayerTrigger currentTarget;
-        public PlayerTrigger CurrentTarget { get { return currentTarget; } }
-
-        public UnityAction<GameObject> OnDetectTarget;
+        public UnityAction<PlayerTrigger> OnDetectTarget;
         public UnityAction OffDetectTarget;
 
         private void OnTriggerEnter(Collider other)
@@ -23,8 +16,8 @@ namespace Jc
             // 플레이어가 탐지범위에 들어온 경우
             if (!Manager.Layer.playerableLM.Contain(other.gameObject.layer)) return;
 
-            currentTarget = other.GetComponent<PlayerTrigger>();
-            OnDetectTarget?.Invoke(other.gameObject);
+            PlayerTrigger target = other.GetComponent<PlayerTrigger>();
+            OnDetectTarget?.Invoke(target);
         }
         private void OnTriggerExit(Collider other)
         {
@@ -32,7 +25,8 @@ namespace Jc
             if (!Manager.Layer.playerableLM.Contain(other.gameObject.layer)) return;
 
             OffDetectTarget?.Invoke();
-            currentTarget = null;
         }
+
+
     }
 }

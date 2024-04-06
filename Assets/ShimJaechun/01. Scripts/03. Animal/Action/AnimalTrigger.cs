@@ -6,14 +6,16 @@ using UnityEngine.Events;
 
 namespace Jc
 {
-    public class AnimalTrigger : MonoBehaviour, IDamageable
+    public class AnimalTrigger : MonoBehaviour, IDamageable, IKnockbackable, ITileable
     {
         [SerializeField]
         private Animal owner;
 
         public UnityAction OnTakeDamage;
 
-        public void TakeDamage(float value, Vector3 suspectPos)
+        private Coroutine knockbackRoutine;
+
+        public void TakeDamage(float value)
         {
             // 데미지값 처리
             float damage = value - owner.Stat.AMR;
@@ -24,32 +26,46 @@ namespace Jc
             {
                 owner.FSM.ChangeState("Die");
             }
-            // 데미지 처리, 넉백
+            // 데미지 처리
             else
             {
-                OnTakeDamage?.Invoke();
-                owner.Anim.SetTrigger("OnHit");
+                owner.FSM.ChangeState("Hit");
                 owner.Stat.OwnHp -= damage;
-               // knockBackTimer = StartCoroutine(KnockBackRoutine());
             }
         }
-        //IEnumerator KnockBackRoutine()
-        //{
-        //    // 네비메시 비활성화
-        //    // 물리 이동으로 전환
-        //    agent.enabled = false;
-        //    rigid.AddForce(transform.forward * -knockBackPower, ForceMode.Impulse);
+        public void Knockback(float power, float time, Vector3 suspectPos)
+        {
+            knockbackRoutine = StartCoroutine(KnockBackRoutine(power, time, suspectPos));
+        }
+        IEnumerator KnockBackRoutine(float power, float time, Vector3 suspectPos)
+        {
+            // 네비메시 비활성화
+            // 물리 이동으로 전환
 
-        //    yield return new WaitForSeconds(KnockBackTime);
+            Vector3 dir = transform.position - suspectPos;
+            owner.transform.forward = -dir;
+            owner.Agent.enabled = false;
+            owner.Rigid.AddForce(dir * power, ForceMode.Impulse);
 
-        //    // 원복
-        //    rigid.velocity = Vector3.zero;
-        //    agent.enabled = true;
+            yield return new WaitForSeconds(time);
 
-        //    // 넉백 후 딜레이
-        //    agent.isStopped = true;
-        //    yield return new WaitForSeconds(0.2f);
-        //    agent.isStopped = false;
-        //}
+            // 원복
+            owner.Rigid.velocity = Vector3.zero;
+            owner.Agent.enabled = true;
+
+            // 넉백 후 딜레이
+            owner.Agent.isStopped = true;
+            yield return new WaitForSeconds(0.2f);
+            owner.Agent.isStopped = false;
+
+            // 회피형 : 회피상태 진입
+            // 공격형 : 공격상태 진입
+            OnTakeDamage?.Invoke();
+        }
+
+        public void OnTile(Ground ground)
+        {
+            owner.onGround = ground;
+        }
     }
 }

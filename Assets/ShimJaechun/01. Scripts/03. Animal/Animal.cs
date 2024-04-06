@@ -15,6 +15,10 @@ namespace Jc
         public string AnimalName { get { return animalName; } }
 
         [SerializeField]
+        protected Rigidbody rigid;
+        public Rigidbody Rigid { get { return rigid; } }
+
+        [SerializeField]
         protected NavMeshAgent agent;
         public NavMeshAgent Agent { get { return agent; } }
 
@@ -46,15 +50,40 @@ namespace Jc
         protected AnimalTrigger trigger;
         public AnimalTrigger Trigger { get { return trigger; } }
 
+        [Space(3)]
+        [Header("Balancing")]
+        [Space(2)]
+
+        [SerializeField]
+        public Ground onGround;
+
+        [SerializeField]
+        public Ground playerGround;
+
+        [SerializeField]
+        protected PlayerTrigger curTarget;
+        public PlayerTrigger CurTarget { get { return curTarget; } }
+
+
         protected virtual void Awake()
         {
+            // 탐지범위 세팅
             detecter.GetComponent<SphereCollider>().radius = stat.DetectRange;
+            detecter.OnDetectTarget += OnDetectTarget;
+            detecter.OffDetectTarget += OnLoseTarget;
         }
-
         protected virtual void OnEnable()
         {
             // 활성화 시 풀링상태 -> 대기상태로 전환
             fsm?.ChangeState("Idle");
+        }
+        public virtual void OnDetectTarget(PlayerTrigger player)
+        {
+            curTarget = player;
+        }
+        public virtual void OnLoseTarget()
+        {
+            curTarget = null;
         }
 
         // 탐지범위 디버깅

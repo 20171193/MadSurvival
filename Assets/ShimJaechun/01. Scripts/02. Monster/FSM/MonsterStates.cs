@@ -56,7 +56,7 @@ namespace Jc
 
         public override void Update()
         {
-            owner.Anim.SetFloat("MoveSpeed", owner.Agent.velocity.magnitude);
+            owner.Anim.SetFloat("MoveSpeed", owner.Agent.velocity.sqrMagnitude);
         }
 
         public override void Exit()

@@ -25,7 +25,7 @@ namespace Jc
             base.OnTile(ground);
         }
 
-        public void TakeDamage(float damage, Vector3 suspectPos)
+        public void TakeDamage(float damage)
         {
         }
     }

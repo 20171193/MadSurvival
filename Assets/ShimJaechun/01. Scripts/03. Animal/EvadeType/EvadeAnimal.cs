@@ -13,6 +13,10 @@ namespace Jc
         private float loseDelayTime;
         public float LoseDelayTime { get { return loseDelayTime; } }
 
+        [SerializeField]
+        private float evadeDistance;
+        public float EvadeDistance { get { return evadeDistance; } }
+
         protected override void Awake()
         {
             base.Awake();
@@ -22,12 +26,7 @@ namespace Jc
             fsm.FSM.AddState("Evade", new AnimalEvade(this));
             fsm.FSM.Init("Pooled");
 
-            // 중립형 동물은 공격을 받은경우 회피
-            if (isNeutral)
-                trigger.OnTakeDamage += DamagedEvade;
-            // 회피형은 범위내에 들어온 경우 회피
-            else
-                detecter.OnDetectTarget += DetectedEvade;
+            trigger.OnTakeDamage += OnEvade;
         }
         protected override void OnEnable()
         {
@@ -37,19 +36,17 @@ namespace Jc
             base.OnEnable();
         }
 
-        public void DamagedEvade()
+        public void OnEvade()
         {
-            Debug.Log("Damaged Evade");
-            if (detecter.CurrentTarget != null &&
-                fsm.FSM.CurState != "Evade")
+            if (fsm.FSM.CurState != "Evade")
                 fsm.ChangeState("Evade");
         }
-        private void DetectedEvade(GameObject obj)
+        public override void OnDetectTarget(PlayerTrigger player)
         {
-            Debug.Log("Detected Evade");
-            if (detecter.CurrentTarget != null &&
-                fsm.FSM.CurState != "Evade")
-                fsm.ChangeState("Evade");
+            base.OnDetectTarget(player);
+            // 회피형 동물의 경우 탐지했을 때 바로 회피
+            if (!isNeutral)
+                OnEvade();
         }
     }
 }
