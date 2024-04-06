@@ -4,24 +4,20 @@ using UnityEngine;
 
 public class LayerManager : Singleton<LayerManager> 
 {
-    [SerializeField]
+    [Header("빌딩")]
     public LayerMask wallLM;
-
-    [SerializeField]
+    [Header("플레이어 공격대상")]
     public LayerMask damageableLM;
-
-    [SerializeField]
+    [Header("몬스터")]
     public LayerMask monsterLM;
-
-    [SerializeField]
+    [Header("몬스터/동물 공격대상")]
+    public LayerMask targetableLM;
+    [Header("플레이어")]
     public LayerMask playerLM;
-
-    [SerializeField]
+    [Header("플레이어/무적플레이어")]
     public LayerMask playerableLM;
-
-    [SerializeField]
+    [Header("드랍아이템")]
     public LayerMask dropItemLM;
-
-    [SerializeField]
+    [Header("땅(타일)")]
     public LayerMask groundLM;
 }

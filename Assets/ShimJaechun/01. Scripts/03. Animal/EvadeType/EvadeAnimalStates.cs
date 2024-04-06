@@ -19,6 +19,8 @@ namespace Jc
 
         public override void Enter()
         {
+            if (owner.CurTarget == null)
+                evadeDir = -owner.transform.forward;
         }
         public override void Update()
         {
@@ -33,14 +35,14 @@ namespace Jc
         private void Evade()
         {
             // 방향 설정
-            if(owner.Detecter.CurrentTarget != null)
-                evadeDir = (owner.transform.position - owner.Detecter.CurrentTarget.transform.position).normalized;
+            if(owner.CurTarget != null)
+                evadeDir = (owner.transform.position - owner.CurTarget.transform.position).normalized;
 
             // rotation
             owner.transform.forward = evadeDir;
-            owner.Agent.Move(evadeDir * owner.Stat.Speed * Time.deltaTime);
+            owner.Agent.Move(owner.transform.forward * owner.Stat.Speed * Time.deltaTime);
 
-            if(owner.Detecter.CurrentTarget == null
+            if(owner.CurTarget == null
                 && evadeRoutine == null)
             {
                 evadeRoutine = owner.StartCoroutine(EvadeRoutine());
@@ -56,13 +58,12 @@ namespace Jc
             {
                 curTime += 0.1f;
 
-                if(owner.Detecter.CurrentTarget != null)
+                if(owner.CurTarget != null)
                 {
+                    // 도망 방향 재설정
+                    evadeDir = (owner.transform.position - owner.CurTarget.transform.position).normalized;
                     // 목표물을 찾은 경우
                     evadeRoutine = null;
-
-                    // 도망 방향 재설정
-                    evadeDir = (owner.transform.position - owner.Detecter.CurrentTarget.transform.position).normalized;
                     yield break;
                 }
                 yield return new WaitForSeconds(0.1f);

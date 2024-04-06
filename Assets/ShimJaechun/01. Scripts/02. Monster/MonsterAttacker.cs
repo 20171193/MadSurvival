@@ -38,7 +38,7 @@ public class MonsterAttacker : MonoBehaviour
     public void AttackTiming()
     {
         Debug.Log("Attack Timing");
-        int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.playerLM);
+        int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.targetableLM);
         for (int i = 0; i < size; i++)
         {
             Vector3 dirToTarget = (colliders[i].transform.position - transform.position).normalized;
@@ -46,7 +46,7 @@ public class MonsterAttacker : MonoBehaviour
                 continue;
 
             IDamageable damagable = colliders[i].GetComponent<IDamageable>();
-            damagable?.TakeDamage(owner.Stat.ATK, transform.position);
+            damagable?.TakeDamage(owner.Stat.ATK);
         }
     }
 

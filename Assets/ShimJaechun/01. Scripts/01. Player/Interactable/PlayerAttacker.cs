@@ -54,7 +54,10 @@ namespace Jc
 
                 // 공격대상
                 IDamageable damagable = colliders[i].GetComponent<IDamageable>();
-                damagable?.TakeDamage(owner.Stat.MonsterATK, transform.position);
+                damagable?.TakeDamage(owner.Stat.MonsterATK);
+
+                IKnockbackable knockbackable = colliders[i].GetComponent<IKnockbackable>();
+                knockbackable?.Knockback(owner.Stat.KnockbackPower, owner.Stat.KnockbackTime, transform.position);
 
                 // 채굴대상
                 IDiggable diggable = colliders[i].GetComponent<IDiggable>();

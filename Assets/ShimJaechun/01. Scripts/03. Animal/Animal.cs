@@ -50,17 +50,21 @@ namespace Jc
         protected AnimalTrigger trigger;
         public AnimalTrigger Trigger { get { return trigger; } }
 
+        [SerializeField]
+        public Ground onGround;
+
+        [SerializeField]
+        public Ground playerGround;
+
         protected virtual void Awake()
         {
             detecter.GetComponent<SphereCollider>().radius = stat.DetectRange;
         }
-
         protected virtual void OnEnable()
         {
             // 활성화 시 풀링상태 -> 대기상태로 전환
             fsm?.ChangeState("Idle");
         }
-
         // 탐지범위 디버깅
         private void OnDrawGizmosSelected()
         {

@@ -10,7 +10,6 @@ namespace Jc
     {
         protected Animal baseOwner;
     }
-
     public class AnimalPooled : AnimalBaseState
     {
 
@@ -55,13 +54,11 @@ namespace Jc
             baseOwner.Agent.speed = baseOwner.Stat.Speed /2f;
             SetDestination();
         }
-
         public override void Exit()
         {
             if (wonderRoutine != null)
                 baseOwner.StopCoroutine(wonderRoutine);
         }
-
         private bool IsArrived()
         {
             return baseOwner.Agent.remainingDistance < 0.9f;
@@ -93,6 +90,13 @@ namespace Jc
             wonderRoutine = null;
             baseOwner.FSM.ChangeState("Idle");
             yield return null;
+        }
+    }
+    public class AnimalHit : AnimalBaseState
+    {
+        public AnimalHit(Animal owner)
+        {
+            this.baseOwner = owner;
         }
     }
     public class AnimalDie : AnimalBaseState

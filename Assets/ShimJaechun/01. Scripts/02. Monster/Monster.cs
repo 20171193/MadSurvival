@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 
 namespace Jc
 {
-    public class Monster : PooledObject, ITileable, IDamageable
+    public class Monster : PooledObject, ITileable, IDamageable, IKnockbackable
     {
         [Header("Components")]
         [Space(2)]
@@ -48,14 +48,6 @@ namespace Jc
         [SerializeField]
         protected string monsterName;
         public string MonsterName { get { return monsterName; } }
-
-        [SerializeField]
-        private float knockBackPower;
-        public float KnockBackPower { get { return knockBackPower; } }
-
-        [SerializeField]
-        private float knockBackTime;
-        public float KnockBackTime { get { return knockBackTime; } }
 
         private Coroutine knockBackTimer;
 
@@ -97,7 +89,7 @@ namespace Jc
 
         #region 데미지 처리
         // 데미지 처리
-        public void TakeDamage(float value, Vector3 suspectPos)
+        public void TakeDamage(float value)
         {
             // 데미지값 처리
             float damage = value - stat.AMR;
@@ -113,17 +105,25 @@ namespace Jc
             {
                 anim.SetTrigger("OnHit");
                 stat.OwnHp -= damage;
-                knockBackTimer = StartCoroutine(KnockBackRoutine());
             }
         }
-        IEnumerator KnockBackRoutine()
+
+        public void Knockback(float power, float time, Vector3 suspectPos)
+        {
+            knockBackTimer = StartCoroutine(KnockBackRoutine(power, time, suspectPos));
+        }
+
+        IEnumerator KnockBackRoutine(float power, float time, Vector3 suspectPos)
         {
             // 네비메시 비활성화
             // 물리 이동으로 전환
-            agent.enabled = false;
-            rigid.AddForce(transform.forward * -knockBackPower, ForceMode.Impulse);
 
-            yield return new WaitForSeconds(KnockBackTime);
+            Vector3 dir = transform.position - suspectPos;
+
+            agent.enabled = false;
+            rigid.AddForce(dir * power, ForceMode.Impulse);
+
+            yield return new WaitForSeconds(time);
 
             // 원복
             rigid.velocity = Vector3.zero;

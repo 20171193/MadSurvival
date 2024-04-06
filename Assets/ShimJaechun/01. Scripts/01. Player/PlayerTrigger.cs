@@ -16,7 +16,7 @@ namespace Jc
             owner.currentGround = ground;
         }
 
-        public void TakeDamage(float damage, Vector3 suspectPos)
+        public void TakeDamage(float damage)
         {
             owner.Stat.OwnHp -= damage;
             if(owner.Stat.OwnHp <= 0)
