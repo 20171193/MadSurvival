@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using jungmin;
+using static Equip_Item;
 
 namespace Jc
 {
@@ -70,9 +71,23 @@ namespace Jc
         private float curSpeed;
 
         [Space(3)]
-        [Header("현재 등록된 아이템")]
+        [Header("플레이어 아이템")]
         [Space(2)]
+        [Header("등록된 슬롯")]
+        [SerializeField]
+        private Slot curSlot;
+        [SerializeField]
+        private Equip_Item curWeaponItem;
+        [SerializeField]
+        private Equip_Item curArmorItem;
 
+        [Header("아이템 이미지")]
+        [SerializeField]
+        private GameObject weaponImage;
+        [SerializeField]
+        private GameObject potionImage;
+        
+        private GameObject curImage;
 
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
@@ -104,15 +119,25 @@ namespace Jc
         }
         public void OnClickInteractButton()
         {
-            if (isAttackCoolTime) return;
+            if (curSlot == null) return;
 
-            anim.SetTrigger("OnAttack");
+            switch(curSlot.item.itemdata.itemtype)
+            {
+                case ItemData.ItemType.Used:
+                    Use();
+                    break;
+                case ItemData.ItemType.Equipment:
+                    if (isAttackCoolTime) return;
 
-            if (atsRoutine != null)
-                StopCoroutine(atsRoutine);
-            // 공격 쿨타임 적용
-            isAttackCoolTime = true;
-            atsRoutine = StartCoroutine(AttackSpeedRoutine());
+                    anim.SetTrigger("OnAttack");
+
+                    if (atsRoutine != null)
+                        StopCoroutine(atsRoutine);
+                    // 공격 쿨타임 적용
+                    isAttackCoolTime = true;
+                    atsRoutine = StartCoroutine(AttackSpeedRoutine());
+                    break;
+            }
         }
         IEnumerator AttackSpeedRoutine()
         {
@@ -181,25 +206,79 @@ namespace Jc
         #endregion
 
         #region 아이템 사용 / 장비
-        public void GetItem(global::ItemData item)
+        public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
         }
-        // 
-        public void OnItem()
-        {
 
+        // 무기는 인벤토리에서 장착이 안되게?
+
+        public void OnSelectSlot(Slot slot)
+        {
+            // 기존무기 해제
+            curWeaponItem = null;
+
+            curSlot = slot;
+
+            ChangeButton();
         }
-        public void Use(Item item)
+        private void ChangeButton()
         {
+            if (curSlot == null) return;
 
+            curImage.SetActive(false);
+
+            switch (curSlot.item.itemdata.itemtype)
+            {
+                case ItemData.ItemType.Used:
+                    potionImage.SetActive(true);
+                    curImage = potionImage;
+                    break;
+                case ItemData.ItemType.Equipment:
+                    weaponImage.SetActive(true);
+                    curImage = weaponImage;
+                    break;
+            }
+        }
+
+        public void Use()
+        {
+            Used_Item item = (Used_Item)curSlot.item;
+            if (item == null || 
+                curSlot.itemCount < 1) return;
+
+            item.Use(this);
         }
         public void Equip()
         {
+            Equip_Item item = (Equip_Item)curSlot.item;
+            if (item == null) return;
 
+            // 기존 아이템 장착해제
+            UnEquip(item.equipType);
+            switch (item.equipType)
+            {
+                case EquipType.Weapon:
+                    curWeaponItem = item;
+                    break;
+                case EquipType.Armor:
+                    curArmorItem = item;
+                    break;
+            }
+            // 새 아이템 장착
+            item.Equip(this);
         }
-        public void UnEquip()
+        public void UnEquip(EquipType type)
         {
+            switch(type)
+            {
+                case EquipType.Weapon:
+                    curWeaponItem.UnEquip(this);
+                    break;
+                case EquipType.Armor:
+                    curArmorItem.UnEquip(this);
+                    break;
+            }
         }
         #endregion
     }

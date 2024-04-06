@@ -11,7 +11,7 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
-        private global::ItemData itemData;
+        private Item item;
 
         [SerializeField]
         private Rigidbody rigid;
@@ -104,7 +104,7 @@ namespace Jc
 
             gameObject.SetActive(false);
             transform.position = player.transform.position;
-            player.GetItem(itemData);
+            player.GetItem(item);
             yield return null;
         }
     }
