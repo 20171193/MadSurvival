@@ -10,25 +10,25 @@ namespace Jc
     }
     public class PlayerDiggable : PlayerBaseState
     {
-        public GameObject diggingImage;
+        //public GameObject diggingImage;
 
         // 채굴/공격이 가능한 상태
         public PlayerDiggable(Player owner)
         {
             this.owner = owner;
         }
-        public override void Enter()
-        {
-            diggingImage.SetActive(true);
-        }
-        public override void Exit()
-        {
-            diggingImage.SetActive(false);
-        }
+        //public override void Enter()
+        //{
+        //    diggingImage.SetActive(true);
+        //}
+        //public override void Exit()
+        //{
+        //    diggingImage.SetActive(false);
+        //}
     }
     public class PlayerAttackable : PlayerBaseState
     {
-        public GameObject attackImage;
+        //public GameObject attackImage;
 
         // 공격이 가능한 상태
         public PlayerAttackable(Player owner)
@@ -36,18 +36,18 @@ namespace Jc
             this.owner = owner;
         }
 
-        public override void Enter()
-        {
-            attackImage.SetActive(true);
-        }
-        public override void Exit()
-        {
-            attackImage.SetActive(false);
-        }
+        //public override void Enter()
+        //{
+        //    attackImage.SetActive(true);
+        //}
+        //public override void Exit()
+        //{
+        //    attackImage.SetActive(false);
+        //}
     }
     public class PlayerBuildable : PlayerBaseState
     {
-        public GameObject buildingImage;
+        //public GameObject buildingImage;
 
         // 건물 짓기가 가능한 상태
         public PlayerBuildable(Player owner)
@@ -55,13 +55,13 @@ namespace Jc
             this.owner = owner;
         }
 
-        public override void Enter()
-        {
-            buildingImage.SetActive(true);
-        }
-        public override void Exit()
-        {
-            buildingImage.SetActive(false);
-        }
+        //public override void Enter()
+        //{
+        //    buildingImage.SetActive(true);
+        //}
+        //public override void Exit()
+        //{
+        //    buildingImage.SetActive(false);
+        //}
     }
 }
