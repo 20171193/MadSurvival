@@ -3,29 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IDropHandler,IPointerClickHandler
 {
 	Vector3 originPos;
-	public ItemData item;
+	public Item item;
 	public int itemCount;
 	[SerializeField] public Image itemImage; //슬롯 위에 보여질 아이템 이미지.
 	[SerializeField] TMP_Text text_Count;
 	[SerializeField] GameObject go_CountImage;
+	[SerializeField] UnityAction OnToolTip;
 	private void Start()
 	{
 		originPos = transform.position;
+		OnToolTip += BackPackController.instance.TryOpenToolTip;
 	}
-	public void AddItem( ItemData _item, int _count = 1 ) //슬롯 상의 아이템 UI 업데이트
+	public void AddItem( Item _item, int _count = 1 ) //슬롯 상의 아이템 UI 업데이트
 	{
 		item = _item;
 		itemCount = _count;
 
-        itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemName].itemImage;
+        itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
-        if (item.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
+        if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 		{
 			go_CountImage.SetActive(true);
 			text_Count.text = itemCount.ToString(); 
@@ -125,7 +128,7 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
     }
 	void ChangeSlot()
 	{
-		ItemData tempItem = item;
+		Item tempItem = item;
 		int tempItemCount = itemCount;
 
 		AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.itemCount);
@@ -139,50 +142,64 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 			DragSlot.instance.dragSlot.ClearSlot();
 		}
 	}
-	void SelectSlot()
+	void SelectSlot_QuickSlot()
 	{
         //인벤토리가 꺼져있을 때만 반응하기에, 인벤토리와 무관.
         // 퀵슬롯에서 슬롯 선택하기
         if (!BackPackController.inventory_Activated)
         {
-			if (SelectedSlot.instance.slot != null) //이전에 셀렉된 슬롯이 있었다면,
+			if (SelectedSlot_QuickSlot.instance.slot != null) //이전에 셀렉된 슬롯이 있었다면,
 			{
-				SelectedSlot.instance.slot.SetColorBG(255);
+				SelectedSlot_QuickSlot.instance.slot.SetColorBG(255);
 				Debug.Log("SelectSlot 교체 실행");
-				SelectedSlot.instance.slot = this;
+				SelectedSlot_QuickSlot.instance.slot = this;
 				SetColorBG(0);
 			}
 			else
 			{
-                SelectedSlot.instance.slot = this;
+                SelectedSlot_QuickSlot.instance.slot = this;
                 SetColorBG(0);
             }
         }
 
     }
-	void ShowToolTip()
-    {// 인벤토리가 켜져있을 때만 툴팁
+	void SelectSlot_Inventory()
+	{
         if (BackPackController.inventory_Activated)
-		{
-			//Debug.Log("Show Tool Tip");
-		}
+        {
+            if (SelectedSlot_Inventory.instance.slot != null) //이전에 셀렉된 슬롯이 있었다면,
+            {
+                SelectedSlot_Inventory.instance.slot.SetColorBG(255);
+                SelectedSlot_Inventory.instance.slot = this;
+                SetColorBG(0);
+            }
+            else
+            {
+                SelectedSlot_Inventory.instance.slot = this;
+                SetColorBG(0);
+            }
+        }
+    }
 
-	}
     public void OnPointerClick(PointerEventData eventData)
     {
-		/* 인벤토리가 켜져있을 땐 아이템 설명 혹은 툴팁
+		/* 인벤토리가 켜져있을 땐 툴팁 On / 사용 버리기 선택.
 		 * 인벤토리가 꺼져있을 땐 퀵슬롯의 슬롯 선택
 		 * 
 		 */
 		//Debug.Log("OnPointerClick event");
-		if (BackPackController.inventory_Activated)
+		if (item != null &&BackPackController.inventory_Activated)
 		{
-            ShowToolTip();
-            
+			SelectSlot_Inventory();
+			OnToolTip?.Invoke();
+		}
+		else if(item == null)
+		{
+			Debug.Log("현재 그 슬롯에 아이템이 없습니다.");
 		}
 		else
 		{
-            SelectSlot();
+            SelectSlot_QuickSlot();
         }
     }
 }
