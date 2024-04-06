@@ -9,22 +9,23 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler,IDropHandler,IPointerClickHandler
 {
 	Vector3 originPos;
-	public Item item;
+	public ItemData item;
 	public int itemCount;
-	public Image itemimage;
+	[SerializeField] public Image itemImage; //슬롯 위에 보여질 아이템 이미지.
 	[SerializeField] TMP_Text text_Count;
 	[SerializeField] GameObject go_CountImage;
 	private void Start()
 	{
 		originPos = transform.position;
 	}
-	public void AddItem( Item _item, int _count = 1 )
+	public void AddItem( ItemData _item, int _count = 1 ) //슬롯 상의 아이템 UI 업데이트
 	{
 		item = _item;
 		itemCount = _count;
-		itemimage.sprite = _item.itemImage; //중요
 
-		if(item.itemtype != Item.ItemType.Equipment)
+        itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemName].itemImage;
+
+        if (item.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 		{
 			go_CountImage.SetActive(true);
 			text_Count.text = itemCount.ToString(); 
@@ -47,11 +48,11 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 			ClearSlot();
 		}
 	}
-	void ClearSlot()
+	public void ClearSlot()
 	{
 		item = null;
 		itemCount = 0;
-		itemimage.sprite = null;
+		itemImage.sprite = GetComponent<Image>().sprite; //슬롯의 기본 스프라이트로 변경.
 		SetColor(0);
 		text_Count.text = "0";
 		go_CountImage.SetActive(false);
@@ -59,9 +60,9 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 	}
 	void SetColor(float alpha ) //슬롯의 아이템 이미지의 색깔을 변경
 	{
-		Color color = itemimage.color;
+		Color color = itemImage.color;
 		color.a = alpha;
-		itemimage.color = color;
+		itemImage.color = color;
 	}
     void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
     {
@@ -81,9 +82,8 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
             {
                 DragSlot.instance.transform.position = eventData.position;
                 DragSlot.instance.dragSlot = this;
-                DragSlot.instance.DragSetImage(itemimage);
+                DragSlot.instance.DragSetImage(itemImage);
             }
-            //DragSlot.instance.dragSlot.GetComponent<>().blocksRaycasts = false;
         }
 	}
 	public void OnDrag( PointerEventData eventData )
@@ -120,12 +120,12 @@ public class Slot : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 		{
 			DragSlot.instance.SetColor(0);
 			DragSlot.instance.dragSlot = null;
-            //DragSlot.instance.dragSlot.GetComponent<CanvasGroup>().blocksRaycasts = true;
+
         }
     }
 	void ChangeSlot()
 	{
-		Item tempItem = item;
+		ItemData tempItem = item;
 		int tempItemCount = itemCount;
 
 		AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.itemCount);
