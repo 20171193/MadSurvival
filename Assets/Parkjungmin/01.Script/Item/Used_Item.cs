@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Jc;
 
-public abstract class Used_Item : Item
+namespace jungmin
 {
-    public abstract void Use(Player player);
+    public abstract class Used_Item : Item
+    {
+        public abstract void Use(Player player);
 
+    }
 }
