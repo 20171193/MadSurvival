@@ -69,6 +69,11 @@ namespace Jc
         [SerializeField]
         private float curSpeed;
 
+        [Space(3)]
+        [Header("현재 등록된 아이템")]
+        [Space(2)]
+
+
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
 
@@ -100,7 +105,7 @@ namespace Jc
         public void OnClickInteractButton()
         {
             if (isAttackCoolTime) return;
-            
+
             anim.SetTrigger("OnAttack");
 
             if (atsRoutine != null)
@@ -179,6 +184,12 @@ namespace Jc
         public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
+        }
+
+        // 
+        public void OnItem()
+        {
+
         }
         public void Use(Item item)
         {
