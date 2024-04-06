@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Stamina_Potion", menuName = "Item/Used_Item/Potion/Stamina_Potion")]
-public class Stamina_Potion : Used_Item
+namespace jungmin
 {
-    [SerializeField] float staminaIncValue;
-
-    public override void Use(Player player)
+    [CreateAssetMenu(fileName = "Stamina_Potion", menuName = "Item/Used_Item/Potion/Stamina_Potion")]
+    public class Stamina_Potion : Used_Item
     {
-        player.Stat.OwnStamina += staminaIncValue;
+        [SerializeField] float staminaIncValue;
+
+        public override void Use(Player player)
+        {
+            player.Stat.OwnStamina += staminaIncValue;
+        }
     }
 }
