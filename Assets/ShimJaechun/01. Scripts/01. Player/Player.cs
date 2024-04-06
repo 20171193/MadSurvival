@@ -221,18 +221,14 @@ namespace Jc
             interactButton.SetActive(!isOnBackpack);
             joystick.SetActive(!isOnBackpack);
         }
-
         public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
         }
-
-        // 무기는 인벤토리에서 장착이 안되게?
-
         public void OnSelectSlot(Slot slot)
         {
-            // 기존무기 해제
-            curWeaponItem = null;
+            // 기존 무기해제
+            UnEquip(Equip_Item.EquipType.Weapon);
 
             curSlot = slot;
 
@@ -276,6 +272,7 @@ namespace Jc
             {
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
+                    anim.SetBool("IsTwoHand", true);
                     break;
                 case Equip_Item.EquipType.Armor:
                     curArmorItem = item;
@@ -286,13 +283,29 @@ namespace Jc
         }
         public void UnEquip(Equip_Item.EquipType type)
         {
+            if (curWeaponItem == null) return;
+
             switch(type)
             {
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem.UnEquip(this);
+                    anim.SetBool("IsTwoHand", false);
                     break;
                 case Equip_Item.EquipType.Armor:
                     curArmorItem.UnEquip(this);
+                    break;
+            }
+            curWeaponItem = null;
+        }
+        private void EquipModel(Equip_Item.ATKType atkType)
+        {
+            switch(atkType)
+            {
+                case Equip_Item.ATKType.Monster:
+                    break;
+                case Equip_Item.ATKType.Tree:
+                    break;
+                case Equip_Item.ATKType.Stone:
                     break;
             }
         }
