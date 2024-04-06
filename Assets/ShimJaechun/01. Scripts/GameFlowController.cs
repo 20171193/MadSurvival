@@ -76,7 +76,6 @@ namespace Jc
             }
         }
 
-
         private Coroutine totalTimer;
 
         private bool isNight;

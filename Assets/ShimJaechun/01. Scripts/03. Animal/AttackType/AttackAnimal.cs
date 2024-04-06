@@ -28,10 +28,6 @@ namespace Jc
         [Header("Balancing")]
         [Space(2)]
         [SerializeField]
-        private PlayerTrigger curTarget;
-        public PlayerTrigger CurTarget { get { return curTarget; } }
-
-        [SerializeField]
         private bool isLose = false;
         public bool IsLose { get { return isLose; } set { isLose = value; } }
         
@@ -41,12 +37,12 @@ namespace Jc
             attacker.Range = attackRange;
         }
 
-        public void DetectTarget(PlayerTrigger target)
+        public override void OnDetectTarget(PlayerTrigger player)
         {
+            base.OnDetectTarget(player);
             isLose = false;
-            curTarget = target;
         }
-        public void LoseTarget()
+        public override void OnLoseTarget()
         {
             isLose = true;
         }

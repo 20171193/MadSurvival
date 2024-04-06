@@ -17,10 +17,6 @@ namespace Jc
         private float evadeDistance;
         public float EvadeDistance { get { return evadeDistance; } }
 
-        [SerializeField]
-        private PlayerTrigger curTarget;
-        public PlayerTrigger CurTarget { get { return curTarget; } }
-
         protected override void Awake()
         {
             base.Awake();
@@ -30,8 +26,6 @@ namespace Jc
             fsm.FSM.AddState("Evade", new AnimalEvade(this));
             fsm.FSM.Init("Pooled");
 
-            detecter.OffDetectTarget += LoseTarget;
-            detecter.OnDetectTarget += OnDetectTarget;
             trigger.OnTakeDamage += OnEvade;
         }
         protected override void OnEnable()
@@ -47,17 +41,12 @@ namespace Jc
             if (fsm.FSM.CurState != "Evade")
                 fsm.ChangeState("Evade");
         }
-        public void OnDetectTarget(PlayerTrigger player)
+        public override void OnDetectTarget(PlayerTrigger player)
         {
-            curTarget = player;
-
+            base.OnDetectTarget(player);
             // 회피형 동물의 경우 탐지했을 때 바로 회피
             if (!isNeutral)
                 OnEvade();
-        }
-        public void LoseTarget()
-        {
-            curTarget = null;
         }
     }
 }
