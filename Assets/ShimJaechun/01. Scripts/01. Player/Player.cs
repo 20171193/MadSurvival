@@ -69,6 +69,11 @@ namespace Jc
         [SerializeField]
         private float curSpeed;
 
+        [Space(3)]
+        [Header("í˜„ì¬ ë“±ë¡ëœ ì•„ì´í…œ")]
+        [Space(2)]
+
+
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
 
@@ -83,9 +88,9 @@ namespace Jc
         }
         private void Move()
         {
-            // ÇÃ·¹ÀÌ¾î ÀÌµ¿ 
+            // í”Œë ˆì´ì–´ ì´ë™ 
             controller.Move(Stat.MaxSpeed, ref curSpeed, anim);
-            // ½ºÅ×¹Ì³Ê Ã³¸®
+            // ìŠ¤í…Œë¯¸ë„ˆ ì²˜ë¦¬
             if (curSpeed >= stat.speedThreshold)
             {
                 if (stat.OwnStamina > 0)
@@ -100,12 +105,12 @@ namespace Jc
         public void OnClickInteractButton()
         {
             if (isAttackCoolTime) return;
-            
+
             anim.SetTrigger("OnAttack");
 
             if (atsRoutine != null)
                 StopCoroutine(atsRoutine);
-            // °ø°İ ÄğÅ¸ÀÓ Àû¿ë
+            // ê³µê²© ì¿¨íƒ€ì„ ì ìš©
             isAttackCoolTime = true;
             atsRoutine = StartCoroutine(AttackSpeedRoutine());
         }
@@ -116,7 +121,7 @@ namespace Jc
             atsRoutine = null;
         }
 
-        #region ³· / ¹ã °ü·Ã ÀÌº¥Æ®Ã³¸®
+        #region ë‚® / ë°¤ ê´€ë ¨ ì´ë²¤íŠ¸ì²˜ë¦¬
         public void OnEnterNight()
         {
             stat.StopTimer(CoreStatType.Hunger, false);
@@ -129,14 +134,14 @@ namespace Jc
         }
         #endregion
 
-        #region µ¥¹ÌÁö Ã³¸®
+        #region ë°ë¯¸ì§€ ì²˜ë¦¬
         public void OnTakeDamage()
         {
             damageRoutine = StartCoroutine(DamageRoutine());
         }
         IEnumerator DamageRoutine()
         {
-            // ÀÏÁ¤½Ã°£ ¹«Àû»óÅÂ Àû¿ë
+            // ì¼ì •ì‹œê°„ ë¬´ì ìƒíƒœ ì ìš©
 
             float time = Stat.InvinsibleTime;
             float materialTime = Stat.InvinsibleTime / 10f;
@@ -175,12 +180,17 @@ namespace Jc
         }
         #endregion
 
-        #region ¾ÆÀÌÅÛ »ç¿ë / Àåºñ
+        #region ì•„ì´í…œ ì‚¬ìš© / ì¥ë¹„
         public void GetItem(global::ItemData item)
         {
             backPack.AcquireItem(item);
         }
-        public void Use(global::ItemData item)
+        // 
+        public void OnItem()
+        {
+
+        }
+        public void Use(Item item)
         {
 
         }
