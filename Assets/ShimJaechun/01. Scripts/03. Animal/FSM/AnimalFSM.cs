@@ -21,7 +21,6 @@ namespace Jc
             fsm.AddState("Pooled", new AnimalPooled());
             fsm.AddState("Idle", new AnimalIdle(owner));
             fsm.AddState("Wonder", new AnimalWonder(owner));
-            fsm.AddState("Hit", new AnimalHit(owner));
             fsm.AddState("Die", new AnimalDie(owner));
         }
 

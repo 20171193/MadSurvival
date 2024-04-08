@@ -56,6 +56,9 @@ MonoBehaviour:
   targetableLM:
     serializedVersion: 2
     m_Bits: 4718592
+  playerLM:
+    serializedVersion: 2
+    m_Bits: 4194304
   playerableLM:
     serializedVersion: 2
     m_Bits: 6291456

@@ -19,8 +19,8 @@ namespace Jc
         [Header("Balancing")]
         [Space(2)]
         [SerializeField]
-        private PlayerTrigger currentTarget;
-        public PlayerTrigger CurrentTarget { get { return currentTarget; } }
+        private GameObject currentTarget;
+        public GameObject CurrentTarget { get { return currentTarget; } }
 
         public UnityAction<GameObject> OnAttackTrigger;
 
@@ -31,16 +31,28 @@ namespace Jc
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!Manager.Layer.playerLM.Contain(other.gameObject.layer)) return;
+            // 데미지를 입을 수 있는 즉, 공격이 가능한 객체일 경우 액션 
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                if (owner.FSM.FSM.CurState == "Tracking" &&
+                (owner.Tracker.IsTrackingPlayer && other.gameObject.tag == "Player" ||
+                !owner.Tracker.IsTrackingPlayer && Manager.Layer.wallLM.Contain(other.gameObject.layer)))
+                {
+                    // 타깃으로 지정
+                    currentTarget = other.gameObject;
 
-            currentTarget = other.gameObject.GetComponent<PlayerTrigger>();
-            OnAttackTrigger?.Invoke(other.gameObject);
+                    owner.FSM.ChangeState("Attack");
+                }
+            }
         }
         private void OnTriggerExit(Collider other)
         {
-            if (!Manager.Layer.playerLM.Contain(other.gameObject.layer)) return;
-
-            currentTarget = null;
+            if (other.GetComponent<IDamageable>() != null)
+            {
+                // 지정된 타깃 해제
+                if (other.gameObject == currentTarget)
+                    currentTarget = null;
+            }
         }
     }
 }

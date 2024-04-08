@@ -73,6 +73,7 @@ namespace Jc
         {
             while(true)
             {
+                // 0.1초에 한번 씩 길찾기 갱신
                 yield return new WaitForSeconds(0.1f);
                 owner.Detecter.Tracking(owner.Detecter.PlayerGround);
             }
@@ -89,6 +90,7 @@ namespace Jc
         }
         public override void Enter()
         {
+            // 공격 중 멈춤
             owner.Agent.isStopped = true;
 
             currentTarget = owner.Detecter.CurrentTarget;

@@ -92,13 +92,6 @@ namespace Jc
             yield return null;
         }
     }
-    public class AnimalHit : AnimalBaseState
-    {
-        public AnimalHit(Animal owner)
-        {
-            this.baseOwner = owner;
-        }
-    }
     public class AnimalDie : AnimalBaseState
     {
         public AnimalDie(Animal owner)
