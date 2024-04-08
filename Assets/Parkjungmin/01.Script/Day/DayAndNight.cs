@@ -1,3 +1,4 @@
+using Jc;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,17 +45,17 @@ namespace jungmin
             dayForDensity = RenderSettings.fogDensity;
         }
 
-        IEnumerator DayTimeCoroutine()
-		{
-			while(dayTimer > 0f)
-			{
-				dayTimer -= Time.deltaTime;
-				yield return null;
-			}
-			dayTimer = 0f;
-			OnEnterNight();
-            yield return null;
-		}
+  //      IEnumerator DayTimeCoroutine()
+		//{
+		//	while(dayTimer > 0f)
+		//	{
+		//		dayTimer -= Time.deltaTime;
+		//		yield return null;
+		//	}
+		//	dayTimer = 0f;
+		//	OnEnterNight();
+  //          yield return null;
+		//}
 
 		// --------DAY ENTER EXIT
 		public void OnExitNight()
@@ -65,44 +66,74 @@ namespace jungmin
 				dayTimer = resetTimeValue;
 			}
 			IsNight = false;
-			exitNightRoutine = StartCoroutine(DayTimeCoroutine());
-            exitFogRoutine = StartCoroutine(ExitFogRoutine());
+			//exitNightRoutine = StartCoroutine(DayTimeCoroutine());
+            //exitFogRoutine = StartCoroutine(ExitFogRoutine());
 			prevDayValue = IsNight ? 1 : 0;
-		}
-		public void OnEnterNight()
+
+            RenderSettings.fogDensity = 0f;
+        }
+		public void OnInFog()
 		{
-			IsNight = true;
-			prevDayValue = IsNight ? 1 : 0;
-			OnNight?.Invoke();
-			enterFogRoutine = StartCoroutine(EnterFogRoutine());
+			//IsNight = true;
+			//prevDayValue = IsNight ? 1 : 0;
+			//OnNight?.Invoke();
+			enterFogRoutine = StartCoroutine(InFogRoutine());
 		}
 		// -------FOG ENTER EXIT
 
-		IEnumerator EnterFogRoutine()
+		// 심재천 수정
+		IEnumerator InFogRoutine()
 		{
-			while (currentFogDensity <= nightFogDensity )
-			{
-				EnterFog();
-				yield return null;
-			}
-		}
-		IEnumerator ExitFogRoutine()
-		{
-			while ( currentFogDensity > dayForDensity )
-			{
-				ExitFog();
-				yield return null;
-			}
-		}
-		void ExitFog()
-		{
-			currentFogDensity -= 0.1f * fogDensityCalc * Time.deltaTime;
-			RenderSettings.fogDensity = currentFogDensity;
-		}
-		void EnterFog()
-		{
-			currentFogDensity += 0.1f * fogDensityCalc * Time.deltaTime;
-			RenderSettings.fogDensity = currentFogDensity;
-		}
+            float rate = 0f;
+            while (rate < 1)
+            {
+                rate = GameFlowController.Inst.DayTime / GameFlowController.Inst.DayChangeTime;
+                RenderSettings.fogDensity = Mathf.Lerp(0, nightFogDensity, rate);
+                yield return null;
+            }
+
+            RenderSettings.fogDensity = nightFogDensity;
+            yield return null;
+        }
+		//IEnumerator OutFogRoutine()
+		//{
+		//	float rate = 0f;
+  //          while (rate < 1)
+  //          {
+		//		rate = GameFlowController.Inst.DayTime / GameFlowController.Inst.DayChangeTime;
+  //              RenderSettings.fogDensity = Mathf.Lerp(nightFogDensity,0, rate);
+  //              yield return null;
+  //          }
+
+		//	RenderSettings.fogDensity = 0f;
+  //          yield return null;
+  //      }
+
+		//IEnumerator EnterFogRoutine()
+		//{
+		//	while (currentFogDensity <= nightFogDensity )
+		//	{
+		//		EnterFog();
+		//		yield return null;
+		//	}
+		//}
+		//IEnumerator ExitFogRoutine()
+		//{
+		//	while ( currentFogDensity > dayForDensity )
+		//	{
+		//		ExitFog();
+		//		yield return null;
+		//	}
+		//}
+		//void ExitFog()
+		//{
+		//	currentFogDensity -= 0.1f * fogDensityCalc * Time.deltaTime;
+		//	RenderSettings.fogDensity = currentFogDensity;
+		//}
+		//void EnterFog()
+		//{
+		//	currentFogDensity += 0.1f * fogDensityCalc * Time.deltaTime;
+		//	RenderSettings.fogDensity = currentFogDensity;
+		//}
 	}
 }
