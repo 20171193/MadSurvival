@@ -55,7 +55,7 @@ namespace Jc
 
         public void OnTracking()
         {
-
+            fsm.FSM.ChangeState("Tracking");
         }
 
         public void OnPlayerGround(Ground ground)

@@ -29,7 +29,7 @@ namespace Jc
             // 데미지 처리
             else
             {
-                owner.FSM.ChangeState("Hit");
+                owner.Anim.SetTrigger("OnHit");
                 owner.Stat.OwnHp -= damage;
             }
         }
