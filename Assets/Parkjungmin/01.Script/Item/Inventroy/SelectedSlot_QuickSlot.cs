@@ -10,6 +10,7 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
     public static SelectedSlot_QuickSlot instance;
     [SerializeField] Player player;
     [SerializeField] Slot selectedSlot;
+    [SerializeField] Slot default_Slot;
     public Slot SelectedSlot
     {
         get { return selectedSlot; }
@@ -24,7 +25,12 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
     private void Awake()
     {
         instance = this;
-        selectedSlot?.SetColorBG(255);
-    }    
+
+    }
+    private void Start()
+    {
+        SelectedSlot = default_Slot;
+        default_Slot.SetColorBG(0);
+    }
 
 }
