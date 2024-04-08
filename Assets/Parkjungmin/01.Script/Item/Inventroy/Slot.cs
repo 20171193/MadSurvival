@@ -54,8 +54,10 @@ namespace jungmin
                 this.item = _item;
                 this.ItemCount += itemCount;
 			}
-
-			itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
+			if(_item.itemdata.itemtype == ItemData.ItemType.Ingredient)
+				itemImage.sprite = ItemManager.Instance.ingredientItemDic[_item.itemdata.itemName].itemdata.itemImage;
+            else
+				itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 			{
