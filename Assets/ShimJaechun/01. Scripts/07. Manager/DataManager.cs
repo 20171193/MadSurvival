@@ -14,6 +14,7 @@ namespace Jc
         ObstacleData,
         AnimalData,
         DaysWaveData,
+        DaysAnimalData,
         DaysObstacleData,
         ItemData
     }
@@ -31,6 +32,7 @@ public class DataManager : Singleton<DataManager>
     private string animalDataName = "Data/AnimalData";
     private string daysWaveDataName = "Data/DaysWaveData";
     private string daysObstacleDataName = "Data/DaysObstacleData";
+    private string daysAnimalDataName = "Data/DaysAnimalData";
     private string itemPrefabName = "Item/Item_";
 
     // key : 몬스터 이름 / value : 몬스터 프리팹
@@ -42,6 +44,7 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, Dictionary<int, WaveData>> daysWaveDataDic;
     public Dictionary<int, DaysObstacleData> daysObstacleDataDic;
     public Dictionary<string, AnimalData> animalDataDic;
+    //Dictionary<int,Dictionary<Animal, int>>
 
     private void OnEnable()
     {

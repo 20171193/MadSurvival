@@ -73,18 +73,19 @@ namespace Jc
         {
             if(other.gameObject.tag == "Player")
             {
-                Player player = other.gameObject.GetComponent<PlayerTrigger>().owner;
-                if (player == null) return;
-                getItemRoutine = StartCoroutine(GetItemRoutine(player));
+                PlayerTrigger trigger = other.gameObject.GetComponent<PlayerTrigger>();
+                if (trigger == null) 
+                    return;
+                getItemRoutine = StartCoroutine(GetItemRoutine(trigger));
             }
         }
 
         // 베지어 곡선을 활용한 아이템 습득효과
-        IEnumerator GetItemRoutine(Player player)
+        IEnumerator GetItemRoutine(PlayerTrigger trigger)
         {
             Vector3[] points = new Vector3[3];
             // 아이템 위치와 플레이어 사이의 1/5 지점 뒤를 경유할 포인트로 지정
-            Vector3 vec = player.transform.position - transform.position;
+            Vector3 vec = trigger.transform.position - transform.position;
             float dist = vec.magnitude / 8f;
             points[0] = transform.position -vec.normalized * dist;
 
@@ -96,15 +97,15 @@ namespace Jc
                 // 변경값 1
                 points[1] = Vector3.Lerp(transform.position, points[0], time);
                 // 변경값 2
-                points[2] = Vector3.Lerp(points[0], player.transform.position, time);
+                points[2] = Vector3.Lerp(points[0], trigger.transform.position, time);
                 transform.position = Vector3.Lerp(points[1], points[2], time);
                 time += Time.deltaTime / getSpeed;
                 yield return null;
             }
 
             gameObject.SetActive(false);
-            transform.position = player.transform.position;
-            player.GetItem(item);
+            transform.position = trigger.transform.position;
+            trigger.GetItem(item);
             yield return null;
         }
     }
