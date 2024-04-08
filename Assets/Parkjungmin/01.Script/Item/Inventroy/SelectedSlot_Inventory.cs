@@ -21,11 +21,6 @@ namespace jungmin
             } 
         }
 
-        private void Awake()
-        {
-            player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        }
-
         private void Start()
         {
             instance = this;

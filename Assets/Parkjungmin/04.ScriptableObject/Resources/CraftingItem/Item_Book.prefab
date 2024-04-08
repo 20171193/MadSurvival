@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7784097429104160063}
-  - component: {fileID: 6560188538664462865}
+  - component: {fileID: 596193195459919610}
   m_Layer: 0
   m_Name: Item_Book
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6560188538664462865
+--- !u!114 &596193195459919610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3533223332522542482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca474cc784efd714587372ef8c91cd8c, type: 3}
+  m_Script: {fileID: 11500000, guid: c6ca75dc51997844fbb54da57667b81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 18d3c7e4f8c251445afe713bd7c60abb, type: 2}
-  equipType: 0
-  atkType: 2
-  atk: 5
+  staminaIncValue: 10
