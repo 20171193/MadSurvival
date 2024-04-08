@@ -50,6 +50,9 @@ MonoBehaviour:
   damageableLM:
     serializedVersion: 2
     m_Bits: 168820736
+  turretTargetableLM:
+    serializedVersion: 2
+    m_Bits: 135266304
   monsterLM:
     serializedVersion: 2
     m_Bits: 1048576

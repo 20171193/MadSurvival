@@ -8,6 +8,8 @@ public class LayerManager : Singleton<LayerManager>
     public LayerMask wallLM;
     [Header("플레이어 공격대상")]
     public LayerMask damageableLM;
+    [Header("포탑 공격대상")]
+    public LayerMask turretTargetableLM;
     [Header("몬스터")]
     public LayerMask monsterLM;
     [Header("몬스터/동물 공격대상")]
