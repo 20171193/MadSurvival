@@ -159,7 +159,7 @@ namespace Jc
             spawnCount--;
 
             if (spawnCount <= 0)
-                OnAllMonsterDie?.Invoke();
+                GameFlowController.Inst.FadeControll(true);
         }
     }
 }

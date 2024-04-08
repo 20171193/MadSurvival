@@ -64,9 +64,6 @@ namespace Jc
         // 간략화
         private NavigationManager Navi => Manager.Navi;
 
-        // 그라운드 세팅이 끝난경우 Invoke
-        public UnityAction OnEndGroundSet;
-
         private void Start()
         {
             // 길찾기 매니저에 게임 맵을 할당
@@ -87,7 +84,7 @@ namespace Jc
 
             DrawBuildableGround();
             waterSpawner.Spawn();
-            OnEndGroundSet?.Invoke();
+            GameFlowController.Inst.ExitNight();
         }
 
 
