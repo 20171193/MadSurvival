@@ -55,17 +55,14 @@ namespace jungmin
 				{
 					if (slots[i].item != null && (slots[i].item.itemdata.itemName == _item.itemdata.itemName)) // 같은 아이템 있는 슬롯을 발견했을 때.
 					{
-						Debug.Log("1");
 						if (slots[i].item.itemdata.itemName == _item.itemdata.itemName) // 해당 아이템을 찾아 개수를 추가한다.
 						{
-                            Debug.Log("2");
                             slots[i].SetSlotCount(_count);
 							return;
 						}
 					}
                     else if (slots[i].item == null) 
                     {
-                        Debug.Log("3");
                         slots[i].AddItem(_item, _count);
                         return;
                     }

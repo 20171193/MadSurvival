@@ -27,17 +27,25 @@ namespace jungmin
 			//OnToolTip += BackPackController.instance.TryOpenToolTip;
 		}
 		public void AddItem(Item _item, int itemCount = 1) //슬롯 상의 아이템 UI 업데이트
-		{
-			item = _item;
-			this.itemCount += itemCount;
+		{ 
+			if (item != null && _item.itemdata.itemName != this.item.itemdata.itemName)
+			{ //전에 있던 아이템과 바꾸려는 아이템이 다른 아이템인 경우.
+                this.item = _item;
+                this.itemCount = itemCount;
+			}
+			else
+			{
+                this.item = _item;
+                this.itemCount += itemCount;
+			}
 
 			itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 			{
-				Debug.Log("123");
+
 				go_CountImage.SetActive(true);
-                Debug.Log("zzz");
+
                 text_Count.text = this.itemCount.ToString();
 			}
 			else
@@ -51,7 +59,6 @@ namespace jungmin
 		public void SetSlotCount(int _count)
 		{
 			itemCount += _count;
-			Debug.Log($"{itemCount}");
 			text_Count.text = itemCount.ToString();
 
 			if (itemCount <= 0)
@@ -110,21 +117,15 @@ namespace jungmin
 		}
 		public void OnDrop(PointerEventData eventData)
 		{
-			Debug.Log($"End {this}");
 
 			if (DragSlot.instance.dragSlot != null)
 			{
 				ChangeSlot();
 			}
-			else
-			{
-				Debug.Log("DragSlot.instance.dragSlot is null");
-			}
 		}
 
 		public void OnEndDrag(PointerEventData eventData)
 		{
-			Debug.Log($"Start {this}");
 
 			// 드래그중인 이미지 리턴
 			if (BackPackController.inventory_Activated)
@@ -140,12 +141,13 @@ namespace jungmin
 			int tempItemCount = itemCount;
 
 			AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.itemCount);
+
 			if (tempItem != null)
 			{
 				DragSlot.instance.dragSlot.AddItem(tempItem, tempItemCount);
 			}
 			else
-			{
+			{ //
 
 				DragSlot.instance.dragSlot.ClearSlot();
 			}
@@ -159,7 +161,6 @@ namespace jungmin
 				if (SelectedSlot_QuickSlot.instance.SelectedSlot != null) //이전에 셀렉된 슬롯이 있었다면,
 				{
 					SelectedSlot_QuickSlot.instance.SelectedSlot.SetColorBG(255);
-					Debug.Log("SelectSlot 교체 실행");
 					SelectedSlot_QuickSlot.instance.SelectedSlot = this;
 					SetColorBG(0);
 				}

@@ -32,7 +32,7 @@ public class ItemManager : Singleton<ItemManager>
                 foreach(Item item in items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
-                    Debug.Log($"{name}");
+                    //Debug.Log($"{name}");
                     craftingItemDic.Add(name, item);
 
                 }
