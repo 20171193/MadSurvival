@@ -98,7 +98,7 @@ namespace jungmin
 			color.a = alpha;
 			itemImage.color = color;
 		}
-		void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
+		public void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
 		{
 			Color color = GetComponent<Image>().color;
 			color.r = alpha;
@@ -168,7 +168,7 @@ namespace jungmin
 				DragSlot.instance.dragSlot.ClearSlot();
 			}
 		}
-		void SelectSlot_QuickSlot()
+		public void SelectSlot_QuickSlot()
 		{
 			//인벤토리가 꺼져있을 때만 반응하기에, 인벤토리와 무관.
 			// 퀵슬롯에서 슬롯 선택하기

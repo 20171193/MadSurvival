@@ -17,10 +17,14 @@ namespace jungmin
 		[SerializeField] Slot[] slots;
 		[SerializeField] GameObject Slot_parent;
 		[SerializeField] GameObject quickSlot_Base;
-		private void Start()
+		//[SerializeField] GameObject default_Slot;
+ 
+        private void Start()
 		{
-			slots = Slot_parent.GetComponentsInChildren<Slot>();
-		}
+            
+            slots = Slot_parent.GetComponentsInChildren<Slot>();
+            //SelectedSlot_QuickSlot.instance.SelectedSlot = default_Slot.GetComponent<Slot>();
+        }
 		void Execute()
 		{
 			//선택된 슬롯에 있는 아이템을 사용하기.
