@@ -232,8 +232,12 @@ namespace Jc
         {
             backPack.TryOpenInventory();
             isOnBackpack = BackPackController.inventory_Activated;
+
             interactButton.SetActive(!isOnBackpack);
             joystick.SetActive(!isOnBackpack);
+
+            if (!isOnBackpack)
+                ChangeButton();
         }
         public void GetItem(Item item)
         {
@@ -255,11 +259,12 @@ namespace Jc
 
         private void ChangeButton()
         {
-            if (curSlot == null) return;
+            if (curQuickSlot == null) return;
+            if (curQuickSlot.item == null) return;
 
             curImage?.SetActive(false);
 
-            switch (curSlot.item.itemdata.itemtype)
+            switch (curQuickSlot.item.itemdata.itemtype)
             {
                 case ItemData.ItemType.Used:
                     potionImage.SetActive(true);
