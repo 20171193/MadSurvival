@@ -17,7 +17,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         recipe_name = recipe.name;
-        Debug.Log("123");
+
         resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
         bg_image = GetComponent<Image>();
         item_image.sprite = resultItem.itemdata.itemImage;
