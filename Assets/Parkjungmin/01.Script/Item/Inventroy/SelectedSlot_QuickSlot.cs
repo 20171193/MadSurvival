@@ -20,11 +20,6 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
             player.OnSelectSlot(selectedSlot);
         }
     }
-    private void Awake()
-    {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-    }
-
 
     private void Start()
     {

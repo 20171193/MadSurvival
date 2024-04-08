@@ -59,7 +59,7 @@ public class ItemManager : Singleton<ItemManager>
             {
                 if (BackPackController.instance.slots[x].item.itemdata.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name)
                 {
-                    if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count)
+                    if (BackPackController.instance.slots[x].ItemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count)
                     {
 
                         IGD_1_Check = true;
@@ -99,7 +99,7 @@ public class ItemManager : Singleton<ItemManager>
                 {
                     if (BackPackController.instance.slots[x].item.itemdata.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name)
                     {
-                        if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count)
+                        if (BackPackController.instance.slots[x].ItemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count)
                         {
                             Debug.Log("재료 아이템이 충분합니다.");
                             IGD_2_Check = true;
@@ -138,7 +138,7 @@ public class ItemManager : Singleton<ItemManager>
                 {
                     if (BackPackController.instance.slots[x].item.itemdata.itemName == SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name)
                     {
-                        if (BackPackController.instance.slots[x].itemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count)
+                        if (BackPackController.instance.slots[x].ItemCount >= SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count)
                         {
 
                             ready_Craft = true;
