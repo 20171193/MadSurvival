@@ -23,6 +23,8 @@ namespace jungmin
             Armor
         }
 
+        public float durable = 100; //아이템의 내구도
+        [SerializeField] public float DecDurableValue;
         public EquipType equipType;
         public ATKType atkType; //어떤 타입에게 공격을 할지.
         public abstract void Equip(Player player);

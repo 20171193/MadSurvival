@@ -33,7 +33,7 @@ namespace jungmin
         private void Start()
         {
             instance = this;
-            reader = CSVReader.Read("CraftingItem/RecipeData");
+            reader = CSVReader.Read("RecipeData/RecipeCSV");
             ReadRecipeCSV();
             recipe_slots = Slot_parent.GetComponentsInChildren<RecipeSlot>();
             Page_index = 0;
