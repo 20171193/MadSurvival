@@ -28,8 +28,8 @@ public class ItemManager : Singleton<ItemManager>
         switch (type)
         {
             case ItemType.Crafting:
-                Item[] items = Resources.LoadAll<Item>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
-                foreach(Item item in items) // 05.Scriptable Object에서 검색해서 할당함
+                Item[] craft_items = Resources.LoadAll<Item>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
+                foreach(Item item in craft_items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
                     //Debug.Log($"{name}");
@@ -38,6 +38,14 @@ public class ItemManager : Singleton<ItemManager>
                 }
                 break;
             case ItemType.Ingredient:
+                Item[] igd_items = Resources.LoadAll<Item>("IngredientItem"); //아이템 딕셔너리에 데이터 할당
+                foreach (Item item in igd_items) // 05.Scriptable Object에서 검색해서 할당함
+                { // 정상적으로 작동하기 위해선, 
+                    string name = item.itemdata.itemName;
+                    Debug.Log($"{name}");
+                    ingredientItemDic.Add(name, item);
+
+                }
                 break;
         }
     }
