@@ -17,7 +17,7 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
         set
         {
             selectedSlot = value;
-            player.OnSelectSlot(selectedSlot);
+            player.OnSelectQuickSlot(selectedSlot);
         }
     }
 
