@@ -267,8 +267,9 @@ namespace Jc
         {
             Used_Item item = (Used_Item)curSlot.item;
             if (item == null || 
-                curSlot.itemCount < 1) return;
+                curSlot.ItemCount < 1) return;
 
+            curSlot.ItemCount--;
             item.Use(this);
         }
         public void Equip()
