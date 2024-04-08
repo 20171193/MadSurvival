@@ -123,7 +123,7 @@ namespace Jc
 
             totalTimer = StartCoroutine(TotalGameTimer());
         }
-        
+
         public void EnterNight()
         {
             // 태양 회전값 적용
@@ -160,6 +160,7 @@ namespace Jc
 
             OnEnterDay?.Invoke(day);
             obstacleSpawner.SpawnObstacle(day);
+            SetPlayerPosition();
         }
 
         IEnumerator TotalGameTimer()
@@ -193,7 +194,6 @@ namespace Jc
 
             fadeRoutine = StartCoroutine(isFadeIn ? FadeInRoutine() : FadeOutRoutine());
         }
-
         // 페이드인
         IEnumerator FadeInRoutine()
         {
@@ -230,6 +230,14 @@ namespace Jc
             fadeImage.color = fadeOutColor;
             Time.timeScale = 1f;
             yield return null;
+        }
+
+        private void SetPlayerPosition()
+        {
+            player.transform.position =
+                Manager.Navi.gameMap[Manager.Navi.cornerTL.z + (Manager.Navi.cornerBL.z - Manager.Navi.cornerTL.z) / 2].
+                groundList[Manager.Navi.cornerTL.x + (Manager.Navi.cornerTR.x - Manager.Navi.cornerTL.x) / 2].transform.position;
+            player.transform.Translate(Vector3.up * 1f);
         }
     }
 }

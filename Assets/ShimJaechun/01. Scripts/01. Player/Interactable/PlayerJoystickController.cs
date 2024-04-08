@@ -30,7 +30,6 @@ namespace Jc
         // 마우스 입력 시 조이스틱 위치 설정
         private void OnMouseClick(InputValue value)
         {
-            Debug.Log("MouseClick");
             if (owner.IsOnBackpack) return;
             if (Input.mousePosition.y < 120F) return;
 

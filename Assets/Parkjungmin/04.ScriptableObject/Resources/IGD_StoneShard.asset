@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: IGD_StoneShard
   m_EditorClassIdentifier: 
-  itemName: Stone
+  itemName: 'StoneShard '
   itemImage: {fileID: 21300000, guid: 540741cdeedaa3241811ae6a1262cd6d, type: 3}
   itemtype: 2
   recipe:

@@ -32,7 +32,7 @@ public class ItemManager : Singleton<ItemManager>
                 foreach(Item item in craft_items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
-                    //Debug.Log($"{name}");
+                    Debug.Log($"{name}");
                     craftingItemDic.Add(name, item);
 
                 }
@@ -172,15 +172,24 @@ public class ItemManager : Singleton<ItemManager>
                 BackPackController.instance.AcquireItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe_name]);
                 Debug.Log("크래프팅 생성");
 
-                BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
-                
+                if(craftingItemDic.ContainsKey(SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name))
+                    BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+                else
+                    BackPackController.instance.LoseItem(ingredientItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+
                 if (SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name != null)
                 {
-                    BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+                    if (craftingItemDic.ContainsKey(SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name))
+                        BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count);
+                    else
+                        BackPackController.instance.LoseItem(ingredientItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count);
                 }
                 if (SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name != null)
                 {
-                    BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count);
+                    if (craftingItemDic.ContainsKey(SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name))
+                        BackPackController.instance.LoseItem(craftingItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count);
+                    else
+                        BackPackController.instance.LoseItem(ingredientItemDic[SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name], SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count);
                 }
 
                 //아이템을 생성한 기능
