@@ -64,9 +64,6 @@ namespace Jc
         // 간략화
         private NavigationManager Navi => Manager.Navi;
 
-        // 그라운드 세팅이 끝난경우 Invoke
-        public UnityAction OnEndGroundSet;
-
         private void Start()
         {
             // 길찾기 매니저에 게임 맵을 할당
@@ -87,7 +84,7 @@ namespace Jc
 
             DrawBuildableGround();
             waterSpawner.Spawn();
-            OnEndGroundSet?.Invoke();
+            GameFlowController.Inst.ExitNight();
         }
 
 
@@ -137,6 +134,13 @@ namespace Jc
             {
                 for (int x = Navi.cornerTL.x; x <= Navi.cornerTR.x; x++)
                 {
+                    if(z == Navi.cornerTL.z + (Navi.cornerBL.z - Navi.cornerTL.z)/2 &&
+                        x == Navi.cornerTL.x + (Navi.cornerTR.x - Navi.cornerTL.x) / 2)
+                    {
+                        groundLists[z].groundList[x].type = GroundType.PlayerSpawn;
+                        groundLists[z].groundList[x].OriginType = GroundType.PlayerSpawn;
+                        continue;
+                    }
                     groundLists[z].groundList[x].type = GroundType.Buildable;
                     groundLists[z].groundList[x].OriginType = GroundType.Buildable;
                     groundLists[z].groundList[x].transform.GetChild(0).GetComponent<MeshRenderer>().SetMaterials(buildableMt);

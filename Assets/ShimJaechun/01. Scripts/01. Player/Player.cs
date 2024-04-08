@@ -34,6 +34,8 @@ namespace Jc
         private GameObject joystick;
         [SerializeField]
         private GameObject interactButton;
+        [SerializeField]
+        private GameObject backpackButton;
 
         [Space(3)]
         [Header("Linked Class")]
@@ -83,7 +85,9 @@ namespace Jc
         [Space(2)]
         [Header("등록된 슬롯")]
         [SerializeField]
-        private Slot curSlot;
+        private Slot curQuickSlot;
+        [SerializeField]
+        private Slot curInventorySlot;
         [SerializeField]
         private Equip_Item curWeaponItem;
         [SerializeField]
@@ -136,9 +140,12 @@ namespace Jc
         public void OnClickInteractButton()
         {
             // 공격
-            if (curSlot == null || curSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
+            // 퀵슬롯에 아이템이 없거나 공격무기를 들고있는 경우
+            if (curQuickSlot == null || curQuickSlot.item == null ||
+                curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
             {
-                if (isAttackCoolTime) return;
+                if (isAttackCoolTime) 
+                    return;
 
                 anim.SetTrigger("OnAttack");
 
@@ -151,7 +158,7 @@ namespace Jc
                 return;
             }
             // 사용
-            if (curSlot != null && curSlot.item.itemdata.itemtype == ItemData.ItemType.Used)
+            if (curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Used)
             {
                 Use();
                 return;
@@ -174,6 +181,14 @@ namespace Jc
         {
             stat.StartTimer(false, CoreStatType.Hunger, 1f);
             stat.StartTimer(false, CoreStatType.Thirst, 1f);
+        }
+
+        public void OnEnableMode(bool isEnable)
+        {
+            GetComponent<PlayerInput>().enabled = isEnable;
+            joystick.SetActive(isEnable);
+            interactButton.SetActive(isEnable);
+            backpackButton.SetActive(isEnable);
         }
         #endregion
 
@@ -228,29 +243,39 @@ namespace Jc
         {
             backPack.TryOpenInventory();
             isOnBackpack = BackPackController.inventory_Activated;
+
             interactButton.SetActive(!isOnBackpack);
             joystick.SetActive(!isOnBackpack);
+
+            if (!isOnBackpack)
+                ChangeButton();
         }
         public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
         }
-        public void OnSelectSlot(Slot slot)
+        public void OnSelectQuickSlot(Slot slot)
         {
             // 기존 무기해제
             UnEquip(Equip_Item.EquipType.Weapon);
 
-            curSlot = slot;
+            curQuickSlot = slot;
 
             ChangeButton();
         }
+        public void OnSelectInventorySlot(Slot slot)
+        {
+            curInventorySlot = slot;
+        }
+
         private void ChangeButton()
         {
-            if (curSlot == null) return;
+            if (curQuickSlot == null) return;
+            if (curQuickSlot.item == null) return;
 
             curImage?.SetActive(false);
 
-            switch (curSlot.item.itemdata.itemtype)
+            switch (curQuickSlot.item.itemdata.itemtype)
             {
                 case ItemData.ItemType.Used:
                     potionImage.SetActive(true);
@@ -265,6 +290,7 @@ namespace Jc
 
         public void Use()
         {
+            Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
             Used_Item item = (Used_Item)curSlot.item;
             if (item == null || 
                 curSlot.ItemCount < 1) return;
@@ -274,6 +300,8 @@ namespace Jc
         }
         public void Equip()
         {
+            Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
+
             Equip_Item item = (Equip_Item)curSlot.item;
             if (item == null) return;
 

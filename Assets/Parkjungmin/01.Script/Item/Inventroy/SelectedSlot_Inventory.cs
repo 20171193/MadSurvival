@@ -17,7 +17,7 @@ namespace jungmin
             set 
             { 
                 selectedSlot = value;
-                player.OnSelectSlot(selectedSlot);
+                player.OnSelectInventorySlot(selectedSlot);
             } 
         }
 

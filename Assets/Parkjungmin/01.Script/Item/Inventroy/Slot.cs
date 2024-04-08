@@ -54,8 +54,10 @@ namespace jungmin
                 this.item = _item;
                 this.ItemCount += itemCount;
 			}
-
-			itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
+			if(_item.itemdata.itemtype == ItemData.ItemType.Ingredient)
+				itemImage.sprite = ItemManager.Instance.ingredientItemDic[_item.itemdata.itemName].itemdata.itemImage;
+            else
+				itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 			{
@@ -98,7 +100,7 @@ namespace jungmin
 			color.a = alpha;
 			itemImage.color = color;
 		}
-		void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
+		public void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
 		{
 			Color color = GetComponent<Image>().color;
 			color.r = alpha;
@@ -168,7 +170,7 @@ namespace jungmin
 				DragSlot.instance.dragSlot.ClearSlot();
 			}
 		}
-		void SelectSlot_QuickSlot()
+		public void SelectSlot_QuickSlot()
 		{
 			//인벤토리가 꺼져있을 때만 반응하기에, 인벤토리와 무관.
 			// 퀵슬롯에서 슬롯 선택하기
