@@ -24,7 +24,6 @@ namespace Jc
             else
                 owner.OnTakeDamage();
         }
-
         public void GetItem(Item item)
         {
             owner.GetItem(item);

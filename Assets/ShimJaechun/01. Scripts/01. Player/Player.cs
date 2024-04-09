@@ -13,10 +13,6 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
-        private GameObject[] models;
-        private int curModel = 0;
-
-        [SerializeField]
         private BackPackController backPack;
 
         [SerializeField]
@@ -29,6 +25,16 @@ namespace Jc
         private Material invinsibleMT;
         [SerializeField]
         private Material originMT;
+
+        [SerializeField]
+        private GameObject buildSocket;
+        [SerializeField]
+        private MeshRenderer buildSocketRenderer;
+
+        [SerializeField]
+        private Material enableSocketMT;
+        [SerializeField]
+        private Material disableSocketMT;
 
         [SerializeField]
         private GameObject joystick;
@@ -79,7 +85,14 @@ namespace Jc
         [SerializeField]
         private bool isOnBackpack = false;
         public bool IsOnBackpack { get { return isOnBackpack; } }
-        
+
+        [SerializeField]
+        private bool isBuildMode = false;
+        [SerializeField]
+        private bool isBuildable = false;
+
+        private Vector3 buildablePos = Vector3.zero;
+
         [Space(3)]
         [Header("플레이어 아이템")]
         [Space(2)]
@@ -122,6 +135,11 @@ namespace Jc
         private void Update()
         {
             Move();
+
+            if (isBuildMode)
+            {
+                CheckBuildable();
+            }
         }
         private void Move()
         {
@@ -146,7 +164,7 @@ namespace Jc
             if (curQuickSlot == null || curQuickSlot.item == null ||
                 curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
             {
-                if (isAttackCoolTime) 
+                if (isAttackCoolTime)
                     return;
 
                 anim.SetTrigger("OnAttack");
@@ -160,7 +178,7 @@ namespace Jc
                 return;
             }
             // 빌드 아이템
-            if( curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Structure)
+            if (curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Structure)
             {
                 Build();
                 return;
@@ -191,7 +209,6 @@ namespace Jc
             stat.StartTimer(false, CoreStatType.Hunger, 1f);
             stat.StartTimer(false, CoreStatType.Thirst, 1f);
         }
-
         public void OnEnableMode(bool isEnable)
         {
             GetComponent<PlayerInput>().enabled = isEnable;
@@ -281,6 +298,7 @@ namespace Jc
             if (curQuickSlot == null) return;
             if (curQuickSlot.item == null) return;
 
+            isBuildMode = false;
             curImage?.SetActive(false);
 
             switch (curQuickSlot.item.itemdata.itemtype)
@@ -296,6 +314,7 @@ namespace Jc
                 case ItemData.ItemType.Structure:
                     buildImage.SetActive(true);
                     curImage = buildImage;
+                    isBuildMode = true;
                     break;
             }
         }
@@ -303,13 +322,13 @@ namespace Jc
         {
             Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
             Used_Item item = (Used_Item)curSlot.item;
-            if (item == null || 
+            if (item == null ||
                 curSlot.ItemCount < 1) return;
 
             curSlot.ItemCount--;
             item.Use(this);
 
-            if((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
+            if ((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
             {
                 curImage?.SetActive(false);
             }
@@ -356,8 +375,59 @@ namespace Jc
             curWeaponItem = null;
         }
         public void Build()
-        { 
+        {
+            if(isBuildable)
+            {
+                Build_Base build = (Build_Base)curQuickSlot.item;
+                build.Build();
+                build.transform.position = buildablePos;
+            }
+            else
+            {
+                return;
+            }
+        }
+        private void CheckBuildable()
+        {
+            if (!buildSocket.activeSelf)
+                buildSocket.SetActive(true);
 
+            float yRot = transform.eulerAngles.y;
+            Debug.Log(yRot);
+            int nz = currentGround.Pos.z;
+            int nx = currentGround.Pos.x;
+            if ((yRot > 315f && yRot <=360f) || (yRot > 0f && yRot <= 45f)) // +z 앞
+                nz++;
+            else if (yRot > 45f && yRot <= 135f) // +x 우
+                nx++;
+            else if (yRot > 135f && yRot <= 225f)    // -z 뒤 
+                nz--;
+            else if (yRot > 225f && yRot <= 315f) // -x 좌
+                nx--;
+
+            if (nz < 0 || nz > 59 || nx < 0 || nx > 59)
+            {
+                isBuildable = false;
+                buildablePos = Vector3.zero;
+                buildSocketRenderer.material = disableSocketMT;
+                return;
+            }
+
+            buildSocket.transform.position = Manager.Navi.gameMap[nz].groundList[nx].transform.position;
+            buildSocket.transform.position += Vector3.up;
+
+            if (Manager.Navi.gameMap[nz].groundList[nx].type == GroundType.Buildable)
+            {
+                isBuildable = true;
+                buildSocketRenderer.material = enableSocketMT;
+                buildablePos = Manager.Navi.gameMap[nz].groundList[nx].transform.position;
+            }
+            else
+            {
+                isBuildable = false;
+                buildablePos = Vector3.zero;
+                buildSocketRenderer.material = disableSocketMT;
+            }
         }
 
         // 무기 모델적용
@@ -365,7 +435,7 @@ namespace Jc
         {
             curWeaponModel?.SetActive(false);
 
-            switch(atkType)
+            switch (atkType)
             {
                 case Equip_Item.ATKType.Monster:
                     curWeaponModel = monsterWeaponModel;

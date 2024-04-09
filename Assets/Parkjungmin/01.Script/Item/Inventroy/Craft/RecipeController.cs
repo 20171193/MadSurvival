@@ -53,7 +53,8 @@ namespace jungmin
 
         public void NextRecipePage()
         {
-            if(Page_index < Max_index)
+            Debug.Log("Next");
+            if (Page_index < Max_index)
             {
                 Debug.Log($"{Page_index}");
                 Page_index++;
