@@ -28,6 +28,6 @@ namespace jungmin
 
 		[Header("아이템 딕셔너리는 Resource 폴더에서 스크럽터블 오브젝트를 읽고")]
 		[Header("아래의 Recipe 목록은 CSV 파일에서 읽음")]
-		[SerializeField] public Recipe recipe; //재료의 레시피
+		public Recipe recipe; //재료의 레시피
 	}
 }

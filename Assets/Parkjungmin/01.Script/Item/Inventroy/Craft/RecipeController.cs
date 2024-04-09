@@ -23,10 +23,13 @@ namespace jungmin
         [SerializeField] GameObject Slot_parent;
         public TMP_Text Recipe_Info;
         public int Page_index;
+        public int Max_index;
+        public int Min_index;
         /*
          *0~5 1페이지.
-         *6~10 2페이지.
-         * 
+         *6~11 2페이지.
+         *12~17 3페이지
+         *18~23 4페이지
          * 
          * 
          */
@@ -44,14 +47,13 @@ namespace jungmin
         { //레시피 리스트 -> 레시피 슬롯
             for(int x = 0; x < 6; x++)
             {
-                recipe_slots[x].recipe = recipeList[x + (5 * Page_index)];
+               recipe_slots[x].recipe = recipeList[x + (6 * Page_index)];
             }
         }
 
         public void NextRecipePage()
         {
-            Debug.Log("NEXT");
-            if(Page_index <= 0)
+            if(Page_index < Max_index)
             {
                 Debug.Log($"{Page_index}");
                 Page_index++;
@@ -65,7 +67,7 @@ namespace jungmin
         public void PastRecipePage()
         {
             Debug.Log("Past");
-            if (Page_index >= 0)
+            if (Page_index > Min_index)
             {
                 Debug.Log($"{Page_index}");
                 Page_index--;
@@ -119,7 +121,7 @@ namespace jungmin
             {
                 StringBuilder text = new StringBuilder($"{SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Name}*{SelectedSlot_Recipe.instance.slot.recipe.IGD_1.IGD_Count}");
                 if (SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name != null)
-                { //SelectedSlot_Recipe.instance.slot.recipe.IGD_2 == 연산자 오버로딩 재복습 필요.
+                {
 
                     text.Append($"+{SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Name}*{SelectedSlot_Recipe.instance.slot.recipe.IGD_2.IGD_Count}");
                 }
