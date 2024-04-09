@@ -32,7 +32,7 @@ public class ItemManager : Singleton<ItemManager>
                 foreach(Item item in craft_items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
-                    //Debug.Log($"Craft: {name}");
+                    Debug.Log($"Craft: {name}");
                     craftingItemDic.Add(name, item);
 
                 }
@@ -42,7 +42,7 @@ public class ItemManager : Singleton<ItemManager>
                 foreach (Item item in igd_items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
-                    //Debug.Log($"IGD : {name}");
+                    Debug.Log($"IGD : {name}");
                     ingredientItemDic.Add(name, item);
 
                 }
