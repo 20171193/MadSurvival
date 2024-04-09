@@ -8,7 +8,6 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
-
 namespace Jc
 {
     public class Monster : PooledObject, ITileable, IDamageable, IKnockbackable
@@ -25,6 +24,12 @@ namespace Jc
         [SerializeField]
         private Animator anim;
         public Animator Anim { get { return anim; } }
+
+        [SerializeField]
+        private ExplosionInvoker explosionInvoker;
+
+        [SerializeField]
+        private DropItem meat;
 
         [Space(3)]
         [Header("Linked Class")]
@@ -72,9 +77,6 @@ namespace Jc
             Navi.OnChangePlayerGround += OnChangeTarget;
             // 게임맵 할당
             detecter.PlayerGround = Navi.OnPlayerGround;
-
-            // 상태변경
-            fsm.ChangeState("Idle");
         }
 
         private void Update()
@@ -135,6 +137,17 @@ namespace Jc
             agent.isStopped = false;
         }
         #endregion
+
+        public void DropItem()
+        {
+            int rand = Random.Range(0, 10);
+            if (rand <= 5) return;
+
+            Manager.Pool.GetPool(meat, transform.position + Vector3.up, Quaternion.identity);
+
+            ExplosionInvoker invoker = (ExplosionInvoker)Manager.Pool.GetPool(explosionInvoker, transform.position, Quaternion.identity);
+            invoker.OnExplosion();
+        }
 
         #region 인터페이스 오버라이드
         // 몬스터가 타일에 진입한 경우 세팅

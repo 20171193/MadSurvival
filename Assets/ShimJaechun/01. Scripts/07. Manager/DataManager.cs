@@ -118,6 +118,7 @@ public class DataManager : Singleton<DataManager>
             Manager.Pool.CreatePool(animal, animal.Size, 15);
         }
     }
+
     public void LoadData(DataType type)
     {
         switch (type)
@@ -295,7 +296,7 @@ public class DataManager : Singleton<DataManager>
     {
         for (int i = 0; i < csvData.Count; i++)
         {
-            if (!daysObstacleDataDic.ContainsKey((int)csvData[i]["Day"]))
+            if (!daysObstacleDataDic.ContainsKey((int)csvData[i]["day"]))
             {
                 DaysObstacleData inst = ScriptableObject.CreateInstance<DaysObstacleData>();
 
@@ -305,7 +306,7 @@ public class DataManager : Singleton<DataManager>
                     inst.stones[j] = (int)csvData[i][$"Stone_{j}"];
                 }
 
-                daysObstacleDataDic.Add((int)csvData[i]["Day"], inst);
+                daysObstacleDataDic.Add((int)csvData[i]["day"], inst);
             }
         }
 
@@ -327,6 +328,8 @@ public class DataManager : Singleton<DataManager>
             data.detectRange = (float)dic["detectRange"];
             data.wonderRange = (float)dic["wonderRange"];
             data.atkRange = (float)dic["atkRange"];
+            data.dropMeatCount = (int)dic["dropMeat"];
+            data.dropNiceMeatCount = (int)dic["dropNiceMeat"];
             animalDataDic.Add(name, data);
         }
     }

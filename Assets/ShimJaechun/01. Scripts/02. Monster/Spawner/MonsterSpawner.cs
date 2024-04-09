@@ -63,6 +63,7 @@ namespace Jc
 
             if (!Manager.Data.daysWaveDataDic.ContainsKey(day))
                 return;
+
             waveDataDic = Manager.Data.daysWaveDataDic[day];
             spawnRoutine = StartCoroutine(SpawnRoutine());
         }
@@ -95,6 +96,7 @@ namespace Jc
                     }
                     Monster spawned = (Monster)Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
                     spawned.OnMonsterDie += MonsterDie;
+                    spawned.FSM.ChangeState("Idle");
                     spawnCount++;
                 }
             }

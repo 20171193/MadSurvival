@@ -102,6 +102,8 @@ namespace Jc
         }
         public override void Enter()
         {
+            // 아이템 드랍
+            baseOwner.DropItem();
             baseOwner.Anim.SetBool("IsDie", true);
             baseOwner.Agent.isStopped = true;
             dieRoutine = baseOwner.StartCoroutine(Extension.DelayRoutine(1.5f, () => baseOwner.FSM.ChangeState("ReturnPool")));
