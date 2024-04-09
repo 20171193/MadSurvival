@@ -17,13 +17,8 @@ namespace jungmin
             set 
             { 
                 selectedSlot = value;
-                player.OnSelectSlot(selectedSlot);
+                player.OnSelectInventorySlot(selectedSlot);
             } 
-        }
-
-        private void Awake()
-        {
-            player = GameObject.FindWithTag("Player").GetComponent<Player>();
         }
 
         private void Start()

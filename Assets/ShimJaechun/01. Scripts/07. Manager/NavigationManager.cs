@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEditor.Experimental.GraphView;
 namespace Jc
 {
     public enum DirectionType

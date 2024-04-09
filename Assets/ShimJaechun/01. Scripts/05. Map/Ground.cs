@@ -32,7 +32,8 @@ namespace Jc
         Buildable,
         Object,
         Wall,
-        Water
+        Water,
+        PlayerSpawn
     }
     [Serializable]
     public struct GroundPos

@@ -15,6 +15,22 @@ namespace jungmin
 		Vector3 originPos;
 		public Item item;
 		public int itemCount;
+		public int ItemCount 
+		{ 
+			get { return itemCount; }
+			set 
+			{ 
+				itemCount = value;
+
+                text_Count.text = itemCount.ToString();
+
+                if (itemCount <= 0)
+                {
+                    ClearSlot();
+                }
+            } 
+		}
+
 		[SerializeField] public Image itemImage; //슬롯 위에 보여질 아이템 이미지.
 		[SerializeField] TMP_Text text_Count;
 		[SerializeField] GameObject go_CountImage;
@@ -31,22 +47,24 @@ namespace jungmin
 			if (item != null && _item.itemdata.itemName != this.item.itemdata.itemName)
 			{ //전에 있던 아이템과 바꾸려는 아이템이 다른 아이템인 경우.
                 this.item = _item;
-                this.itemCount = itemCount;
+                this.ItemCount = itemCount;
 			}
 			else
-			{
+			{				
                 this.item = _item;
-                this.itemCount += itemCount;
+                this.ItemCount += itemCount;
 			}
-
-			itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
+			if(_item.itemdata.itemtype == ItemData.ItemType.Ingredient)
+				itemImage.sprite = ItemManager.Instance.ingredientItemDic[_item.itemdata.itemName].itemdata.itemImage;
+            else
+				itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
 			{
 
 				go_CountImage.SetActive(true);
 
-                text_Count.text = this.itemCount.ToString();
+                text_Count.text = this.ItemCount.ToString();
 			}
 			else
 			{
@@ -58,10 +76,10 @@ namespace jungmin
 		}
 		public void SetSlotCount(int _count)
 		{
-			itemCount += _count;
-			text_Count.text = itemCount.ToString();
+            ItemCount += _count;
+			text_Count.text = ItemCount.ToString();
 
-			if (itemCount <= 0)
+			if (ItemCount <= 0)
 			{
 				ClearSlot();
 			}
@@ -69,7 +87,7 @@ namespace jungmin
 		public void ClearSlot()
 		{
 			item = null;
-			itemCount = 0;
+            //ItemCount = 0;
 			itemImage.sprite = GetComponent<Image>().sprite; //슬롯의 기본 스프라이트로 변경.
 			SetColor(0);
 			text_Count.text = "0";
@@ -82,7 +100,7 @@ namespace jungmin
 			color.a = alpha;
 			itemImage.color = color;
 		}
-		void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
+		public void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
 		{
 			Color color = GetComponent<Image>().color;
 			color.r = alpha;
@@ -138,9 +156,9 @@ namespace jungmin
 		void ChangeSlot()
 		{
 			Item tempItem = item;
-			int tempItemCount = itemCount;
+			int tempItemCount = ItemCount;
 
-			AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.itemCount);
+			AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
 
 			if (tempItem != null)
 			{
@@ -152,7 +170,7 @@ namespace jungmin
 				DragSlot.instance.dragSlot.ClearSlot();
 			}
 		}
-		void SelectSlot_QuickSlot()
+		public void SelectSlot_QuickSlot()
 		{
 			//인벤토리가 꺼져있을 때만 반응하기에, 인벤토리와 무관.
 			// 퀵슬롯에서 슬롯 선택하기

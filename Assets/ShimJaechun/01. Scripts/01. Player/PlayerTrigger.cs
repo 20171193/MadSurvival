@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using jungmin;
 namespace Jc
 {
     // 충돌관련 이벤트처리
@@ -23,6 +23,11 @@ namespace Jc
                 owner.OnDie();
             else
                 owner.OnTakeDamage();
+        }
+
+        public void GetItem(Item item)
+        {
+            owner.GetItem(item);
         }
     }
 }
