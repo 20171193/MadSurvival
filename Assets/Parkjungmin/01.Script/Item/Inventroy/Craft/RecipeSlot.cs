@@ -17,15 +17,11 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     void OnEnable()
     {
         recipe_name = recipe.name;
-        //Debug.Log($"Find : {recipe.name}");
-        if(ItemManager.Instance.craftingItemDic[recipe.name] != null)
-        {
-            resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
-        }
-        else
-        {
-            //Debug.Log($"{recipe.name} is not in craftingItemDic");
-        }
+        Debug.Log($"Find : {recipe.name}");
+
+        resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
+
+
         bg_image = GetComponent<Image>();
         item_image.sprite = resultItem.itemdata.itemImage;
     }
