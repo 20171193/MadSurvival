@@ -80,6 +80,8 @@ namespace Jc
             detectRange = data.detectRange;
             wonderRange = data.wonderRange;
             atkRange = data.atkRange;
+            owner.DropMeatCount = data.dropMeatCount;
+            owner.DropNiceMeatCount = data.dropNiceMeatCount;
         }
     }
 }

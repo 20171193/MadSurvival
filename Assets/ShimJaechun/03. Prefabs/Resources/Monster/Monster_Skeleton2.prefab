@@ -108,6 +108,8 @@ MonoBehaviour:
   rigid: {fileID: 1996272332345754056}
   agent: {fileID: 3724574002126460141}
   anim: {fileID: 307023201807092671}
+  explosionInvoker: {fileID: 7579299635910308337, guid: 504e6e517fb46094fa09da03d2fd1126, type: 3}
+  meat: {fileID: 5530291736414995612, guid: a9feff26d4761b44ab80f414f9ed5e4a, type: 3}
   fsm: {fileID: 3982216081018918420}
   stat: {fileID: 0}
   detecter: {fileID: 485027754624369353}

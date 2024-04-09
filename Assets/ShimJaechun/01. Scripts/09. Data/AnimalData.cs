@@ -14,5 +14,7 @@ namespace Jc
         public float detectRange;   // 탐지범위
         public float wonderRange;   // 배회범위
         public float atkRange;      // 공격범위
+        public int dropMeatCount;       // 드랍할 고기 카운트
+        public int dropNiceMeatCount;   // 드랍할 맛있는 고기 카운트
     }
 }

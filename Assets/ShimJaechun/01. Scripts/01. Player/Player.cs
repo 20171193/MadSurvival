@@ -267,7 +267,6 @@ namespace Jc
         {
             curInventorySlot = slot;
         }
-
         private void ChangeButton()
         {
             if (curQuickSlot == null) return;
@@ -287,7 +286,6 @@ namespace Jc
                     break;
             }
         }
-
         public void Use()
         {
             Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
@@ -297,6 +295,11 @@ namespace Jc
 
             curSlot.ItemCount--;
             item.Use(this);
+
+            if((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
+            {
+                curImage?.SetActive(false);
+            }
         }
         public void Equip()
         {

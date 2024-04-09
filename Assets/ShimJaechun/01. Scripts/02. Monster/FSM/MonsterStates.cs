@@ -136,6 +136,7 @@ namespace Jc
 
         public override void Enter()
         {
+            owner.DropItem();
             owner.Agent.isStopped = true;
             owner.Agent.enabled = false;
             owner.GetComponent<CapsuleCollider>().enabled = false;
