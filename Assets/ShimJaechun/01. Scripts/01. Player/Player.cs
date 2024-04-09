@@ -98,6 +98,8 @@ namespace Jc
         private GameObject weaponImage;
         [SerializeField]
         private GameObject potionImage;
+        [SerializeField]
+        private GameObject buildImage;
         private GameObject curImage;
 
         [Header("캐릭터 무기 모델")]
@@ -157,7 +159,14 @@ namespace Jc
 
                 return;
             }
-            // 사용
+            // 빌드 아이템
+            if( curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Structure)
+            {
+                Build();
+                return;
+            }
+
+            // 사용 아이템
             if (curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Used)
             {
                 Use();
@@ -284,6 +293,10 @@ namespace Jc
                     weaponImage.SetActive(true);
                     curImage = weaponImage;
                     break;
+                case ItemData.ItemType.Structure:
+                    buildImage.SetActive(true);
+                    curImage = buildImage;
+                    break;
             }
         }
         public void Use()
@@ -342,7 +355,10 @@ namespace Jc
             }
             curWeaponItem = null;
         }
-        
+        public void Build()
+        { 
+
+        }
 
         // 무기 모델적용
         private void SetEquipModel(Equip_Item.ATKType atkType)

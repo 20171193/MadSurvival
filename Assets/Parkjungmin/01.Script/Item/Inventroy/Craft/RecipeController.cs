@@ -95,6 +95,12 @@ namespace jungmin
                     recipe.IGD_1.IGD_Name = (string)reader[x]["IGD_1"];
                     recipe.IGD_1.IGD_Count = (int)reader[x]["IGD_1_Count"];
                 }
+                else
+                {
+                    return;
+                }
+
+
                 if (reader[x]["IGD_2"] != null && !string.IsNullOrEmpty((string)reader[x]["IGD_2"]))
                 {
                     //2¹ø Àç·á
