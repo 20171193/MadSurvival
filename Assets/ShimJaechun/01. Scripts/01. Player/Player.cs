@@ -34,6 +34,8 @@ namespace Jc
         private GameObject joystick;
         [SerializeField]
         private GameObject interactButton;
+        [SerializeField]
+        private GameObject backpackButton;
 
         [Space(3)]
         [Header("Linked Class")]
@@ -142,7 +144,8 @@ namespace Jc
             if (curQuickSlot == null || curQuickSlot.item == null ||
                 curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
             {
-                if (isAttackCoolTime) return;
+                if (isAttackCoolTime) 
+                    return;
 
                 anim.SetTrigger("OnAttack");
 
@@ -178,6 +181,14 @@ namespace Jc
         {
             stat.StartTimer(false, CoreStatType.Hunger, 1f);
             stat.StartTimer(false, CoreStatType.Thirst, 1f);
+        }
+
+        public void OnEnableMode(bool isEnable)
+        {
+            GetComponent<PlayerInput>().enabled = isEnable;
+            joystick.SetActive(isEnable);
+            interactButton.SetActive(isEnable);
+            backpackButton.SetActive(isEnable);
         }
         #endregion
 
