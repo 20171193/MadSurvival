@@ -324,6 +324,11 @@ MonoBehaviour:
   anim: {fileID: 6746969002363685666}
   detectCol: {fileID: 4596765293348745314}
   isNeutral: 0
+  explosionInvoker: {fileID: 7579299635910308337, guid: 504e6e517fb46094fa09da03d2fd1126, type: 3}
+  meat: {fileID: 5530291736414995612, guid: a9feff26d4761b44ab80f414f9ed5e4a, type: 3}
+  niceMeat: {fileID: 5530291736414995612, guid: 6b8ae0c505d7fe94eb3cba956e4bebcb, type: 3}
+  dropMeatCount: 0
+  dropNiceMeatCount: 0
   fsm: {fileID: 673255210612796071}
   stat: {fileID: 5456785248780157187}
   detecter: {fileID: 3517209262205678379}

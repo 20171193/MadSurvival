@@ -6,6 +6,8 @@ namespace Jc
 {
     public class ItemSpawner : MonoBehaviour
     {
+        // 드랍아이템 풀링 전용 
+
         [SerializeField]
         private ExplosionInvoker explosionInvoker;
 
