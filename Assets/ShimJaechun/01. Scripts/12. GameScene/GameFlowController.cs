@@ -32,6 +32,8 @@ namespace Jc
         [SerializeField]
         private ObstacleSpawner obstacleSpawner;
         // 4. Animal
+        [SerializeField]
+        private AnimalSpawner animalSpawner;
         // 5. Monster
         [SerializeField]
         private MonsterSpawner monsterSpawner;
@@ -42,6 +44,8 @@ namespace Jc
         [Header("낮 / 밤 변경 시스템")]
         [SerializeField]
         private DayAndNight dayController;
+        [SerializeField]
+        private float fogSpeed;
         private Vector3 dayRot = new Vector3(70f, -30f, 0);     // 정오의 태양 회전값
         private Vector3 nightRot = new Vector3(270f, -30f, 0);  // 자정의 태양 회전값
         private float nightFogDensity = 0.18f;
@@ -108,6 +112,7 @@ namespace Jc
 
         private Coroutine totalTimer;
         private Coroutine fadeRoutine;
+        private Coroutine enterFogRoutine;
 
         private bool isNight;
         public bool IsNight { get { return isNight; }  set { isNight = value; } }
@@ -126,6 +131,9 @@ namespace Jc
 
         public void EnterNight()
         {
+            // 동물 리턴
+            animalSpawner.ReturnAllAnimal();
+
             // 태양 회전값 적용
             dayController.transform.eulerAngles = nightRot;
             // 안개 밀도 적용
@@ -160,12 +168,15 @@ namespace Jc
 
             OnEnterDay?.Invoke(day);
             obstacleSpawner.SpawnObstacle(day);
+            animalSpawner.OnSpawn(day);
             SetPlayerPosition();
         }
 
         IEnumerator TotalGameTimer()
         {
             float dayRate = 0f;
+            bool isEnterFog = false;
+
             while(true)
             {
                 TotalTime += Time.deltaTime;
@@ -175,14 +186,30 @@ namespace Jc
                     dayRate = DayTime / DayChangeTime;
 
                     dayController.transform.eulerAngles = Vector3.Lerp(dayRot, nightRot, dayRate);      // 태양 회전 값 적용
-                    RenderSettings.fogDensity = Mathf.Lerp(dayFogDensity, nightFogDensity, dayRate);    // 안개 밀도 값 적용
+                    if (dayRate >= 0.9f && !isEnterFog)    // 안개 밀도 적용
+                    {
+                        enterFogRoutine = StartCoroutine(EnterFogRoutine());
+                        isEnterFog = true;
+                    }
                     playerSpotLight.intensity = Mathf.Lerp(0, 10f, dayRate-0.05f);        // 플레이어 스포트라이트 밝기 적용
+
                     if(DayTime >= dayChangeTime)
                     {
                         EnterNight();
-                        dayTime = 0f;
+                        DayTime = 0f;
+                        isEnterFog = false;
                     }
                 }
+                yield return null;
+            }
+        }
+        IEnumerator EnterFogRoutine()
+        {
+            float rate = 0f;
+            while(rate < 1f)
+            {
+                rate += Time.deltaTime * fogSpeed;
+                RenderSettings.fogDensity = Mathf.Lerp(dayFogDensity, nightFogDensity, rate);
                 yield return null;
             }
         }

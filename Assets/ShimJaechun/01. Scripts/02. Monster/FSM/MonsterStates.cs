@@ -28,6 +28,7 @@ namespace Jc
 
         public override void Enter()
         {
+            owner.Agent.enabled = true;
             // 일정시간 딜레이 이후 상태전환 -> 트래킹
             delayRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.1f, () => owner.FSM.ChangeState("Tracking")));
         }
@@ -137,6 +138,7 @@ namespace Jc
         public override void Enter()
         {
             owner.Agent.isStopped = true;
+            owner.Agent.enabled = false;
             //owner.Anim.SetTrigger("OnDie");
             dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }

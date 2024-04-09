@@ -1,2 +1,3 @@
-animalName,hp,speed,atk,ats,detectRange
-Pig,100.0,1.5,10.0,0.1,5.0
+animalName,hp,speed,atk,ats,amr,detectRange,wonderRange,atkRange
+Sparrow,30.0,1.5,0.0,0.0,1.0,5.0,10.0,0.0
+Colobus,50.0,3.0,10.0,1.5,2.0,5.0,10.0,1.5

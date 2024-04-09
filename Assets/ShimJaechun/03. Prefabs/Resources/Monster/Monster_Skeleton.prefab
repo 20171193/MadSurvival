@@ -46,7 +46,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6047920945414391479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.2
   m_Speed: 1.5
@@ -131,8 +131,6 @@ MonoBehaviour:
   stat: {fileID: -3050584068223075259}
   detecter: {fileID: 485027754624369353}
   monsterName: Skeleton
-  knockBackPower: 5
-  knockBackTime: 0.1
   currentState: 
 --- !u!114 &3982216081018918420
 MonoBehaviour:

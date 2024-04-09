@@ -17,6 +17,8 @@ namespace Jc
 
         public void TakeDamage(float value)
         {
+            if (owner.FSM.FSM.CurState == "Die" || owner.FSM.FSM.CurState == "ReturnPool") return;
+
             // 데미지값 처리
             float damage = value - owner.Stat.AMR;
             if (damage <= 0) return;
@@ -35,6 +37,7 @@ namespace Jc
         }
         public void Knockback(float power, float time, Vector3 suspectPos)
         {
+            if (owner.FSM.FSM.CurState == "Die" || owner.FSM.FSM.CurState == "ReturnPool") return;
             knockbackRoutine = StartCoroutine(KnockBackRoutine(power, time, suspectPos));
         }
         IEnumerator KnockBackRoutine(float power, float time, Vector3 suspectPos)
