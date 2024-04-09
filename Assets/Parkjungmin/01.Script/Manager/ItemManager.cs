@@ -32,7 +32,7 @@ public class ItemManager : Singleton<ItemManager>
                 foreach(Item item in craft_items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
-                    //Debug.Log($"{name}");
+                    //Debug.Log($"Craft: {name}");
                     craftingItemDic.Add(name, item);
 
                 }
@@ -42,7 +42,7 @@ public class ItemManager : Singleton<ItemManager>
                 foreach (Item item in igd_items) // 05.Scriptable Object에서 검색해서 할당함
                 { // 정상적으로 작동하기 위해선, 
                     string name = item.itemdata.itemName;
-                    //Debug.Log($"{name}");
+                    //Debug.Log($"IGD : {name}");
                     ingredientItemDic.Add(name, item);
 
                 }
@@ -57,10 +57,8 @@ public class ItemManager : Singleton<ItemManager>
         for (int x = 0; x < BackPackController.instance.slots.Length; x++) // 백팩 슬롯의 갯수 만큼
         {
             
-            Debug.Log($"첫번째 재료 탐색");
             if(BackPackController.instance.slots[x].item == null)
             {
-                Debug.Log("이 슬롯엔 그 아이템이 없습니다.");
                 continue;
             }
             if (BackPackController.instance.slots[x].item != null)

@@ -25,10 +25,6 @@ namespace jungmin
             slots = Slot_parent.GetComponentsInChildren<Slot>();
             //SelectedSlot_QuickSlot.instance.SelectedSlot = default_Slot.GetComponent<Slot>();
         }
-		void Execute()
-		{
-			//선택된 슬롯에 있는 아이템을 사용하기.
-		}
 
 	}
 }
