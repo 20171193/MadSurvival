@@ -13,10 +13,6 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
-        private GameObject[] models;
-        private int curModel = 0;
-
-        [SerializeField]
         private BackPackController backPack;
 
         [SerializeField]
@@ -29,6 +25,13 @@ namespace Jc
         private Material invinsibleMT;
         [SerializeField]
         private Material originMT;
+
+        [SerializeField]
+        private GameObject buildSocket;
+        [SerializeField]
+        private Material enableSocketMT;
+        [SerializeField]
+        private Material disableSocketMT;
 
         [SerializeField]
         private GameObject joystick;
@@ -79,7 +82,12 @@ namespace Jc
         [SerializeField]
         private bool isOnBackpack = false;
         public bool IsOnBackpack { get { return isOnBackpack; } }
-        
+
+        [SerializeField]
+        private bool isBuildMode = false;
+        [SerializeField]
+        private bool isBuildable = false;
+
         [Space(3)]
         [Header("플레이어 아이템")]
         [Space(2)]
@@ -357,6 +365,9 @@ namespace Jc
         }
         public void Build()
         { 
+        }
+        private void CheckBuildable()
+        {
 
         }
 
