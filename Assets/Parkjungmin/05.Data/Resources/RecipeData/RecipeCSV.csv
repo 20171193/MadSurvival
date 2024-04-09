@@ -1,0 +1,15 @@
+id,result,IGD_1,IGD_1_Count,IGD_2,IGD_2_Count,IGD_3,IGD_3_Count
+0,Potion,StoneShard,1,Knife,1,Scroll,1
+1,Knife,StoneShard,1,Scroll,1,,
+2,Scroll,StoneShard,1,,,,
+3,Axe,StoneShard,1,,,,
+4,Book,StoneShard,1,,,,
+5,Helmets,StoneShard,1,,,,
+6,Ingots,StoneShard,1,,,,
+7,Meat,Twig,1,,,,
+8,Pants,Twig,1,,,,
+9,Rings,Twig,1,,,,
+10,Shield,Twig,1,,,,
+11,Sword,Twig,1,,,,
+12,Armor,Twig,1,,,,
+13,PickAxc,Twig,1,,,,

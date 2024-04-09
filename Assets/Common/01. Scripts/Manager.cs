@@ -10,20 +10,24 @@ public static class Manager
     public static DataManager Data {  get { return DataManager.Instance;} }
     // JC - Pool : ø¿∫Í¡ß∆Æ «Æ∏µ
     public static PoolManager Pool { get { return PoolManager.Instance;} }
+    // JM - 
+    public static ItemManager Item { get { return ItemManager.Instance; } }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initialize()
     {
         // ΩÃ±€≈œ ∞¥√º«ÿ¡¶
+        PoolManager.ReleaseInstance();
         NavigationManager.ReleaseInstance();
         LayerManager.ReleaseInstance();
         DataManager.ReleaseInstance();
-        PoolManager.ReleaseInstance();
+        ItemManager.ReleaseInstance();
 
         // ΩÃ±€≈œ ∞¥√ºª˝º∫
+        PoolManager.CreateInstance();
         NavigationManager.CreateInstance();
         LayerManager.CreateInstance();
         DataManager.CreateInstance();
-        PoolManager.CreateInstance();
+        ItemManager.CreateInstance();
     }
 }

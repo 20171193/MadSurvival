@@ -1,3 +1,7 @@
-obstacleName,level,hp
-Tree,0,30.0
-Stone,0,50.0
+obstacleName,level,hp,amr,drop0,drop1,drop2
+Tree,0,30.0,0.0,Twig_2,,
+Tree,1,60.0,0.0,Twig_3,,
+Tree,2,100.0,20.0,Twig_4,,
+Stone,0,50.0,0.0,StoneShard_2,,
+Stone,1,100.0,0.0,StoneShard_3,,
+Stone,2,200.0,20.0,StoneShard_4,,

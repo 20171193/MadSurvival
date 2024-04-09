@@ -25,14 +25,14 @@ TagManager:
   - 
   - 
   - Wall
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Monster
+  - Invinsible
+  - Player
+  - DropItem
+  - Ground
+  - Obstacle
+  - DroppedItem
+  - Animal
   - 
   - 
   - 
