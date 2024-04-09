@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Jc
 {
-    public class Animal : MonoBehaviour
+    public class Animal : PooledObject
     {
         [Header("에디터 세팅")]
         [Space(2)]
@@ -25,6 +25,10 @@ namespace Jc
         [SerializeField]
         protected Animator anim;
         public Animator Anim { get { return anim; } }
+
+        [SerializeField]
+        private SphereCollider detectCol;
+        public SphereCollider DetectCol { get { return detectCol; } }
 
         // 중립형 몬스터인지?
         [SerializeField]
@@ -66,15 +70,13 @@ namespace Jc
 
         protected virtual void Awake()
         {
-            // 탐지범위 세팅
-            detecter.GetComponent<SphereCollider>().radius = stat.DetectRange;
             detecter.OnDetectTarget += OnDetectTarget;
             detecter.OffDetectTarget += OnLoseTarget;
         }
-        protected virtual void OnEnable()
+        protected virtual void Start()
         {
-            // 활성화 시 풀링상태 -> 대기상태로 전환
-            fsm?.ChangeState("Idle");
+            stat.InitSetting();
+            detectCol.radius = stat.DetectRange;
         }
         public virtual void OnDetectTarget(PlayerTrigger player)
         {

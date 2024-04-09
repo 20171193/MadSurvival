@@ -132,8 +132,10 @@ namespace Jc
             int[] dx = new int[4] { 1, -1, 0, 0 };
 
             q.Enqueue(startPos);
+            Debug.Log($"½ºÆù : {startPos.z - minZ}, {startPos.x - minX}");
             visited[startPos.z - minZ, startPos.x - minX] = true;
-            while(q.Count > 0)
+
+            while (q.Count > 0)
             {
                 GroundPos curPos = q.Dequeue();
                 for (int i = 0; i < 4; i++)

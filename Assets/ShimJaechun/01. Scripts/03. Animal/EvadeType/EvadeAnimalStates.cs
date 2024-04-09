@@ -34,8 +34,11 @@ namespace Jc
         }
         private void Evade()
         {
+            if (owner.Agent.enabled == false)
+                return;
+
             // 방향 설정
-            if(owner.CurTarget != null)
+            if (owner.CurTarget != null)
                 evadeDir = (owner.transform.position - owner.CurTarget.transform.position).normalized;
 
             // rotation

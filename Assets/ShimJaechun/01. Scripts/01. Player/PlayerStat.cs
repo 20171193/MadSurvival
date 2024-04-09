@@ -203,27 +203,51 @@ namespace Jc
             {
                 case CoreStatType.Thirst:
                     if (isIncrease == true && thirstIncRoutine != null)
+                    {
                         StopCoroutine(thirstIncRoutine);
+                        thirstIncRoutine = null;
+                    }
                     else if (isIncrease == false && thirstDecRoutine != null)
+                    {
                         StopCoroutine(thirstDecRoutine);
+                        thirstDecRoutine = null;
+                    }
                     break;
                 case CoreStatType.Hunger:
                     if (isIncrease == true && hungerIncRoutine != null)
+                    {
                         StopCoroutine(hungerIncRoutine);
+                        hungerIncRoutine = null;
+                    }
                     else if (isIncrease == false && hungerDecRoutine != null)
+                    {
                         StopCoroutine(hungerDecRoutine);
+                        hungerDecRoutine = null;
+                    }
                     break;
                 case CoreStatType.HP:
                     if (isIncrease == true && hpIncRoutine != null)
+                    {
                         StopCoroutine(hpIncRoutine);
+                        hpIncRoutine = null;
+                    }
                     else if (isIncrease == false && hpDecRoutine != null)
+                    {
                         StopCoroutine(hpDecRoutine);
+                        hpDecRoutine = null;
+                    }
                     break;
                 case CoreStatType.Stamina:
                     if (isIncrease == true && staminaIncRoutine != null)
+                    {
                         StopCoroutine(staminaIncRoutine);
+                        staminaIncRoutine = null;
+                    }
                     else if (isIncrease == false && staminaDecRoutine != null)
+                    {
                         StopCoroutine(staminaDecRoutine);
+                        staminaIncRoutine = null;
+                    }
                     break;
                 default:
                     break;
