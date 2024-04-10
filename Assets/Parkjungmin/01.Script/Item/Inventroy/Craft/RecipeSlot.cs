@@ -17,8 +17,6 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     void OnEnable()
     {
         recipe_name = recipe.name;
-        Debug.Log($"Find : {recipe.name}");
-
         resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
 
 

@@ -12,23 +12,39 @@ namespace jungmin
 {
 	public class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler
 	{
-		Vector3 originPos;
+		[Header("아이템 정보")]
 		public Item item;
-		public int itemCount;
-		public int ItemCount 
-		{ 
+        [Header("아이템의 현재 개수")]
+        public int itemCount;
+		public int ItemCount
+		{
 			get { return itemCount; }
-			set 
-			{ 
+			set
+			{
 				itemCount = value;
 
-                text_Count.text = itemCount.ToString();
+				text_Count.text = itemCount.ToString();
 
-                if (itemCount <= 0)
-                {
-                    ClearSlot();
-                }
-            } 
+				if (itemCount <= 0)
+				{
+					ClearSlot();
+				}
+			}
+		}
+        [Header("아이템의 내구도")]
+        public int itemDurable;
+		public int ItemDurable
+		{
+			get { return itemDurable; }
+			set
+			{
+				itemCount = value;
+
+				if (this.itemDurable <= 0)
+				{
+					ClearSlot();
+				}
+			}
 		}
 
 		[SerializeField] public Image itemImage; //슬롯 위에 보여질 아이템 이미지.
@@ -39,42 +55,51 @@ namespace jungmin
 
 		private void Start()
 		{
-            originPos = transform.position;
 			//OnToolTip += BackPackController.instance.TryOpenToolTip;
 		}
-		public void AddItem(Item _item, int itemCount = 1) //슬롯 상의 아이템 UI 업데이트
+
+
+		// **** Method : 새로운 아이템 추가 시, 그 슬롯의 UI를 업데이트하는 함수 ****
+		public void AddItem(Item newItem, int newitemCount = 1)
 		{ 
-			if (item != null && _item.itemdata.itemName != this.item.itemdata.itemName)
-			{ //전에 있던 아이템과 바꾸려는 아이템이 다른 아이템인 경우.
-                this.item = _item;
-                this.ItemCount = itemCount;
+			// 1. 새로운 아이템과 기존의 아이템을 비교해, 슬롯에 아이템 정보와 갯수 설정
+			if (item != null && newItem.itemdata.itemName != this.item.itemdata.itemName)
+			{ 
+                this.item = newItem;
+                this.ItemCount = newitemCount;
 			}
-			else
+			else 
 			{				
-                this.item = _item;
-                this.ItemCount += itemCount;
+                this.item = newItem;
+                this.ItemCount += newitemCount;
 			}
-			if(_item.itemdata.itemtype == ItemData.ItemType.Ingredient)
-				itemImage.sprite = ItemManager.Instance.ingredientItemDic[_item.itemdata.itemName].itemdata.itemImage;
-            else
-				itemImage.sprite = ItemManager.Instance.craftingItemDic[_item.itemdata.itemName].itemdata.itemImage;
 
-			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //체력,소비 아이템이면,
+			// 2. Dic에서 아이템 이미지 불러오기
+			if(newItem.itemdata.itemtype == ItemData.ItemType.Ingredient) //재료 속성인 경우 -> 재료 Dic
+                itemImage.sprite = ItemManager.Instance.ingredientItemDic[newItem.itemdata.itemName].itemdata.itemImage;
+            else														  //재료 속성이 아닌 경우 -> 크래프팅 Dic
+				itemImage.sprite = ItemManager.Instance.craftingItemDic[newItem.itemdata.itemName].itemdata.itemImage;
+
+			// 3. 슬롯의 아이템의 갯수UI Set On
+			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //재료,소비,건설 타입 아이템 -> 갯수 UI On
 			{
-
 				go_CountImage.SetActive(true);
-
                 text_Count.text = this.ItemCount.ToString();
 			}
-			else
+			else													  //장비 타입 아이템 ->  갯수 UI Off + 내구도 표시UI On
 			{
-                text_Count.text = "0";
+				Equip_Item equip_Item = (Equip_Item)this.item;
+				this.itemDurable = equip_Item.durable;
+				text_Count.text = "0";
 				go_CountImage.SetActive(false);
 			}
-
+			// 4.슬롯의 아이템 이미지 투명도 1로 변경.
 			SetColor(1);
 		}
-		public void SetSlotCount(int _count)
+
+
+        // Method : **** 슬롯의 아이템 갯수 업데이트 ****
+        public void SetSlotCount(int _count)
 		{
             ItemCount += _count;
 			text_Count.text = ItemCount.ToString();
@@ -84,7 +109,10 @@ namespace jungmin
 				ClearSlot();
 			}
 		}
-		public void ClearSlot()
+
+
+        // Method :  **** 슬롯 초기화 ****
+        public void ClearSlot()
 		{
 			item = null;
             //ItemCount = 0;
@@ -94,13 +122,15 @@ namespace jungmin
 			go_CountImage.SetActive(false);
 
 		}
-		void SetColor(float alpha) //슬롯의 아이템 이미지의 색깔을 변경
+        // Method :  **** 슬롯의 아이템 이미지 투명도 변경 ****
+        void SetColor(float alpha)
 		{
 			Color color = itemImage.color;
 			color.a = alpha;
 			itemImage.color = color;
 		}
-		public void SetColorBG(float alpha) //슬롯의 틀 이미지의 색깔을 변경
+        // Method : **** 슬롯의 배경 이미지의 Red 값 변경 ****
+        public void SetColorBG(float alpha)
 		{
 			Color color = GetComponent<Image>().color;
 			color.r = alpha;

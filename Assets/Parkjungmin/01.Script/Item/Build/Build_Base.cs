@@ -9,17 +9,11 @@ namespace jungmin
     {
         [SerializeField] GameObject bulidPrefab; //실제 구조물을 건설 시 프리팹.
         public Build_Base(ItemData itemdata_) : base(itemdata_) { }
-        [SerializeField] bool Isbuild;
+        [Header("구조물의 체력")]
         [SerializeField] public float building_hp;
+       // [SerializeField] public float building_Durable;
 
 
-        private void Update()
-        {
-            if (Isbuild)
-            {
-                Build();
-            }
-        }
         public void Build()
         {
             

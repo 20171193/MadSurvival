@@ -21,10 +21,12 @@ namespace jungmin
 
         [SerializeField] RecipeSlot[] recipe_slots; //레시피 슬롯들
         [SerializeField] GameObject Slot_parent;
+        [SerializeField]
         public TMP_Text Recipe_Info;
         public int Page_index;
         public int Max_index;
         public int Min_index;
+
         /*
          *0~5 1페이지.
          *6~11 2페이지.
@@ -33,6 +35,7 @@ namespace jungmin
          * 
          * 
          */
+
         private void Start()
         {
             instance = this;
@@ -43,14 +46,22 @@ namespace jungmin
             PutRecipeInSlot();
         }
 
+        // Method : 레시피 리스트의 데이터를 크래프팅 슬롯으로 할당 ****
         void PutRecipeInSlot()
-        { //레시피 리스트 -> 레시피 슬롯
-            for(int x = 0; x < 6; x++)
-            {
-               recipe_slots[x].recipe = recipeList[x + (6 * Page_index)];
+        {
+            for(int x = 0; x < recipe_slots.Length; x++)
+            {  //1.만일 레시피 리스트의 카운터를 넘어서는 경우 오류 레시피 넣기.
+                if (x + (6 * Page_index) < recipeList.Count)
+                {
+                    recipe_slots[x].recipe = recipeList[x + (6 * Page_index)];
+                }
+                else if(x + (6 * Page_index) >= recipeList.Count)
+                {
+                    recipe_slots[x].recipe = recipeList[0];
+                }
             }
         }
-
+        // Method : 크래프팅 슬롯의 다음 페이지로 이동 ****
         public void NextRecipePage()
         {
             Debug.Log("Next");
@@ -65,6 +76,7 @@ namespace jungmin
                 }
             }
         }
+        // Method : 크래프팅 슬롯의 이전 페이지로 이동 ****
         public void PastRecipePage()
         {
             Debug.Log("Past");
@@ -79,20 +91,18 @@ namespace jungmin
                 }
             }
         }
-
+        // Method : 레시피 CSV 파일의 데이터를 레시피 List에 넣음 ****
         void ReadRecipeCSV()
         {
-            Debug.Log($"전체 레시피 갯수: {ItemManager.Instance.craftingItemDic.Count}");
-
-            for(int x=0;x<ItemManager.Instance.craftingItemDic.Count; x++) //크래프팅 아이템의 최대 종류를 6개라고 가정하고
+            // 1. 크래프팅 Dic의 개수만큼, CSV 파일에서 크래프팅 제조법 갯수를 읽어온다. 
+            for(int x=0;x<ItemManager.Instance.craftingItemDic.Count; x++)
             {
                 Recipe recipe = new Recipe();
+                recipe.name = (string)reader[x]["result"];
 
-                recipe.name = (string)reader[x]["result"]; //레시피 이름
-
+                // 2. 특정 아이템의 조합법의 첫번째 재료의 이름과 갯수를 저장한다. 
                 if (reader[x]["IGD_1"] != null && !string.IsNullOrEmpty((string)reader[x]["IGD_1"]))
                 {
-                    //1번 재료
                     recipe.IGD_1.IGD_Name = (string)reader[x]["IGD_1"];
                     recipe.IGD_1.IGD_Count = (int)reader[x]["IGD_1_Count"];
                 }
@@ -100,28 +110,28 @@ namespace jungmin
                 {
                     return;
                 }
+                // 2.1 여기서부터 조합식의 항이 2개인지 3개인지 체크한다.
 
-
+                // 2.2 특정 아이템의 조합법의 두번째 재료의 이름과 갯수를 저장한다.
                 if (reader[x]["IGD_2"] != null && !string.IsNullOrEmpty((string)reader[x]["IGD_2"]))
                 {
                     //2번 재료
                     recipe.IGD_2.IGD_Name = (string)reader[x]["IGD_2"];
                     recipe.IGD_2.IGD_Count = (int)reader[x]["IGD_2_Count"];
                 }
-
+                // 2.3 특정 아이템의 조합법의 세번째 재료의 이름과 갯수를 저장한다.
                 if (reader[x]["IGD_3"] != null && !string.IsNullOrEmpty((string)reader[x]["IGD_3"]))
                 {
-                    //3번 재료
                     recipe.IGD_3.IGD_Name = (string)reader[x]["IGD_3"];
                     recipe.IGD_3.IGD_Count = (int)reader[x]["IGD_3_Count"];
                 }
-
-                recipeList.Add(recipe); //설계도 배열에 넣기
+                // 3. 완성된 레시피 객체를 레시피 리스트에 추가한다.
+                recipeList.Add(recipe); 
                 
             }
         }
 
-
+        // Method : 조합 아이템의 조합법을 크래프팅 슬롯 UI에서 띄움 ****
         public void ShowRecipeInfo()
         {
             if (SelectedSlot_Recipe.instance.slot != null)
