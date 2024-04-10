@@ -156,8 +156,12 @@ namespace Jc
         public void DigUp(float value)
         {
             Debug.Log($"{gameObject.name} DigUp");
+
+            float damage = value - amr;
+            if (damage < 1) return;
+
             // 데미지 처리
-            ownHp -= 10f;
+            ownHp -= damage;
             if (ownHp <= 0f)
             {
                 Digged();
