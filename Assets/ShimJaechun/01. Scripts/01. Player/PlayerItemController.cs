@@ -11,6 +11,18 @@ namespace Jc
         [SerializeField]
         private Player owner;
 
+        [Space(3)]
+        [Header("플레이어 아이템")]
+        [Space(2)]
+        [Header("버튼 적용 아이템 이미지")]
+        [SerializeField]
+        private GameObject weaponImage;
+        [SerializeField]
+        private GameObject potionImage;
+        [SerializeField]
+        private GameObject buildImage;
+        private GameObject curImage;
+
         [Header("캐릭터 무기 모델")]
         [SerializeField]
         private GameObject monsterWeaponModel;
@@ -24,9 +36,10 @@ namespace Jc
         [Space(2)]
         [SerializeField]
         private Equip_Item curWeaponItem;
+        public Equip_Item CurWeaponItem { get { return curWeaponItem; } }
         [SerializeField]
         private Equip_Item curArmorItem;
-
+        public Equip_Item CurArmorItem { get { return curArmorItem; } }
         [SerializeField]
         private Slot curQuickSlot;
         public Slot CurQuickSlot { get { return curQuickSlot; }  }
@@ -45,7 +58,7 @@ namespace Jc
             if (curQuickSlot == null) return;
             if (curQuickSlot.item == null) return;
 
-            isBuildMode = false;
+            //isBuildMode = false;
             curImage?.SetActive(false);
 
             switch (curQuickSlot.item.itemdata.itemtype)
@@ -53,6 +66,7 @@ namespace Jc
                 case ItemData.ItemType.Used:
                     potionImage.SetActive(true);
                     curImage = potionImage;
+                    owner.curButtonMode = InteractButtonMode.Use;
                     break;
                 case ItemData.ItemType.Equipment:
                     weaponImage.SetActive(true);
@@ -61,7 +75,7 @@ namespace Jc
                 case ItemData.ItemType.Structure:
                     buildImage.SetActive(true);
                     curImage = buildImage;
-                    isBuildMode = true;
+                    owner.Builder.EnterBuildMode();
                     break;
             }
 
@@ -70,7 +84,7 @@ namespace Jc
         // 아이템 장착
         public void Equip()
         {
-            Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
+            Slot curSlot = owner.IsOnBackpack ? curInventorySlot : curQuickSlot;
 
             Equip_Item item = (Equip_Item)curSlot.item;
             if (item == null) return;
@@ -81,7 +95,7 @@ namespace Jc
             {
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
-                    anim.SetBool("IsTwoHand", true);
+                    owner.Anim.SetBool("IsTwoHand", true);
                     SetEquipModel(curWeaponItem.atkType);
                     break;
                 case Equip_Item.EquipType.Armor:
@@ -89,7 +103,7 @@ namespace Jc
                     break;
             }
             // 새 아이템 장착
-            item.Equip(this);
+            item.Equip(owner);
         }
         // 아이템 장착해제
         public void UnEquip(Equip_Item.EquipType type)
@@ -146,7 +160,6 @@ namespace Jc
                 curImage?.SetActive(false);
             }
         }
-
         public void OnSelectQuickSlot(Slot slot)
         {
             // 기존 무기해제
