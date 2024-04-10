@@ -96,18 +96,6 @@ namespace Jc
         private bool isOnBackpack = false;
         public bool IsOnBackpack { get { return isOnBackpack; } }
 
-        [Space(3)]
-        [Header("플레이어 아이템")]
-        [Space(2)]
-        [Header("버튼 적용 아이템 이미지")]
-        [SerializeField]
-        private GameObject weaponImage;
-        [SerializeField]
-        private GameObject potionImage;
-        [SerializeField]
-        private GameObject buildImage;
-        private GameObject curImage;
-
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
 
@@ -228,6 +216,14 @@ namespace Jc
                         // 공격 쿨타임 적용
                         isAttackCoolTime = true;
                         atsRoutine = StartCoroutine(AttackSpeedRoutine());
+                        // 무기를 장착하고 있는 경우
+                        if (ItemController.CurWeaponItem != null)
+                        {
+                            ItemController.CurWeaponItem.durable--;
+                            // 무기 내구도가 모두 소모된 경우
+                            if(ItemController.CurWeaponItem.durable < 1)
+                                ItemController.UnEquip(Equip_Item.EquipType.Weapon);
+                        }
                         break;
                     }
                 case InteractButtonMode.Use:
@@ -260,19 +256,6 @@ namespace Jc
         public void GetItem(Item item)
         {
             backPack.AcquireItem(item);
-        }
-        public void OnSelectQuickSlot(Slot slot)
-        {
-            // 기존 무기해제
-            UnEquip(Equip_Item.EquipType.Weapon);
-
-            curQuickSlot = slot;
-
-            ChangeButton();
-        }
-        public void OnSelectInventorySlot(Slot slot)
-        {
-            curInventorySlot = slot;
         }
         // 무기 모델적용
         #endregion

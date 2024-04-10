@@ -13,12 +13,6 @@ namespace jungmin
         public override void Equip(Player player)
         {
             player.Stat.MonsterATK += atk;
-            this.durable -= DecDurableValue;
-            Debug.Log($"{durable}");
-            if (this.durable <= 0)
-            {
-                player.UnEquip(EquipType.Weapon);
-            }
         }
 
         public override void UnEquip(Player player)
