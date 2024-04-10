@@ -8,6 +8,13 @@ using jungmin;
 
 namespace Jc
 {
+    public enum InteractButtonMode
+    {
+        None,
+        Use,
+        Attack,
+        Build
+    }
     public class Player : MonoBehaviour
     {
         [Header("Components")]
@@ -63,12 +70,12 @@ namespace Jc
         public PlayerJoystickController Controller { get { return controller; } }
 
         [SerializeField]
-        private PlayerAttacker attacker;
-        public PlayerAttacker Attacker { get { return attacker; } }
+        private PlayerItemController itemController;
+        public PlayerItemController ItemController { get { return itemController; } }
 
         [SerializeField]
-        private PlayerDigger digger;
-        public PlayerDigger Digger { get { return digger; } }
+        private PlayerAttacker attacker;
+        public PlayerAttacker Attacker { get { return attacker; } }
 
         [SerializeField]
         private PlayerBuilder builder;
@@ -77,6 +84,9 @@ namespace Jc
         [Space(3)]
         [Header("Balancing")]
         [Space(2)]
+        [SerializeField]
+        public InteractButtonMode curButtonMode = InteractButtonMode.Attack;
+        public InteractButtonMode prevButtonMode = InteractButtonMode.None;
         public Ground currentGround;
         [SerializeField]
         private bool isAttackCoolTime = false;
@@ -86,26 +96,9 @@ namespace Jc
         private bool isOnBackpack = false;
         public bool IsOnBackpack { get { return isOnBackpack; } }
 
-        [SerializeField]
-        private bool isBuildMode = false;
-        [SerializeField]
-        private bool isBuildable = false;
-
-        private Vector3 buildablePos = Vector3.zero;
-
         [Space(3)]
         [Header("플레이어 아이템")]
         [Space(2)]
-        [Header("등록된 슬롯")]
-        [SerializeField]
-        private Slot curQuickSlot;
-        [SerializeField]
-        private Slot curInventorySlot;
-        [SerializeField]
-        private Equip_Item curWeaponItem;
-        [SerializeField]
-        private Equip_Item curArmorItem;
-
         [Header("버튼 적용 아이템 이미지")]
         [SerializeField]
         private GameObject weaponImage;
@@ -114,15 +107,6 @@ namespace Jc
         [SerializeField]
         private GameObject buildImage;
         private GameObject curImage;
-
-        [Header("캐릭터 무기 모델")]
-        [SerializeField]
-        private GameObject monsterWeaponModel;
-        [SerializeField]
-        private GameObject treeWeaponModel;
-        [SerializeField]
-        private GameObject stoneWeaponModel;
-        private GameObject curWeaponModel;
 
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
@@ -135,11 +119,6 @@ namespace Jc
         private void Update()
         {
             Move();
-
-            if (isBuildMode)
-            {
-                CheckBuildable();
-            }
         }
         private void Move()
         {
@@ -155,40 +134,6 @@ namespace Jc
             {
                 if (stat.OwnStamina < stat.MaxStamina)
                     stat.OwnStamina += stat.staminaIncValue * Time.deltaTime;
-            }
-        }
-        public void OnClickInteractButton()
-        {
-            // 공격
-            // 퀵슬롯에 아이템이 없거나 공격무기를 들고있는 경우
-            if (curQuickSlot == null || curQuickSlot.item == null ||
-                curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
-            {
-                if (isAttackCoolTime)
-                    return;
-
-                anim.SetTrigger("OnAttack");
-
-                if (atsRoutine != null)
-                    StopCoroutine(atsRoutine);
-                // 공격 쿨타임 적용
-                isAttackCoolTime = true;
-                atsRoutine = StartCoroutine(AttackSpeedRoutine());
-
-                return;
-            }
-            // 빌드 아이템
-            if (curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Structure)
-            {
-                Build();
-                return;
-            }
-
-            // 사용 아이템
-            if (curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Used)
-            {
-                Use();
-                return;
             }
         }
         IEnumerator AttackSpeedRoutine()
@@ -265,16 +210,52 @@ namespace Jc
         #endregion
 
         #region 아이템 사용 / 장비
+
+        public void OnClickInteractButton()
+        {
+            switch(curButtonMode)
+            {
+                case InteractButtonMode.None:
+                case InteractButtonMode.Attack:
+                    {
+                        if (isAttackCoolTime)
+                            return;
+
+                        anim.SetTrigger("OnAttack");
+
+                        if (atsRoutine != null)
+                            StopCoroutine(atsRoutine);
+                        // 공격 쿨타임 적용
+                        isAttackCoolTime = true;
+                        atsRoutine = StartCoroutine(AttackSpeedRoutine());
+                        break;
+                    }
+                case InteractButtonMode.Use:
+                    {
+                        ItemController.Use();
+                        break;
+                    }
+                case InteractButtonMode.Build:
+                    {
+                        Builder.Build((Build_Base)ItemController.CurQuickSlot.item);
+                        break;
+                    }
+                default:
+                    break;
+            }
+        }
+
         public void OpenBackPack()
         {
             backPack.TryOpenInventory();
             isOnBackpack = BackPackController.inventory_Activated;
 
+            // 조이스틱, 상호작용 버튼 활성화/비활성화
             interactButton.SetActive(!isOnBackpack);
             joystick.SetActive(!isOnBackpack);
 
             if (!isOnBackpack)
-                ChangeButton();
+                ItemController.ChangeButton();
         }
         public void GetItem(Item item)
         {
@@ -293,162 +274,7 @@ namespace Jc
         {
             curInventorySlot = slot;
         }
-        private void ChangeButton()
-        {
-            if (curQuickSlot == null) return;
-            if (curQuickSlot.item == null) return;
-
-            isBuildMode = false;
-            curImage?.SetActive(false);
-
-            switch (curQuickSlot.item.itemdata.itemtype)
-            {
-                case ItemData.ItemType.Used:
-                    potionImage.SetActive(true);
-                    curImage = potionImage;
-                    break;
-                case ItemData.ItemType.Equipment:
-                    weaponImage.SetActive(true);
-                    curImage = weaponImage;
-                    break;
-                case ItemData.ItemType.Structure:
-                    buildImage.SetActive(true);
-                    curImage = buildImage;
-                    isBuildMode = true;
-                    break;
-            }
-        }
-        public void Use()
-        {
-            Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
-            Used_Item item = (Used_Item)curSlot.item;
-            if (item == null ||
-                curSlot.ItemCount < 1) return;
-
-            curSlot.ItemCount--;
-            item.Use(this);
-
-            if ((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
-            {
-                curImage?.SetActive(false);
-            }
-        }
-        public void Equip()
-        {
-            Slot curSlot = IsOnBackpack ? curInventorySlot : curQuickSlot;
-
-            Equip_Item item = (Equip_Item)curSlot.item;
-            if (item == null) return;
-
-            // 기존 아이템 장착해제
-            UnEquip(item.equipType);
-            switch (item.equipType)
-            {
-                case Equip_Item.EquipType.Weapon:
-                    curWeaponItem = item;
-                    anim.SetBool("IsTwoHand", true);
-                    SetEquipModel(curWeaponItem.atkType);
-                    break;
-                case Equip_Item.EquipType.Armor:
-                    curArmorItem = item;
-                    break;
-            }
-            // 새 아이템 장착
-            item.Equip(this);
-        }
-        public void UnEquip(Equip_Item.EquipType type)
-        {
-            if (curWeaponItem == null) return;
-            // 무기 모델 해제
-            curWeaponModel?.SetActive(false);
-
-            switch (type)
-            {
-                case Equip_Item.EquipType.Weapon:
-                    curWeaponItem.UnEquip(this);
-                    anim.SetBool("IsTwoHand", false);
-                    break;
-                case Equip_Item.EquipType.Armor:
-                    curArmorItem.UnEquip(this);
-                    break;
-            }
-            curWeaponItem = null;
-        }
-        public void Build()
-        {
-            if(isBuildable)
-            {
-                Build_Base build = (Build_Base)curQuickSlot.item;
-                build.Build();
-                build.transform.position = buildablePos;
-            }
-            else
-            {
-                return;
-            }
-        }
-        private void CheckBuildable()
-        {
-            if (!buildSocket.activeSelf)
-                buildSocket.SetActive(true);
-
-            float yRot = transform.eulerAngles.y;
-            Debug.Log(yRot);
-            int nz = currentGround.Pos.z;
-            int nx = currentGround.Pos.x;
-            if ((yRot > 315f && yRot <=360f) || (yRot > 0f && yRot <= 45f)) // +z 앞
-                nz++;
-            else if (yRot > 45f && yRot <= 135f) // +x 우
-                nx++;
-            else if (yRot > 135f && yRot <= 225f)    // -z 뒤 
-                nz--;
-            else if (yRot > 225f && yRot <= 315f) // -x 좌
-                nx--;
-
-            if (nz < 0 || nz > 59 || nx < 0 || nx > 59)
-            {
-                isBuildable = false;
-                buildablePos = Vector3.zero;
-                buildSocketRenderer.material = disableSocketMT;
-                return;
-            }
-
-            buildSocket.transform.position = Manager.Navi.gameMap[nz].groundList[nx].transform.position;
-            buildSocket.transform.position += Vector3.up;
-
-            if (Manager.Navi.gameMap[nz].groundList[nx].type == GroundType.Buildable)
-            {
-                isBuildable = true;
-                buildSocketRenderer.material = enableSocketMT;
-                buildablePos = Manager.Navi.gameMap[nz].groundList[nx].transform.position;
-            }
-            else
-            {
-                isBuildable = false;
-                buildablePos = Vector3.zero;
-                buildSocketRenderer.material = disableSocketMT;
-            }
-        }
-
         // 무기 모델적용
-        private void SetEquipModel(Equip_Item.ATKType atkType)
-        {
-            curWeaponModel?.SetActive(false);
-
-            switch (atkType)
-            {
-                case Equip_Item.ATKType.Monster:
-                    curWeaponModel = monsterWeaponModel;
-                    break;
-                case Equip_Item.ATKType.Tree:
-                    curWeaponModel = treeWeaponModel;
-                    break;
-                case Equip_Item.ATKType.Stone:
-                    curWeaponModel = stoneWeaponModel;
-                    break;
-            }
-            curWeaponModel?.SetActive(true);
-        }
         #endregion
     }
 }
