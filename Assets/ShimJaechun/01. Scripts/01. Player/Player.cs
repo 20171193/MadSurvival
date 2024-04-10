@@ -54,10 +54,6 @@ namespace Jc
         [Header("Linked Class")]
         [Space(2)]
         [SerializeField]
-        private PlayerFSM fsm;
-        public PlayerFSM FSM { get { return fsm; } }
-
-        [SerializeField]
         private PlayerStat stat;
         public PlayerStat Stat { get { return stat; } }
 
@@ -86,7 +82,7 @@ namespace Jc
         [Space(2)]
         [SerializeField]
         public InteractButtonMode curButtonMode = InteractButtonMode.Attack;
-        public InteractButtonMode prevButtonMode = InteractButtonMode.None;
+        
         public Ground currentGround;
         [SerializeField]
         private bool isAttackCoolTime = false;
@@ -101,7 +97,6 @@ namespace Jc
 
         private void Awake()
         {
-            fsm.CreateFSM(this);
             trigger.owner = this;
         }
         private void Update()

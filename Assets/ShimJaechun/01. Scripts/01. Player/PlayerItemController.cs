@@ -53,12 +53,14 @@ namespace Jc
             owner = GetComponent<Player>();
         }
 
+        // 퀵슬롯에 할당된 아이템과 상호작용버튼 연동
         public void ChangeButton()
         {
             if (curQuickSlot == null) return;
             if (curQuickSlot.item == null) return;
 
-            //isBuildMode = false;
+            ResetPrevButton(owner.curButtonMode);
+
             curImage?.SetActive(false);
 
             switch (curQuickSlot.item.itemdata.itemtype)
@@ -71,14 +73,32 @@ namespace Jc
                 case ItemData.ItemType.Equipment:
                     weaponImage.SetActive(true);
                     curImage = weaponImage;
+                    Equip();
+                    owner.curButtonMode = InteractButtonMode.Attack;
                     break;
                 case ItemData.ItemType.Structure:
                     buildImage.SetActive(true);
                     curImage = buildImage;
                     owner.Builder.EnterBuildMode();
+                    owner.curButtonMode = InteractButtonMode.Build;
                     break;
             }
+        }
 
+        // 이전 버튼 비활성화처리
+        private void ResetPrevButton(InteractButtonMode prevMode)
+        {
+            switch(prevMode)
+            {
+                case InteractButtonMode.None: 
+                    break;
+                case InteractButtonMode.Attack:
+                    UnEquip(Equip_Item.EquipType.Weapon);
+                    break;
+                case InteractButtonMode.Build:
+                    owner.Builder.ExitBuildMode();
+                    break;
+            }
         }
 
         // 아이템 장착
