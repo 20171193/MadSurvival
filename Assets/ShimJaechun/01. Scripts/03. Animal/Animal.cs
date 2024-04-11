@@ -51,6 +51,10 @@ namespace Jc
         private int dropNiceMeatCount;
         public int DropNiceMeatCount { get { return dropNiceMeatCount; } set { dropNiceMeatCount = value; } }
 
+        [SerializeField]
+        private float dropNiceMeatPercent;
+        public float DropNiceMeatPercent { get { return dropNiceMeatPercent; } set { dropNiceMeatPercent = value; } }
+
         [Space(3)]
         [Header("Linked Class")]
         [Space(2)]
@@ -115,17 +119,22 @@ namespace Jc
 
                 Manager.Pool.GetPool(meat, spawnPos, Quaternion.identity);
             }
-            // spawnCount만큼 생성
-            for (int i = 0; i < dropNiceMeatCount; i++)
+
+            // 드랍확률 계산
+            float percent = Random.Range(1, 10) / 10f;
+            if (percent <= dropNiceMeatPercent)
             {
-                // 반지름이 1인 원 내부의 임의의 점을 도출
-                Vector2 rand = UnityEngine.Random.insideUnitCircle;
-                // 해당 아이템의 스폰위치 지정
-                Vector3 spawnPos = new Vector3(transform.position.x + rand.x, transform.position.y + 0.1f, transform.position.z + rand.y);
+                // spawnCount만큼 생성
+                for (int i = 0; i < dropNiceMeatCount; i++)
+                {
+                    // 반지름이 1인 원 내부의 임의의 점을 도출
+                    Vector2 rand = UnityEngine.Random.insideUnitCircle;
+                    // 해당 아이템의 스폰위치 지정
+                    Vector3 spawnPos = new Vector3(transform.position.x + rand.x, transform.position.y + 0.1f, transform.position.z + rand.y);
 
-                Manager.Pool.GetPool(niceMeat, spawnPos, Quaternion.identity);
+                    Manager.Pool.GetPool(niceMeat, spawnPos, Quaternion.identity);
+                }
             }
-
             // 스폰할 기준점을 중심으로 ExplosionForce를 적용
             ExplosionInvoker invoker = (ExplosionInvoker)Manager.Pool.GetPool(explosionInvoker, transform.position, Quaternion.identity);
             invoker.OnExplosion();

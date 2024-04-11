@@ -223,7 +223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6732028240002745863}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.34, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -336,7 +336,7 @@ MonoBehaviour:
   onGround: {fileID: 0}
   playerGround: {fileID: 0}
   curTarget: {fileID: 0}
-  attacker: {fileID: 0}
+  attacker: {fileID: 6483917595906081105}
   tracker: {fileID: 1794944417185636681}
   attackTrigger: {fileID: 7676594659479648312}
   trackingTime: 10
