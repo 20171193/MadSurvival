@@ -169,10 +169,15 @@ namespace Jc
             // 아이템 사용
             Slot curSlot = owner.IsOnBackpack ? curInventorySlot : curQuickSlot;
             Used_Item item = (Used_Item)curSlot.item;
-            if (item == null ||
-                curSlot.ItemCount < 1) return;
 
-            curSlot.ItemCount--;
+            // 아이템이 존재하지 않거나 아이템의 개수가 없을경우 리턴
+            if (item == null ||
+                curSlot.ItemCount < 1) 
+                return;
+            // 무한히 사용하는 아이템이 아닌 경우
+            if(!item.isInfinite)
+                curSlot.ItemCount--;
+            
             item.Use(owner);
 
             if ((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
