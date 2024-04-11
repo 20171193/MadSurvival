@@ -82,6 +82,7 @@ namespace Jc
             atkRange = data.atkRange;
             owner.DropMeatCount = data.dropMeatCount;
             owner.DropNiceMeatCount = data.dropNiceMeatCount;
+            owner.DropNiceMeatPercent = data.dropNiceMeatPercent;
         }
     }
 }

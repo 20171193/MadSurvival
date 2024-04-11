@@ -223,7 +223,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8118050554758669513}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.25, y: 1.1, z: -1.88}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f50ca2d8976c1ce4e81b3b32cdbf4da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 5
+  size: 2
   animalName: BigSnake
   rigid: {fileID: 2386723464453434211}
   agent: {fileID: 2897656444852721932}
@@ -336,7 +336,7 @@ MonoBehaviour:
   onGround: {fileID: 0}
   playerGround: {fileID: 0}
   curTarget: {fileID: 0}
-  attacker: {fileID: 0}
+  attacker: {fileID: 5498538026439603359}
   tracker: {fileID: 7778248736766767718}
   attackTrigger: {fileID: 3794704033861456558}
   trackingTime: 10

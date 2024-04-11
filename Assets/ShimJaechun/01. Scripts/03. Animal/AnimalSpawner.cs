@@ -27,9 +27,9 @@ namespace Jc
             };
             mapThresholds = new MapThreshold[8]
             {
-                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),new MapThreshold(new GroundPos(0,20), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,40), new GroundPos(19,59)),
-                new MapThreshold(new GroundPos(20,0), new GroundPos(39, 19)),new MapThreshold(new GroundPos(20,40), new GroundPos(39,59)),
-                new MapThreshold(new GroundPos(40, 0), new GroundPos(59, 19)),new MapThreshold(new GroundPos(40, 20), new GroundPos(59,39)),new MapThreshold(new GroundPos(40, 40), new GroundPos(59,59))
+                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),new MapThreshold(new GroundPos(0,19), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,39), new GroundPos(19,59)),
+                new MapThreshold(new GroundPos(19,0), new GroundPos(39, 19)),new MapThreshold(new GroundPos(19,40), new GroundPos(39,59)),
+                new MapThreshold(new GroundPos(39, 0), new GroundPos(59, 19)),new MapThreshold(new GroundPos(39, 20), new GroundPos(59,39)),new MapThreshold(new GroundPos(39, 39), new GroundPos(59,59))
             };
 
         }
@@ -98,7 +98,7 @@ namespace Jc
 
             // bfs 탐색
             Queue<GroundPos> q = new Queue<GroundPos>();
-            bool[,] visited = new bool[20, 20];
+            bool[,] visited = new bool[21, 21];
 
             // 중점부터 각 변까지의 거리
             int resol = Manager.Navi.mapZsize / 3 / 2;

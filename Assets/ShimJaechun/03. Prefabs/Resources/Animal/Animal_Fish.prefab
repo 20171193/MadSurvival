@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2077445081018620128}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.02, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c020bc8a822264899574e489dfb7cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 5
+  size: 8
   animalName: Fish
   rigid: {fileID: 6820609616221060705}
   agent: {fileID: 3125202411677943514}
