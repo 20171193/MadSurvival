@@ -37,7 +37,6 @@ public class MonsterAttacker : MonoBehaviour
     // 애니메이션 이벤트를 통한 공격처리
     public void AttackTiming()
     {
-        Debug.Log("Attack Timing");
         int size = Physics.OverlapSphereNonAlloc(transform.position, range, colliders, Manager.Layer.targetableLM);
         for (int i = 0; i < size; i++)
         {

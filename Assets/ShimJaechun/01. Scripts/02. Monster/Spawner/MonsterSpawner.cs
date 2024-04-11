@@ -118,7 +118,7 @@ namespace Jc
 
             // bfs 탐색
             Queue<GroundPos> q = new Queue<GroundPos>();
-            bool[,] visited = new bool[20, 20];
+            bool[,] visited = new bool[21, 21];
 
             // 중점부터 각 변까지의 거리
             int resol = Manager.Navi.mapZsize / 3 / 2;
@@ -135,7 +135,7 @@ namespace Jc
 
             q.Enqueue(startPos);
             Debug.Log($"스폰 : {startPos.z - minZ}, {startPos.x - minX}");
-            Debug.Log($"StartPos : {startPos}");
+            Debug.Log($"StartPos : {startPos.z}, {startPos.x}");
             Debug.Log($"Min : {minZ}, {minX}");
             visited[startPos.z - minZ, startPos.x - minX] = true;
 
