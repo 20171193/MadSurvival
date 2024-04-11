@@ -140,8 +140,11 @@ namespace Jc
 
         public void DropItem()
         {
-            int rand = Random.Range(0, 10);
-            if (rand <= 5) return;
+            // 아이템 확률 적용
+            if (stat.DropMeatPercent == 0) return;
+
+            float rand = Random.Range(1, 10) / 10f;
+            if (rand > stat.DropMeatPercent) return;
 
             Manager.Pool.GetPool(meat, transform.position + Vector3.up, Quaternion.identity);
 

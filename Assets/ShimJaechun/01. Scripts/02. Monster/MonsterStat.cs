@@ -34,6 +34,10 @@ namespace Jc
         private float amr;
         public float AMR { get { return amr; } }
 
+        [SerializeField]
+        private float dropMeatPercent;
+        public float DropMeatPercent { get { return dropMeatPercent; } }
+
         private void OnEnable()
         {
             InitSetting();
@@ -54,6 +58,7 @@ namespace Jc
             maxHp = loadedData.hp;
             ownHp = maxHp;
             amr = loadedData.amr;
+            dropMeatPercent = loadedData.dropMeatPercent;
         }
 
 

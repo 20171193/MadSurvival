@@ -55,7 +55,7 @@ public class DataManager : Singleton<DataManager>
     // 로드해서 관리될 Dictionary
     public Dictionary<string, MonsterData> monsterDataDic;
     public Dictionary<string, Dictionary<int,ObstacleData>> obstacleDataDic;
-    public Dictionary<int, Dictionary<int, WaveData>> daysWaveDataDic;
+    public Dictionary<int, WaveData> daysWaveDataDic;
     public Dictionary<int, DaysObstacleData> daysObstacleDataDic;
     public Dictionary<string, AnimalData> animalDataDic;
     public Dictionary<int, List<DaysAnimalInfo>> daysAnimalDataDic;
@@ -64,7 +64,7 @@ public class DataManager : Singleton<DataManager>
     {
         monsterDataDic = new Dictionary<string, MonsterData>();
         obstacleDataDic = new Dictionary<string, Dictionary<int, ObstacleData>>();
-        daysWaveDataDic = new Dictionary<int, Dictionary<int, WaveData>>();
+        daysWaveDataDic = new Dictionary<int, WaveData>();
         daysObstacleDataDic = new Dictionary<int, DaysObstacleData>();
         animalDataDic = new Dictionary<string, AnimalData>();
         daysAnimalDataDic = new Dictionary<int, List<DaysAnimalInfo>>();
@@ -219,6 +219,7 @@ public class DataManager : Singleton<DataManager>
             // 3 ats
             // 4 hp
             // 5 amr
+            // 6 dropMeatPercent
             MonsterData loadedData = ScriptableObject.CreateInstance<MonsterData>();
             loadedData.monsterName = (string)csvData[i]["monsterName"];
             loadedData.speed = (float)csvData[i]["speed"];
@@ -226,6 +227,7 @@ public class DataManager : Singleton<DataManager>
             loadedData.ats = (float)csvData[i]["ats"];
             loadedData.hp = (float)csvData[i]["hp"];
             loadedData.amr = (float)csvData[i]["amr"];
+            loadedData.dropMeatPercent = (float)csvData[i]["dropMeatPercent"];
             monsterDataDic.Add(loadedData.monsterName, loadedData);
         }
     }
@@ -278,18 +280,26 @@ public class DataManager : Singleton<DataManager>
         {
             int day = (int)csvData[i]["day"];
 
+            WaveData lodedData = null;
             if (!daysWaveDataDic.ContainsKey(day))
-                daysWaveDataDic.Add(day, new Dictionary<int, WaveData>());
-
-            int waveNum = (int)csvData[i]["wave"];
-            if (!daysWaveDataDic[day].ContainsKey(waveNum))
             {
-                WaveData lodedData = ScriptableObject.CreateInstance<WaveData>();
-                lodedData.spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
-                daysWaveDataDic[day].Add(waveNum, lodedData);
+                lodedData = ScriptableObject.CreateInstance<WaveData>();
+                daysWaveDataDic.Add(day, lodedData);
             }
             else
-                daysWaveDataDic[day][waveNum].spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
+            {
+                lodedData = daysWaveDataDic[day];
+            }
+
+            int waveNum = (int)csvData[i]["wave"] - 1;
+            // 기존 웨이브에 대한 데이터가 없는경우
+            for(int j =0; j<10; j++)     // 총 몬스터의 개수만큼 반복
+            {
+                Debug.Log(Define.TryGetMonsterName((Define.MonsterName)j));
+                // 해당 몬스터가 없을 경우
+                int spawnCount = (int)csvData[i][Define.TryGetMonsterName((Define.MonsterName)j)];
+                lodedData.spawnList[waveNum].monsterList.Add(spawnCount);
+            }
         }
     }
     private void CSVToDaysObstacleDataDic(List<Dictionary<string, object>> csvData)
