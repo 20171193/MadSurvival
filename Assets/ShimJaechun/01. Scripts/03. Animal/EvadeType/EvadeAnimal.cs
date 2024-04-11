@@ -37,7 +37,7 @@ namespace Jc
         public void OnEvade()
         {
             if (FSM.FSM.CurState == "Die" || FSM.FSM.CurState == "ReturnPool") return;
-            if (fsm.FSM.CurState != "Evade")
+            if (fsm.FSM.CurState != "Evade")  
                 fsm.ChangeState("Evade");
         }
         public override void OnDetectTarget(PlayerTrigger player)
@@ -46,8 +46,10 @@ namespace Jc
 
             base.OnDetectTarget(player);
             // 회피형 동물의 경우 탐지했을 때 바로 회피
-            if (!isNeutral)
+            if (!isNeutral && player.owner.CurSpeed > 3f)
+            {
                 OnEvade();
+            }
         }
     }
 }
