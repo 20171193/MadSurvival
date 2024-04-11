@@ -50,9 +50,9 @@ namespace Jc
             };
             mapThresholds = new MapThreshold[8]
             {
-                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),new MapThreshold(new GroundPos(0,20), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,40), new GroundPos(19,59)),
-                new MapThreshold(new GroundPos(20,0), new GroundPos(39, 19)),new MapThreshold(new GroundPos(20,40), new GroundPos(39,59)),
-                new MapThreshold(new GroundPos(40, 0), new GroundPos(59, 19)),new MapThreshold(new GroundPos(40, 20), new GroundPos(59,39)),new MapThreshold(new GroundPos(40, 40), new GroundPos(59,59))
+                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),  new MapThreshold(new GroundPos(0,19), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,39), new GroundPos(19,59)),
+                new MapThreshold(new GroundPos(19,0), new GroundPos(39, 19)), new MapThreshold(new GroundPos(19,39), new GroundPos(39,59)),
+                new MapThreshold(new GroundPos(39, 0), new GroundPos(59, 19)), new MapThreshold(new GroundPos(39, 19), new GroundPos(59,39)),new MapThreshold(new GroundPos(39, 39), new GroundPos(59,59))
             };
         }
 
@@ -135,6 +135,8 @@ namespace Jc
 
             q.Enqueue(startPos);
             Debug.Log($"½ºÆù : {startPos.z - minZ}, {startPos.x - minX}");
+            Debug.Log($"StartPos : {startPos}");
+            Debug.Log($"Min : {minZ}, {minX}");
             visited[startPos.z - minZ, startPos.x - minX] = true;
 
             while (q.Count > 0)

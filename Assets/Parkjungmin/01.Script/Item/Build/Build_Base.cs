@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using jungmin;
+using Jc;
 
 namespace jungmin
 {
@@ -14,11 +15,11 @@ namespace jungmin
        // [SerializeField] public float building_Durable;
 
 
-        public void Build()
+        public void Build(Ground socketGround)
         {
-            
-            GameObject building = Instantiate(bulidPrefab);
-         
+            Debug.Log($"Build : {socketGround}");
+            GameObject building = Instantiate(bulidPrefab, socketGround.transform.position, Quaternion.identity);
+            socketGround.type = GroundType.Wall;
         }
 
     }

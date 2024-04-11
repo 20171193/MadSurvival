@@ -84,10 +84,14 @@ namespace Jc
         public InteractButtonMode curButtonMode = InteractButtonMode.Attack;
         
         public Ground currentGround;
+
         [SerializeField]
         private bool isAttackCoolTime = false;
+
         [SerializeField]
         private float curSpeed;
+        public float CurSpeed { get { return curSpeed; } }
+
         [SerializeField]
         private bool isOnBackpack = false;
         public bool IsOnBackpack { get { return isOnBackpack; } }
