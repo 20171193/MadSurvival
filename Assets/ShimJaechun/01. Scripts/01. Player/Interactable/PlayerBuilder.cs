@@ -4,6 +4,14 @@ using UnityEngine;
 using jungmin;
 namespace Jc
 {
+    public enum BuildDirection
+    {
+        Front,
+        Back,
+        Left,
+        Right
+    }
+
     public class PlayerBuilder : MonoBehaviour
     {
         [SerializeField]
@@ -19,6 +27,7 @@ namespace Jc
         private Material disableSocketMT;   // 비활성화 시 머터리얼
 
         private Ground buildableGround;
+        private BuildDirection buildDirection;
         private Coroutine socketSetRoutine;
 
         private void Awake()
@@ -59,17 +68,28 @@ namespace Jc
                 buildSocket.SetActive(true);
 
             float yRot = transform.eulerAngles.y;
-            Debug.Log(yRot);
             int nz = owner.currentGround.Pos.z;
             int nx = owner.currentGround.Pos.x;
             if ((yRot > 315f && yRot <= 360f) || (yRot > 0f && yRot <= 45f)) // +z 앞
+            {
+                buildDirection = BuildDirection.Front;
                 nz++;
+            }
             else if (yRot > 45f && yRot <= 135f) // +x 우
+            {
+                buildDirection = BuildDirection.Right;
                 nx++;
+            }
             else if (yRot > 135f && yRot <= 225f)    // -z 뒤 
+            {
+                buildDirection = BuildDirection.Back;
                 nz--;
+            }
             else if (yRot > 225f && yRot <= 315f) // -x 좌
+            {
+                buildDirection = BuildDirection.Left;
                 nx--;
+            }
 
             if (nz < 0 || nz > 59 || nx < 0 || nx > 59)
             {
@@ -95,6 +115,5 @@ namespace Jc
                 buildSocketRenderer.material = disableSocketMT;
             }
         }
-
     }
 }

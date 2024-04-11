@@ -14,10 +14,15 @@ namespace Jc
     public class GameFlowController : MonoBehaviour
     {
         public static GameFlowController inst;
-        public static GameFlowController Inst { get { return inst; } }   
+        public static GameFlowController Inst { get { return inst; } }
 
         [Header("에디터 세팅")]
         [Space(2)]
+        [SerializeField]
+        private GameObject dayLight;
+        [SerializeField]
+        private GameObject nightLight;
+
         [SerializeField]
         private int maxDay;
         [SerializeField]
@@ -46,8 +51,11 @@ namespace Jc
         private DayAndNight dayController;
         [SerializeField]
         private float fogSpeed;
-        private Vector3 dayRot = new Vector3(70f, -30f, 0);     // 정오의 태양 회전값
-        private Vector3 nightRot = new Vector3(270f, -30f, 0);  // 자정의 태양 회전값
+        private Vector3 dayRot = new Vector3(70f, 0, 0);     // 정오의 태양 회전값
+        private Vector3 nightRot = new Vector3(270f, 0, 0);  // 자정의 태양 회전값
+        private Vector3 moonDayRot = new Vector3(270, 0, 0);   // 정오의 달 회전값
+        private Vector3 moonNightRot = new Vector3(470, 0, 0);   // 자정의 달 회전값
+
         private float nightFogDensity = 0.18f;
         private float dayFogDensity = 0f;
 
@@ -135,11 +143,13 @@ namespace Jc
             animalSpawner.ReturnAllAnimal();
 
             // 태양 회전값 적용
-            dayController.transform.eulerAngles = nightRot;
+            dayLight.transform.eulerAngles = nightRot;
+            // 달 회전값 적용
+            nightLight.transform.eulerAngles = moonNightRot;
             // 안개 밀도 적용
             RenderSettings.fogDensity = nightFogDensity;
             // 플레이어 스포트라이트 적용
-            playerSpotLight.intensity = 20f;
+            playerSpotLight.intensity = 10f;
 
             isNight = true;
             OnEnterNight?.Invoke();
@@ -151,7 +161,10 @@ namespace Jc
         public void ExitNight()
         {
             // 태양 회전값 적용
-            dayController.transform.eulerAngles = dayRot;
+            dayLight.transform.eulerAngles = dayRot;
+            // 달 회전값 적용
+            nightLight.transform.eulerAngles = moonDayRot;
+
             // 안개 밀도 적용
             RenderSettings.fogDensity = nightFogDensity;
             // 플레이어 스포트라이트 적용
@@ -185,7 +198,8 @@ namespace Jc
                     DayTime += Time.deltaTime;
                     dayRate = DayTime / DayChangeTime;
 
-                    dayController.transform.eulerAngles = Vector3.Lerp(dayRot, nightRot, dayRate);      // 태양 회전 값 적용
+                    dayLight.transform.eulerAngles = Vector3.Lerp(dayRot, nightRot, dayRate);      // 태양 회전 값 적용
+                    nightLight.transform.eulerAngles = Vector3.Lerp(moonDayRot, moonNightRot, dayRate);     // 달 회전 값 적용
                     if (dayRate >= 0.9f && !isEnterFog)    // 안개 밀도 적용
                     {
                         enterFogRoutine = StartCoroutine(EnterFogRoutine());
