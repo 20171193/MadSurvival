@@ -14,12 +14,13 @@ GameObject:
   - component: {fileID: 2933173714712775699}
   - component: {fileID: 5843674420317999525}
   - component: {fileID: -6630474669590291295}
+  - component: {fileID: 6281097596046807948}
   m_Layer: 0
   m_Name: Item_Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &6679598277481619171
 Transform:
@@ -31,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.49, y: 1.0156864, z: 3.18}
-  m_LocalScale: {x: 1, y: 1.1816572, z: 1.5339854}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1.5}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -103,7 +104,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 2.1999998, y: 1, z: 0.19999999}
   m_Center: {x: -0.000000059604645, y: 0.5, z: 0}
@@ -122,6 +123,7 @@ MonoBehaviour:
   itemdata: {fileID: 11400000, guid: 5b2ff7fa24075e54f8206324ecd4cbd5, type: 2}
   bulidPrefab: {fileID: -6630474669590291295}
   building_hp: 100
+  hasPos: 1
 --- !u!114 &-6630474669590291295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,4 +136,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad07dad495980747b7b513b06511889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 200
+  size: 10
+--- !u!208 &6281097596046807948
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4487448408175064518}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.1}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.015000001, y: 0.81900007, z: 0.1}
+  m_TimeToStationary: 0.5

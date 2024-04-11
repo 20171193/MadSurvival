@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 8111111958526891098}
   - component: {fileID: 1629134564635537129}
   - component: {fileID: 4260678044198171361}
+  - component: {fileID: 1568676446222307063}
   m_Layer: 0
   m_Name: Item_Turret
   m_TagString: Untagged
@@ -214,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b98d8a27850b143a51fda06df5f240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 10
   target_List: []
   attack_Range: {fileID: 0}
   Turret_Head: {fileID: 7092873722094518745}
@@ -257,9 +259,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 062e2f3fcebf15f43b62b6478bf72e88, type: 2}
-  bulidPrefab: {fileID: 5660771043255329131}
-  Isbuild: 0
+  bulidPrefab: {fileID: 8111111958526891098}
   building_hp: 100
+--- !u!208 &1568676446222307063
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5660771043255329131}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7092873722094518745
 GameObject:
   m_ObjectHideFlags: 0

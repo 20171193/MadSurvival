@@ -198,8 +198,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b98d8a27850b143a51fda06df5f240, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  size: 10
   target_List: []
-  attack_Range: {fileID: 0}
+  attack_Range: {fileID: 5298801550063582476}
   Turret_Head: {fileID: 6443769025892085264}
   turret_Line_Renderer: {fileID: 1895821910182918847}
   damageValue: 5
