@@ -9,8 +9,8 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
 {
     public static SelectedSlot_QuickSlot instance;
     [SerializeField] Player player;
-    [SerializeField] Slot selectedSlot;
-    [SerializeField] Slot default_Slot;
+    [SerializeField] public Slot selectedSlot;
+    [SerializeField] public Slot default_Slot;
     public Slot SelectedSlot
     {
         get { return selectedSlot; }
