@@ -22,4 +22,7 @@ public class LayerManager : Singleton<LayerManager>
     public LayerMask dropItemLM;
     [Header("땅(타일)")]
     public LayerMask groundLM;
+    [Header("물(타일)")]
+    public LayerMask waterLM;
+
 }

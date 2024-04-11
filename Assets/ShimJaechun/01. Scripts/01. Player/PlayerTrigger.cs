@@ -15,7 +15,6 @@ namespace Jc
         {
             owner.currentGround = ground;
         }
-
         public void TakeDamage(float value)
         {
             float damage = value - owner.Stat.AMR;
@@ -39,6 +38,25 @@ namespace Jc
         public void GetItem(Item item)
         {
             owner.GetItem(item);
+        }
+
+
+        private void OnTriggerStay(Collider other)
+        {
+            // 물에 근접하고 있는 경우
+            if(Manager.Layer.waterLM.Contain(other.gameObject.layer))
+            {
+                owner.IsOnWater = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            // 물에서 벗어난 경우
+            if (Manager.Layer.waterLM.Contain(other.gameObject.layer))
+            {
+                owner.IsOnWater = false;
+            }
         }
     }
 }
