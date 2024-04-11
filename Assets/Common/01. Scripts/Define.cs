@@ -20,12 +20,11 @@ namespace Jc
             BlackGolem
         }
 
-        public static Dictionary<MonsterName, string> enumToNameDic;
+        public static Dictionary<MonsterName, string> enumToNameDic = new Dictionary<MonsterName,string>();
         public static string TryGetMonsterName(MonsterName enumName)
         {
             if(enumToNameDic.Count < 1)
             {
-                enumToNameDic = new Dictionary<MonsterName, string>();
                 // 딕셔너리가 비었다면 생성
                 for(int i = 0; i<10; i++)
                 {

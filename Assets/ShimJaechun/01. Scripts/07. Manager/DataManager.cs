@@ -295,10 +295,10 @@ public class DataManager : Singleton<DataManager>
             // 기존 웨이브에 대한 데이터가 없는경우
             for(int j =0; j<10; j++)     // 총 몬스터의 개수만큼 반복
             {
+                Debug.Log(Define.TryGetMonsterName((Define.MonsterName)j));
                 // 해당 몬스터가 없을 경우
                 int spawnCount = (int)csvData[i][Define.TryGetMonsterName((Define.MonsterName)j)];
-                if (spawnCount < 1) continue;
-                lodedData.spawnList[waveNum].monsterList[j] = spawnCount;
+                lodedData.spawnList[waveNum].monsterList.Add(spawnCount);
             }
         }
     }
