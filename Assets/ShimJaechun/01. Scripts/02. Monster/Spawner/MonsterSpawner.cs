@@ -134,9 +134,6 @@ namespace Jc
             int[] dx = new int[4] { 1, -1, 0, 0 };
 
             q.Enqueue(startPos);
-            Debug.Log($"½ºÆù : {startPos.z - minZ}, {startPos.x - minX}");
-            Debug.Log($"StartPos : {startPos.z}, {startPos.x}");
-            Debug.Log($"Min : {minZ}, {minX}");
             visited[startPos.z - minZ, startPos.x - minX] = true;
 
             while (q.Count > 0)
