@@ -16,15 +16,26 @@ namespace Jc
             owner.currentGround = ground;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float value)
         {
+            float damage = value - owner.Stat.AMR;
+            if (damage < 1) return;
+
+            // 방어구가 있을 경우
+            if (owner.ItemController.CurArmorItem != null)
+            {
+                owner.ItemController.CurArmorItem.durable--;
+
+                // 방어구 내구도가 모두 소모된 경우
+                if(owner.ItemController.CurArmorItem.durable < 1)
+                    owner.ItemController.UnEquip(Equip_Item.EquipType.Armor);
+            }
             owner.Stat.OwnHp -= damage;
             if(owner.Stat.OwnHp <= 0)
                 owner.OnDie();
             else
                 owner.OnTakeDamage();
         }
-
         public void GetItem(Item item)
         {
             owner.GetItem(item);

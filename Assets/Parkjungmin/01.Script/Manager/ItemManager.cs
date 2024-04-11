@@ -23,44 +23,48 @@ public class ItemManager : Singleton<ItemManager>
         LoadItem(ItemType.Ingredient);
         LoadItem(ItemType.Crafting);
     }
+
+    // Method : 아이템의 타입에 따라 구분해 각각의 Dic에 추가 ****
     private void LoadItem(ItemType type)
     {
+        // 1.Resource의 CraftingItem,IngredientItem 폴더에서 모든 Item 속성들 갖고 있는 프리팹들을 수집한다.
         switch (type)
         {
-            case ItemType.Crafting:
-                Item[] craft_items = Resources.LoadAll<Item>("CraftingItem"); //아이템 딕셔너리에 데이터 할당
-                foreach(Item item in craft_items) // 05.Scriptable Object에서 검색해서 할당함
-                { // 정상적으로 작동하기 위해선, 
+            case ItemType.Crafting: // 2. 크래프팅 속성이라면 크래프팅 Dic에 데이터 추가
+                Item[] craft_items = Resources.LoadAll<Item>("CraftingItem"); 
+                foreach(Item item in craft_items)
+                {
                     string name = item.itemdata.itemName;
-                    Debug.Log($"{name}");
+                    //Debug.Log($"Craft: {name}");
                     craftingItemDic.Add(name, item);
 
                 }
                 break;
-            case ItemType.Ingredient:
-                Item[] igd_items = Resources.LoadAll<Item>("IngredientItem"); //아이템 딕셔너리에 데이터 할당
-                foreach (Item item in igd_items) // 05.Scriptable Object에서 검색해서 할당함
-                { // 정상적으로 작동하기 위해선, 
+            case ItemType.Ingredient: // 2. 재료 속성이라면 크래프팅 Dic에 데이터 추가
+                Item[] igd_items = Resources.LoadAll<Item>("IngredientItem");
+                foreach (Item item in igd_items)
+                { 
                     string name = item.itemdata.itemName;
-                    Debug.Log($"{name}");
+                    //Debug.Log($"IGD : {name}");
                     ingredientItemDic.Add(name, item);
 
                 }
                 break;
         }
     }
+
+
+    // Method : 크래프팅 전에 인벤토리에 충분한 재료 소지 여부 확인 ****
     void SearchForCraft()
-    { //어떤 재료 아이템이 있는지 여부 한종류만 체크
+    {
         bool IGD_1_Check = false;
         bool IGD_2_Check = false;
         ready_Craft = false;
         for (int x = 0; x < BackPackController.instance.slots.Length; x++) // 백팩 슬롯의 갯수 만큼
         {
             
-            Debug.Log($"첫번째 재료 탐색");
             if(BackPackController.instance.slots[x].item == null)
             {
-                Debug.Log("이 슬롯엔 그 아이템이 없습니다.");
                 continue;
             }
             if (BackPackController.instance.slots[x].item != null)
@@ -160,12 +164,14 @@ public class ItemManager : Singleton<ItemManager>
 
         return;
     }
+
+    // Method : 크래프팅 기능 ****
     public void CraftItem()
     {
 
-        if (SelectedSlot_Recipe.instance.slot != null) //레시피의 슬롯을 선택했을 때
+        if (SelectedSlot_Recipe.instance.slot != null) 
         {
-            SearchForCraft();
+            SearchForCraft(); // 1. 먼저 재료가 인벤토리 내에 충분히 있는지 확인한다.
 
             if (ready_Craft)
             {

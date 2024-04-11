@@ -18,7 +18,7 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
         set
         {
             selectedSlot = value;
-            player.OnSelectQuickSlot(selectedSlot);
+            player.ItemController.OnSelectQuickSlot(selectedSlot);//
         }
     }
 
@@ -29,7 +29,7 @@ public class SelectedSlot_QuickSlot : MonoBehaviour //pointclick 핸들러로 선택된
     }
     private void Start()
     {
-        SelectedSlot = default_Slot;
+        SelectedSlot = default_Slot; //
         default_Slot.SetColorBG(0);
     }
 

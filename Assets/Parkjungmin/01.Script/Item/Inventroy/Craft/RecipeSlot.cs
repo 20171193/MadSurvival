@@ -14,11 +14,12 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     public Image bg_image;
     public Image item_image;
     public UnityEvent OnSelect;
-    void Start()
+    void OnEnable()
     {
         recipe_name = recipe.name;
-
         resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
+
+
         bg_image = GetComponent<Image>();
         item_image.sprite = resultItem.itemdata.itemImage;
     }

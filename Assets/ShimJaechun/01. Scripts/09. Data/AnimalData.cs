@@ -1,4 +1,4 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,18 +6,15 @@ namespace Jc
 {
     public class AnimalData : ScriptableObject
     {
-        [Header("ì´ë¦„")]
-        public string animalName;
-        [Header("ì´ë™ì†ë„")]
-        public float speed;
-        [Header("ê³µê²©ë ¥")]
-        public float atk;
-        [Header("ê³µê²©ì†ë„")]
-        public float ats;
-        [Header("ì²´ë ¥")]
-        public float hp;
-        [Header("ë°©ì–´ë ¥")]
-        public float amr;
+        public float hp;            // Ã¼·Â
+        public float speed;         // ÀÌµ¿¼Óµµ
+        public float atk;           // °ø°İ·Â
+        public float ats;           // °ø°İ¼Óµµ
+        public float amr;           // ¹æ¾î·Â
+        public float detectRange;   // Å½Áö¹üÀ§
+        public float wonderRange;   // ¹èÈ¸¹üÀ§
+        public float atkRange;      // °ø°İ¹üÀ§
+        public int dropMeatCount;       // µå¶øÇÒ °í±â Ä«¿îÆ®
+        public int dropNiceMeatCount;   // µå¶øÇÒ ¸ÀÀÖ´Â °í±â Ä«¿îÆ®
     }
 }
-

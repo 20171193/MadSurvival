@@ -16,10 +16,6 @@ namespace Jc
         private float idleTime;
         public float IdleTime { get { return idleTime; } }
 
-        [SerializeField]
-        private float wonderRange;
-        public float WonderRange { get { return wonderRange; } }
-
         [Space(3)]
         [Header("코어 스텟")]
         [Space(2)]
@@ -57,15 +53,35 @@ namespace Jc
         private float detectRange;
         public float DetectRange { get { return detectRange; } }
 
-        private void OnEnable()
+        [SerializeField]
+        private float wonderRange;
+        public float WonderRange { get { return wonderRange; } }
+
+        [SerializeField]
+        private float atkRange;
+        public float AtkRange { get { return atkRange; } }
+
+        public void InitSetting()
         {
-            InitSetting();
-        }
-        private void InitSetting()
-        {
-            // 데이터 로드
+            if(!Manager.Data.animalDataDic.ContainsKey(owner.AnimalName))
+            {
+                Debug.Log($"{owner.AnimalName} 의 데이터를 불러올 수 없습니다.");
+                return;
+            }
+
+            AnimalData data = Manager.Data.animalDataDic[owner.AnimalName];
+
+            maxHp = data.hp;
             ownHp = maxHp;
-            Speed = speed;
+            Speed = data.speed;
+            atk = data.atk;
+            ats = data.ats;
+            amr = data.amr;
+            detectRange = data.detectRange;
+            wonderRange = data.wonderRange;
+            atkRange = data.atkRange;
+            owner.DropMeatCount = data.dropMeatCount;
+            owner.DropNiceMeatCount = data.dropNiceMeatCount;
         }
     }
 }

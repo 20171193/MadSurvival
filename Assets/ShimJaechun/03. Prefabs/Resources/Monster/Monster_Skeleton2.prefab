@@ -77,7 +77,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6047920945414391479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 1
   m_Speed: 1.5
@@ -108,20 +108,12 @@ MonoBehaviour:
   rigid: {fileID: 1996272332345754056}
   agent: {fileID: 3724574002126460141}
   anim: {fileID: 307023201807092671}
+  explosionInvoker: {fileID: 7579299635910308337, guid: 504e6e517fb46094fa09da03d2fd1126, type: 3}
+  meat: {fileID: 5530291736414995612, guid: a9feff26d4761b44ab80f414f9ed5e4a, type: 3}
   fsm: {fileID: 3982216081018918420}
+  stat: {fileID: 0}
   detecter: {fileID: 485027754624369353}
   monsterName: Skeleton2
-  knockBackPower: 5
-  knockBackTime: 0.1
-  speed: 0
-  atk: 0
-  ats: 0
-  hp: 0
-  ownHp: 0
-  amr: 0
-  gameMap: []
-  onGround: {fileID: 0}
-  playerGround: {fileID: 0}
   currentState: 
 --- !u!114 &3982216081018918420
 MonoBehaviour:
@@ -280,6 +272,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05051cd917421e045a3d4f42471e2636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 0}
+  gameMap: []
+  onGround: {fileID: 0}
+  playerGround: {fileID: 0}
 --- !u!1001 &5977077992674993821
 PrefabInstance:
   m_ObjectHideFlags: 0
