@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Events;
@@ -46,6 +47,13 @@ namespace jungmin
 		void CloseInventory()
 		{
 			inventory_Base.SetActive(false);
+
+			//1. 인벤토리를 닫았을 때, 퀵슬롯의 선택 슬롯을 초기화한다.
+			//if(QuickSlotController.slots.Contains())
+			//{
+			//	SelectedSlot_QuickSlot.instance.SelectedSlot = SelectedSlot_QuickSlot.instance.default_Slot;
+
+   //         }
 		}
 		public void AcquireItem(Item _item, int _count = 1) //아이템을 먹었을 때 인벤토리에 넣는 기능,자동으로 정렬되어 추가됨
 		{

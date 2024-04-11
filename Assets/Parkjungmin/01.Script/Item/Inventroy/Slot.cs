@@ -75,9 +75,12 @@ namespace jungmin
 			}
 
 			// 2. Dic에서 아이템 이미지 불러오기
-			if(newItem.itemdata.itemtype == ItemData.ItemType.Ingredient) //재료 속성인 경우 -> 재료 Dic
+			if (ItemManager.Instance.ingredientItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
+			{
+                // 아이템의 이름을 Dic에서 검색해 해당되는 데이터에 저장된 아이템의 이미지를 가져온다.
                 itemImage.sprite = ItemManager.Instance.ingredientItemDic[newItem.itemdata.itemName].itemdata.itemImage;
-            else														  //재료 속성이 아닌 경우 -> 크래프팅 Dic
+			}
+			else
 				itemImage.sprite = ItemManager.Instance.craftingItemDic[newItem.itemdata.itemName].itemdata.itemImage;
 
 			// 3. 슬롯의 아이템의 갯수UI Set On
@@ -140,7 +143,6 @@ namespace jungmin
 		public void OnBeginDrag(PointerEventData eventData)
 		{
 			// 클릭한 곳에 아이템이 존재하는지?
-			//if ()
 			if (BackPackController.inventory_Activated)
 			{
 				// 백팩에 아이템이 존재하는 경우
@@ -200,26 +202,25 @@ namespace jungmin
 				DragSlot.instance.dragSlot.ClearSlot();
 			}
 		}
-		public void SelectSlot_QuickSlot()
+        // Method : 퀵슬롯에서 슬롯 선택하기 ****
+        public void SelectSlot_QuickSlot()
 		{
-			//인벤토리가 꺼져있을 때만 반응하기에, 인벤토리와 무관.
-			// 퀵슬롯에서 슬롯 선택하기
-			if (!BackPackController.inventory_Activated)
+
+			if (SelectedSlot_QuickSlot.instance.SelectedSlot != null) //이전에 셀렉된 슬롯이 있었다면,
 			{
-				if (SelectedSlot_QuickSlot.instance.SelectedSlot != null) //이전에 셀렉된 슬롯이 있었다면,
-				{
-					SelectedSlot_QuickSlot.instance.SelectedSlot.SetColorBG(255);
-					SelectedSlot_QuickSlot.instance.SelectedSlot = this;
-					SetColorBG(0);
-				}
-				else
-				{
-					SelectedSlot_QuickSlot.instance.SelectedSlot = this;
-					SetColorBG(0);
-				}
+				SelectedSlot_QuickSlot.instance.SelectedSlot.SetColorBG(255);
+				SelectedSlot_QuickSlot.instance.SelectedSlot = this;
+				SetColorBG(0);
 			}
+			else
+			{
+				SelectedSlot_QuickSlot.instance.SelectedSlot = this;
+				SetColorBG(0);
+			}
+
         }
-		void SelectSlot_Inventory()
+        // Method : 인벤토리에서 슬롯 선택하기 ****
+        void SelectSlot_Inventory()
 		{
 			if (BackPackController.inventory_Activated)
 			{
@@ -248,10 +249,6 @@ namespace jungmin
 			{
 				SelectSlot_Inventory();
 				//OnToolTip?.Invoke();
-			}
-			else if (item == null)
-			{
-				Debug.Log("현재 그 슬롯에 아이템이 없습니다.");
 			}
 			else
 			{
