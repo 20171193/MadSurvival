@@ -16,8 +16,6 @@ namespace Jc
 
         private Coroutine spawnRoutine;
 
-        private Dictionary<int, WaveData> waveDataDic;
-
         [SerializeField]
         private GroundPos[] spawnablePos;
         public struct MapThreshold
@@ -64,36 +62,38 @@ namespace Jc
             if (!Manager.Data.daysWaveDataDic.ContainsKey(day))
                 return;
 
-            waveDataDic = Manager.Data.daysWaveDataDic[day];
-            spawnRoutine = StartCoroutine(SpawnRoutine());
+            spawnRoutine = StartCoroutine(SpawnRoutine(day));
         }
         
-        IEnumerator SpawnRoutine()
+        IEnumerator SpawnRoutine(int day)
         {
-            int spawnWave = 1;
+            int spawnWave = 0;
             yield return null;
 
-            while(spawnWave <= 3)
+            while(spawnWave <= 2)
             {
-                Spawn(spawnWave++);
+                Spawn(day, spawnWave++);
                 yield return new WaitForSeconds(waveSpawnTime);
             }
         }
-        private void Spawn(int wave)
+        private void Spawn(int day, int wave)
         {
-            if (waveDataDic == null) return;
-            if (!waveDataDic.ContainsKey(wave)) return;
+            if (!Manager.Data.daysWaveDataDic.ContainsKey(day)) return;
+            if (Manager.Data.daysWaveDataDic[day] == null) return;
 
-            foreach(SpawnInfo spawnInfo in waveDataDic[wave].spawnList)
+            for(int i =0; i< Manager.Data.daysWaveDataDic[day].spawnList[wave].monsterList.Count; i++)
             {
-                string monsterName = spawnInfo.monsterName;
-                for(int i =0; i<spawnInfo.count; i++)
+                if (Manager.Data.daysWaveDataDic[day].spawnList[wave].monsterList[i] < 1) continue;
+                string monsterName = Define.TryGetMonsterName((Define.MonsterName)i);
+
+                for (int j = 0; j < Manager.Data.daysWaveDataDic[day].spawnList[wave].monsterList[i]; j++)
                 {
                     Ground spawnGround = null;
-                    while(spawnGround == null)
+                    while (spawnGround == null)
                     {
                         spawnGround = SetSpawnPos();
                     }
+
                     Monster spawned = (Monster)Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
                     spawned.OnMonsterDie += MonsterDie;
                     spawned.FSM.ChangeState("Idle");

@@ -147,7 +147,7 @@ namespace Jc
             // 달 회전값 적용
             nightLight.transform.eulerAngles = moonNightRot;
             // 안개 밀도 적용
-            RenderSettings.fogDensity = nightFogDensity;
+            RenderSettings.fog = true;
             // 플레이어 스포트라이트 적용
             playerSpotLight.intensity = 10f;
 
@@ -166,7 +166,7 @@ namespace Jc
             nightLight.transform.eulerAngles = moonDayRot;
 
             // 안개 밀도 적용
-            RenderSettings.fogDensity = nightFogDensity;
+            RenderSettings.fog = false;
             // 플레이어 스포트라이트 적용
             playerSpotLight.intensity = 0f;
 
@@ -200,18 +200,18 @@ namespace Jc
 
                     dayLight.transform.eulerAngles = Vector3.Lerp(dayRot, nightRot, dayRate);      // 태양 회전 값 적용
                     nightLight.transform.eulerAngles = Vector3.Lerp(moonDayRot, moonNightRot, dayRate);     // 달 회전 값 적용
-                    if (dayRate >= 0.9f && !isEnterFog)    // 안개 밀도 적용
-                    {
-                        enterFogRoutine = StartCoroutine(EnterFogRoutine());
-                        isEnterFog = true;
-                    }
+                    //if (dayRate >= 0.9f && !isEnterFog)    // 안개 밀도 적용
+                    //{
+                    //    enterFogRoutine = StartCoroutine(EnterFogRoutine());
+                    //    isEnterFog = true;
+                    //}
                     playerSpotLight.intensity = Mathf.Lerp(0, 10f, dayRate-0.05f);        // 플레이어 스포트라이트 밝기 적용
 
                     if(DayTime >= dayChangeTime)
                     {
                         EnterNight();
                         DayTime = 0f;
-                        isEnterFog = false;
+                        //isEnterFog = false;
                     }
                 }
                 yield return null;
