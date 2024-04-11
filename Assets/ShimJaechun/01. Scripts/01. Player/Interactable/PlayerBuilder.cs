@@ -50,7 +50,7 @@ namespace Jc
         {
             if (buildableGround == null || buildItem == null) return;
 
-            buildItem.Build(buildableGround);
+            buildItem.Build(buildableGround, buildDirection);
         }
 
         // 소켓 위치 지정

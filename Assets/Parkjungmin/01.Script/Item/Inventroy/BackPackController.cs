@@ -47,14 +47,12 @@ namespace jungmin
 		void CloseInventory()
 		{
 			inventory_Base.SetActive(false);
-
-			//1. 인벤토리를 닫았을 때, 퀵슬롯의 선택 슬롯을 초기화한다.
-			//if(QuickSlotController.slots.Contains())
-			//{
-			//	SelectedSlot_QuickSlot.instance.SelectedSlot = SelectedSlot_QuickSlot.instance.default_Slot;
-
-   //         }
-		}
+            // 1.인벤토리를 닫을 때는 인벤토리에서 선택된 슬롯을 Null로 바꾼다.
+            if (SelectedSlot_Inventory.instance.SelectedSlot != null)
+            {
+				SelectedSlot_Inventory.instance.SelectedSlot = null;
+            }
+        }
 		public void AcquireItem(Item _item, int _count = 1) //아이템을 먹었을 때 인벤토리에 넣는 기능,자동으로 정렬되어 추가됨
 		{
 			if (_item.itemdata.itemtype != ItemData.ItemType.Equipment) //획득 아이템 속성이 장비가 아니면

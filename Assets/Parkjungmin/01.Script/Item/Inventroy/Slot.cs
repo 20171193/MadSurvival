@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Jc;
+using System.Linq;
 namespace jungmin
 {
 	public class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler
@@ -165,16 +166,47 @@ namespace jungmin
 				}
 			}
 		}
+
+		// Method : 대상 슬롯 위에서 드래그 앤 드롭 이벤트 시 그 슬롯에서 호출 ****
 		public void OnDrop(PointerEventData eventData)
 		{
 
+			if(QuickSlotController.instance.slots.Contains(this))
+			{
+				SelectedSlot_QuickSlot.instance.selectedSlot = this;
+				SelectSlot_QuickSlot();
+
+            }
 			if (DragSlot.instance.dragSlot != null)
 			{
 				ChangeSlot();
 			}
 		}
+        // Method : 슬롯 간의 교환 ****
+        void ChangeSlot()
+        {
+            // 1. OnDrop 이벤트가 호출된 슬롯의 데이터들을 미리 복사해둔다.
+            Item tempItem = item;
+            int tempItemCount = ItemCount;
 
-		public void OnEndDrag(PointerEventData eventData)
+            // 2.기존의 슬롯에 있던 아이템의 개수를 0으로 변경
+            this.ItemCount = 0;
+
+            // 3.  OnDrop 이벤트가 호출된 슬롯에 드래그 중인 아이템을 추가.
+            AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
+			
+			// 4. 기존 슬롯의 아이템의 존재 유무에 따라 기존 슬롯을 업데이트한다.
+            if (tempItem != null)
+            {					  
+                DragSlot.instance.dragSlot.AddItem(tempItem, tempItemCount);
+            }
+            else
+            { 
+                DragSlot.instance.dragSlot.ClearSlot();
+            }
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
 		{
 
 			// 드래그중인 이미지 리턴
@@ -183,23 +215,6 @@ namespace jungmin
 				DragSlot.instance.SetColor(0);
 				DragSlot.instance.dragSlot = null;
 
-			}
-		}
-		void ChangeSlot()
-		{
-			Item tempItem = item;
-			int tempItemCount = ItemCount;
-
-			AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
-
-			if (tempItem != null)
-			{
-				DragSlot.instance.dragSlot.AddItem(tempItem, tempItemCount);
-			}
-			else
-			{ //
-
-				DragSlot.instance.dragSlot.ClearSlot();
 			}
 		}
         // Method : 퀵슬롯에서 슬롯 선택하기 ****
@@ -218,24 +233,28 @@ namespace jungmin
 				SetColorBG(0);
 			}
 
-        }
+		}
         // Method : 인벤토리에서 슬롯 선택하기 ****
         void SelectSlot_Inventory()
 		{
-			if (BackPackController.inventory_Activated)
+            // 1. 퀵슬롯의 선택된 슬롯의 선택 이미지를 해제시켜 헷갈리지 않게 한다.
+            if (SelectedSlot_QuickSlot.instance.SelectedSlot != null)
+            {
+                SelectedSlot_QuickSlot.instance.SelectedSlot.SetColorBG(255);
+            }
+			// 2. 선택된 슬롯은 배경 이미지의 Red 값을 바꿔서 선택된 것을 확인시킨다.
+			if (SelectedSlot_Inventory.instance.SelectedSlot != null)
 			{
-				if (SelectedSlot_Inventory.instance.SelectedSlot != null) //이전에 셀렉된 슬롯이 있었다면,
-				{
-					SelectedSlot_Inventory.instance.SelectedSlot.SetColorBG(255);
-					SelectedSlot_Inventory.instance.SelectedSlot = this;
-					SetColorBG(0);
-				}
-				else
-				{
-					SelectedSlot_Inventory.instance.SelectedSlot = this;
-					SetColorBG(0);
-				}
+				SelectedSlot_Inventory.instance.SelectedSlot.SetColorBG(255);
+				SelectedSlot_Inventory.instance.SelectedSlot = this;
+				SetColorBG(0);
 			}
+			else
+			{
+				SelectedSlot_Inventory.instance.SelectedSlot = this;
+				SetColorBG(0);
+			}
+
 		}
 
 		public void OnPointerClick(PointerEventData eventData)
@@ -245,7 +264,7 @@ namespace jungmin
 			 * 
 			 */
 			//Debug.Log("OnPointerClick event");
-			if (item != null && BackPackController.inventory_Activated)
+			if (BackPackController.inventory_Activated && BackPackController.instance.slots.Contains(this)) 
 			{
 				SelectSlot_Inventory();
 				//OnToolTip?.Invoke();
