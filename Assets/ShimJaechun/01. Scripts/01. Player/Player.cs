@@ -96,6 +96,10 @@ namespace Jc
         private bool isOnBackpack = false;
         public bool IsOnBackpack { get { return isOnBackpack; } }
 
+        [SerializeField]
+        private bool isOnWater = false;
+        public bool IsOnWater { get { return isOnWater; } set { isOnWater = value; } } 
+
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
 
