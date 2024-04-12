@@ -95,12 +95,16 @@ namespace Jc
             owner.Agent.isStopped = true;
 
             currentTarget = owner.Detecter.CurrentTarget;
-            attackRoutine = owner.StartCoroutine(AttackRoutine());
+            if(attackRoutine == null)
+                attackRoutine = owner.StartCoroutine(AttackRoutine());
         }
         public override void Exit()
         {
-            if(attackRoutine != null)
+            if (attackRoutine != null)
+            {
                 owner.StopCoroutine(attackRoutine);
+                attackRoutine = null;
+            }
         }
         private void Attack()
         {
@@ -117,6 +121,7 @@ namespace Jc
 
             while (owner.Detecter.CurrentTarget == currentTarget)
             {
+                Debug.Log($"owner : {owner.Detecter.CurrentTarget}, state : {currentTarget}");
                 yield return new WaitForSeconds(owner.Stat.ATS);
                 Attack();
             }

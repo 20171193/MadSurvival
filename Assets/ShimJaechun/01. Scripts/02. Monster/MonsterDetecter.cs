@@ -33,6 +33,7 @@ namespace Jc
         private bool isTrackingPlayer;
         public bool IsTrackingPlayer { get { return isTrackingPlayer; } }
 
+        [SerializeField]
         private GameObject currentTarget = null;
         public GameObject CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
 
@@ -182,7 +183,11 @@ namespace Jc
             {
                 // 지정된 타깃 해제
                 if (other.gameObject == currentTarget)
+                {
+                    Debug.Log("목표물 파괴");
                     currentTarget = null;
+                    owner.FSM.ChangeState("Tracking");
+                }
             }
         }
     }
