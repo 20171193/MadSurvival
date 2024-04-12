@@ -26,8 +26,11 @@ namespace Jc
         [SerializeField]
         private Material disableSocketMT;   // 비활성화 시 머터리얼
 
+        [SerializeField]
         private Ground buildableGround;
+        [SerializeField]
         private BuildDirection buildDirection;
+        [SerializeField]
         private Coroutine socketSetRoutine;
 
         private void Awake()
@@ -49,6 +52,14 @@ namespace Jc
         public void Build(Build_Base buildItem)
         {
             if (buildableGround == null || buildItem == null) return;
+
+            owner.ItemController.CurQuickSlot.itemCount--;
+            //owner.ItemController.CurQuickSlot.SetSlotCount(-1);
+            if (owner.ItemController.CurQuickSlot.itemCount <= 0 )
+            {
+                
+                owner.ItemController.CurQuickSlot.ClearSlot();
+            }
 
             buildItem.Build(buildableGround, buildDirection);
         }

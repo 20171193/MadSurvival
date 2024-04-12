@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turret: {fileID: 8111111958526891098, guid: c586cb7274d5d0243bef32b9d5e24c16, type: 3}
+  turret3: {fileID: 6295381355584056332, guid: 4e9c97e10a38918459eaf5a7018a12bd, type: 3}
   wall: {fileID: -6630474669590291295, guid: afb599e76f7cd6b40b19b587d9c456ba, type: 3}
+  wall3: {fileID: 0}
