@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 126138406228806821}
-  - component: {fileID: 4757816054146002904}
+  - component: {fileID: 5143111596359266888}
   m_Layer: 0
   m_Name: Item_Armor
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4757816054146002904
+--- !u!114 &5143111596359266888
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,10 +41,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1338671386135081263}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d35739d269c6547bf5d4fa3b0821c7, type: 3}
+  m_Script: {fileID: 11500000, guid: fe15c8af660c2c24ebd5dd69921a8154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 58e153891894e184b9328db35f0de35f, type: 2}
+  durable: 100
+  DecDurableValue: 1
   equipType: 1
   atkType: 0
-  atk: 0
+  playerstat: {fileID: 0}
+  def: 50
