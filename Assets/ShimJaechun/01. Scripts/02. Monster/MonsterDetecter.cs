@@ -156,7 +156,7 @@ namespace Jc
 
 
             Debug.Log($"{this.gameObject} can't find wall");
-            return null;
+            return playerGround;
         }
         #endregion
 
