@@ -114,7 +114,7 @@ namespace Jc
         private void Move()
         {
             // 플레이어 이동 
-            controller.Move(Stat.MaxSpeed, ref curSpeed, anim);
+            controller.Move(Stat.CurMaxSpeed, ref curSpeed, anim);
             // 스테미너 처리
             if (curSpeed >= stat.speedThreshold)
             {

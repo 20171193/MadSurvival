@@ -23,6 +23,7 @@ namespace Jc
         private Vector2 originPos;
         [SerializeField]
         private OnScreenStick leverStick;
+        public OnScreenStick LeverStick { get { return leverStick; } }
 
         [Space(3)]
         [Header("Specs")]

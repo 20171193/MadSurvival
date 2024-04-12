@@ -40,9 +40,9 @@ namespace jungmin
 
         private void Awake()
         {
-            resetTimeValue = dayTimer;
-            prevDayValue = -1;
-            dayForDensity = RenderSettings.fogDensity;
+            //resetTimeValue = dayTimer;
+            //prevDayValue = -1;
+            //dayForDensity = RenderSettings.fogDensity;
         }
 
   //      IEnumerator DayTimeCoroutine()

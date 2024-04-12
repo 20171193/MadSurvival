@@ -17,7 +17,7 @@ namespace Jc
         private Canvas joystickCanvas;
         [SerializeField]
         private Joystick joystick;
-
+        public Joystick Joystick { get { return joystick; } }
         [SerializeField]
         private Player owner;
 
@@ -53,17 +53,17 @@ namespace Jc
             if (joystick.MoveDir == Vector3.zero)
             {
                 curSpeed = 0f;
-                anim.SetFloat("LeverLength", 0);
+                anim.SetFloat("MoveSpeed", 0);
                 return;
             }
 
             float leverRatio = joystick.LeverDistance / joystick.LeverRange;
-            anim.SetFloat("LeverLength", leverRatio);
 
             // 캐릭터 전면 방향 설정
             Vector3 moveDir = new Vector3(joystick.MoveDir.x, 0, joystick.MoveDir.y);
 
             curSpeed = maxSpeed * leverRatio;
+            anim.SetFloat("MoveSpeed", curSpeed);
             // 이동방향으로 바로 회전하기위한 회전 선 세팅 
             transform.forward = moveDir;
             // 레버의 위치에 따른 이동속도 적용
