@@ -70,5 +70,10 @@ namespace Jc
         {
             owner.onGround = ground;
         }
+        public Ground GetOnTile()
+        {
+            return owner.onGround;
+        }
+
     }
 }

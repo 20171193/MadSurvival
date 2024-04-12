@@ -7,14 +7,10 @@ using jungmin;
 namespace Jc
 {
     // 충돌관련 이벤트처리
-    public class PlayerTrigger : MonoBehaviour, ITileable, IDamageable
+    public class PlayerTrigger : MonoBehaviour, IDamageable
     {
         public Player owner;
 
-        public void OnTile(Ground ground)
-        {
-            owner.currentGround = ground;
-        }
         public void TakeDamage(float value)
         {
             float damage = value - owner.Stat.AMR;

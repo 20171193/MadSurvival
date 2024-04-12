@@ -65,6 +65,8 @@ namespace Jc
         [SerializeField]
         private Ground onGround;
 
+        private GroundType originType;
+
         [SerializeField]
         private ObstacleSpawner spawner;
 
@@ -111,11 +113,19 @@ namespace Jc
 
         public void OnTile(Ground ground)
         {
+            originType = ground.type;
             onGround = ground;
+        }
+        public Ground GetOnTile()
+        {
+            return onGround;
         }
 
         public virtual void Digged()
         {
+            Debug.Log($"{onGround} : return");
+            onGround.type = originType;
+
             // ÆÄ±« Ã³¸®
             DropItem();
 

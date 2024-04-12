@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using jungmin;
+using static UnityEngine.UI.GridLayoutGroup;
 
 
 namespace Jc
@@ -114,7 +115,23 @@ namespace Jc
         private void Update()
         {
             Move();
+            GroundCheck();
         }
+
+        private void GroundCheck()
+        {
+            if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hitInfo, 2f, Manager.Layer.groundLM))
+            {
+                Debug.DrawRay(transform.position + Vector3.up, -transform.up, Color.red, 0.1f);
+                Ground onGround = hitInfo.transform.GetComponent<Ground>();
+                if (currentGround != onGround)
+                {
+                    currentGround = onGround;
+                    Manager.Navi.EnterPlayerGround(currentGround);
+                }
+            }
+        }
+
         private void Move()
         {
             // 플레이어 이동 
@@ -141,11 +158,13 @@ namespace Jc
         #region 낮 / 밤 관련 이벤트처리
         public void OnEnterNight()
         {
+            Debug.Log("ExitDayInvoker");
             stat.StopTimer(CoreStatType.Hunger, false);
             stat.StopTimer(CoreStatType.Thirst, false);
         }
         public void OnEnterDay()
         {
+            Debug.Log("EnterDayInvoker");
             stat.StartTimer(false, CoreStatType.Hunger, 1f);
             stat.StartTimer(false, CoreStatType.Thirst, 1f);
         }
