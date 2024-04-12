@@ -44,19 +44,19 @@ namespace jungmin
 
 		// **** Method : 새로운 아이템 추가 시, 그 슬롯의 UI를 업데이트하는 함수 ****
 		public void AddItem(Item newItem, int newitemCount = 1)
-		{ 
+		{
 			// 1. 새로운 아이템과 기존의 아이템을 비교해, 슬롯에 아이템 정보와 갯수 설정
-			if (item != null && newItem.itemdata.itemName != this.item.itemdata.itemName)
-			{ 
-                this.item = newItem;
-                this.ItemCount = newitemCount;
+
+			if (this.item != null && (newItem.itemdata.itemName != this.item.itemdata.itemName))
+			{
+				this.item = newItem;
+				this.ItemCount = newitemCount;
 			}
-			else 
-			{				
+			else
+			{
                 this.item = newItem;
                 this.ItemCount += newitemCount;
-			}
-
+            }
 			// 2. Dic에서 아이템 이미지 불러오기
 			if (ItemManager.Instance.ingredientItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
 			{
@@ -72,13 +72,18 @@ namespace jungmin
 				if (item is Bottle)
 				{
 					Bottle bottle = (Bottle)item;
-					// 물병 용량 업데이트 등록
+					// 물병 용량 업데이트 등록.
 					bottle.OnUseBottle += UpdateSlotCount;
 					text_Count.text = bottle.ownCapacity.ToString();
-					Debug.Log($"물병의 양 {bottle.ownCapacity}");
 					go_CountImage.SetActive(true);
-					//UpdateSlotCount();
 				}
+				else if(item is Build_Base)
+				{   //건물 개수 업데이트 등록.
+					Build_Base buildbase = (Build_Base)item;
+					buildbase.OnBuild += UpdateSlotCount;
+                    go_CountImage.SetActive(true);
+                    text_Count.text = this.ItemCount.ToString();
+                }
 				else
 				{
 					go_CountImage.SetActive(true);
@@ -196,8 +201,24 @@ namespace jungmin
 		// Method : 대상 슬롯 위에서 드래그 앤 드롭 이벤트 시 그 슬롯에서 호출 ****
 		public void OnDrop(PointerEventData eventData)
 		{
+			if(EquipSlotController.instance.EquipSlot == this)
+			{
 
-			if(QuickSlotController.instance.slots.Contains(this))
+                if(DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
+				{
+					return;
+				}
+				else
+				{
+                    if (this.item != null)
+                    {
+                        ChangeSlot();
+                    }
+
+                }
+            }
+
+			if (QuickSlotController.instance.slots.Contains(this))
 			{
 				foreach (Slot slot in QuickSlotController.instance.slots)
 				{
