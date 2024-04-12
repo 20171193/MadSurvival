@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace jungmin
 {
-    public class Constructed_Wall : PooledObject, ITileable
+    public class Constructed_Wall : PooledObject, ITileable, IDamageable
     {
         [SerializeField]
         private Ground onGround;
         [Header("벽의 체력")]
-        public int maxHp;
-        public int ownHp;
+        public float maxHp;
+        public float ownHp;
 
-        public int OwnHp
+        public float OwnHp
         {
             get
             {
@@ -35,13 +35,21 @@ namespace jungmin
             onGround = ground;
             onGround.type = GroundType.Wall;
         }
-
+        public Ground GetOnTile()
+        {
+            return onGround;
+        }
         public override void Release()
         {
             ownHp = maxHp;
             onGround.type = GroundType.Buildable;
             onGround = null;
             base.Release();
+        }
+
+        public void TakeDamage(float damage)
+        {
+            OwnHp -= damage;
         }
     }
 }

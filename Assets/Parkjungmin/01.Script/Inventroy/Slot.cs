@@ -13,9 +13,9 @@ namespace jungmin
 {
 	public class Slot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler
 	{
-		[Header("¾ÆÀÌÅÛ Á¤º¸")]
+		[Header("ì•„ì´í…œ ì •ë³´")]
 		public Item item;
-        [Header("¾ÆÀÌÅÛÀÇ ÇöÀç °³¼ö")]
+        [Header("ì•„ì´í…œì˜ í˜„ì¬ ê°œìˆ˜")]
         public int itemCount;
 		public int ItemCount
 		{
@@ -26,7 +26,7 @@ namespace jungmin
 
 			}
 		}
-        [Header("¾ÆÀÌÅÛÀÇ ³»±¸µµ")]
+        [Header("ì•„ì´í…œì˜ ë‚´êµ¬ë„")]
         public int itemDurable;
 		public int ItemDurable
 		{
@@ -37,15 +37,15 @@ namespace jungmin
 			}
 		}
 
-		[SerializeField] public Image itemImage; //½½·Ô À§¿¡ º¸¿©Áú ¾ÆÀÌÅÛ ÀÌ¹ÌÁö.
+		[SerializeField] public Image itemImage; //ìŠ¬ë¡¯ ìœ„ì— ë³´ì—¬ì§ˆ ì•„ì´í…œ ì´ë¯¸ì§€.
 		[SerializeField] TMP_Text text_Count;
 		[SerializeField] GameObject go_CountImage;
 
 
-		// **** Method : »õ·Î¿î ¾ÆÀÌÅÛ Ãß°¡ ½Ã, ±× ½½·ÔÀÇ UI¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ÇÔ¼ö ****
+		// **** Method : ìƒˆë¡œìš´ ì•„ì´í…œ ì¶”ê°€ ì‹œ, ê·¸ ìŠ¬ë¡¯ì˜ UIë¥¼ ì—…ë°ì´íŠ¸í•˜ëŠ” í•¨ìˆ˜ ****
 		public void AddItem(Item newItem, int newitemCount = 1)
 		{
-			// 1. »õ·Î¿î ¾ÆÀÌÅÛ°ú ±âÁ¸ÀÇ ¾ÆÀÌÅÛÀ» ºñ±³ÇØ, ½½·Ô¿¡ ¾ÆÀÌÅÛ Á¤º¸¿Í °¹¼ö ¼³Á¤
+			// 1. ìƒˆë¡œìš´ ì•„ì´í…œê³¼ ê¸°ì¡´ì˜ ì•„ì´í…œì„ ë¹„êµí•´, ìŠ¬ë¡¯ì— ì•„ì´í…œ ì •ë³´ì™€ ê°¯ìˆ˜ ì„¤ì •
 
 			if (this.item != null && (newItem.itemdata.itemName != this.item.itemdata.itemName))
 			{
@@ -57,28 +57,28 @@ namespace jungmin
                 this.item = newItem;
                 this.ItemCount += newitemCount;
             }
-			// 2. Dic¿¡¼­ ¾ÆÀÌÅÛ ÀÌ¹ÌÁö ºÒ·¯¿À±â
+			// 2. Dicì—ì„œ ì•„ì´í…œ ì´ë¯¸ì§€ ë¶ˆëŸ¬ì˜¤ê¸°
 			if (ItemManager.Instance.ingredientItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
 			{
-                // ¾ÆÀÌÅÛÀÇ ÀÌ¸§À» Dic¿¡¼­ °Ë»öÇØ ÇØ´çµÇ´Â µ¥ÀÌÅÍ¿¡ ÀúÀåµÈ ¾ÆÀÌÅÛÀÇ ÀÌ¹ÌÁö¸¦ °¡Á®¿Â´Ù.
+                // ì•„ì´í…œì˜ ì´ë¦„ì„ Dicì—ì„œ ê²€ìƒ‰í•´ í•´ë‹¹ë˜ëŠ” ë°ì´í„°ì— ì €ì¥ëœ ì•„ì´í…œì˜ ì´ë¯¸ì§€ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
                 itemImage.sprite = ItemManager.Instance.ingredientItemDic[newItem.itemdata.itemName].itemdata.itemImage;
 			}
 			else
 				itemImage.sprite = ItemManager.Instance.craftingItemDic[newItem.itemdata.itemName].itemdata.itemImage;
 
-			// 3. ½½·ÔÀÇ ¾ÆÀÌÅÛÀÇ °¹¼öUI Set On
-			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //Àç·á,¼Òºñ,°Ç¼³ Å¸ÀÔ ¾ÆÀÌÅÛ -> °¹¼ö UI On
+			// 3. ìŠ¬ë¡¯ì˜ ì•„ì´í…œì˜ ê°¯ìˆ˜UI Set On
+			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //ì¬ë£Œ,ì†Œë¹„,ê±´ì„¤ íƒ€ì… ì•„ì´í…œ -> ê°¯ìˆ˜ UI On
 			{
 				if (item is Bottle)
 				{
 					Bottle bottle = (Bottle)item;
-					// ¹°º´ ¿ë·® ¾÷µ¥ÀÌÆ® µî·Ï.
+					// ë¬¼ë³‘ ìš©ëŸ‰ ì—…ë°ì´íŠ¸ ë“±ë¡.
 					bottle.OnUseBottle += UpdateSlotCount;
 					text_Count.text = bottle.ownCapacity.ToString();
 					go_CountImage.SetActive(true);
 				}
 				else if(item is Build_Base)
-				{   //°Ç¹° °³¼ö ¾÷µ¥ÀÌÆ® µî·Ï.
+				{   //ê±´ë¬¼ ê°œìˆ˜ ì—…ë°ì´íŠ¸ ë“±ë¡.
 					Build_Base buildbase = (Build_Base)item;
 					buildbase.OnBuild += UpdateSlotCount;
                     go_CountImage.SetActive(true);
@@ -90,7 +90,7 @@ namespace jungmin
 					text_Count.text = this.ItemCount.ToString();
 				}
 			}
-			else													  //Àåºñ Å¸ÀÔ ¾ÆÀÌÅÛ ->  °¹¼ö UI Off + ³»±¸µµ Ç¥½ÃUI On
+			else													  //ì¥ë¹„ íƒ€ì… ì•„ì´í…œ ->  ê°¯ìˆ˜ UI Off + ë‚´êµ¬ë„ í‘œì‹œUI On
 			{
 				Equip_Item equipItem = (Equip_Item)this.item;
 				this.itemDurable = equipItem.durable;
@@ -99,12 +99,12 @@ namespace jungmin
 				equipItem.OnUse += UpdateSlotCount;
                 //go_CountImage.SetActive(false);
             }
-			// 4.½½·ÔÀÇ ¾ÆÀÌÅÛ ÀÌ¹ÌÁö Åõ¸íµµ 1·Î º¯°æ.
+			// 4.ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ì´ë¯¸ì§€ íˆ¬ëª…ë„ 1ë¡œ ë³€ê²½.
 			SetColor(1);
 		}
 
 
-        // Method : **** ½½·ÔÀÇ ¾ÆÀÌÅÛ °¹¼ö¸¦ ±âÁ¸¿¡ Ãß°¡. ****
+        // Method : **** ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ê°¯ìˆ˜ë¥¼ ê¸°ì¡´ì— ì¶”ê°€. ****
         public void SetSlotCount(int _count)
 		{
             ItemCount += _count;
@@ -115,16 +115,16 @@ namespace jungmin
 				ClearSlot();
 			}
 		}
-		// Method : **** ½½·ÔÀÇ ¾ÆÀÌÅÛ °¹¼ö UI¸¦ ÇöÀç °¹¼ö¿¡ ¸Â°Ô ¾÷µ¥ÀÌÆ® ****
+		// Method : **** ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ê°¯ìˆ˜ UIë¥¼ í˜„ì¬ ê°¯ìˆ˜ì— ë§ê²Œ ì—…ë°ì´íŠ¸ ****
 		public void UpdateSlotCount()
 		{
-			if (item is Bottle) //¹°º´ ¾ÆÀÌÅÛÀÌ¸é
+			if (item is Bottle) //ë¬¼ë³‘ ì•„ì´í…œì´ë©´
 			{
 				Bottle bottle = (Bottle)item;
 				text_Count.text = bottle.ownCapacity.ToString();
 
 			}
-			else if(item is Equip_Item) //³»±¸µµ°¡ ÀÖ´Â Àåºñ ¾ÆÀÌÅÛÀÌ¸é
+			else if(item is Equip_Item) //ë‚´êµ¬ë„ê°€ ìˆëŠ” ì¥ë¹„ ì•„ì´í…œì´ë©´
 			{
 				Equip_Item equipItem = (Equip_Item)item;
 				text_Count.text = $"{equipItem.durable}%";
@@ -141,7 +141,7 @@ namespace jungmin
         }
 
 
-        // Method :  **** ½½·Ô ÃÊ±âÈ­ ****
+        // Method :  **** ìŠ¬ë¡¯ ì´ˆê¸°í™” ****
         public void ClearSlot()
 		{
 			if(item is Bottle)
@@ -151,20 +151,20 @@ namespace jungmin
 			}
 			item = null;
             ItemCount = 0;
-			itemImage.sprite = GetComponent<Image>().sprite; //½½·ÔÀÇ ±âº» ½ºÇÁ¶óÀÌÆ®·Î º¯°æ.
+			itemImage.sprite = GetComponent<Image>().sprite; //ìŠ¬ë¡¯ì˜ ê¸°ë³¸ ìŠ¤í”„ë¼ì´íŠ¸ë¡œ ë³€ê²½.
 			SetColor(0);
 			text_Count.text = "0";
 			go_CountImage.SetActive(false);
 
 		}
-        // Method :  **** ½½·ÔÀÇ ¾ÆÀÌÅÛ ÀÌ¹ÌÁö Åõ¸íµµ º¯°æ ****
+        // Method :  **** ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ì´ë¯¸ì§€ íˆ¬ëª…ë„ ë³€ê²½ ****
         void SetColor(float alpha)
 		{
 			Color color = itemImage.color;
 			color.a = alpha;
 			itemImage.color = color;
 		}
-        // Method : **** ½½·ÔÀÇ ¹è°æ ÀÌ¹ÌÁöÀÇ Red °ª º¯°æ ****
+        // Method : **** ìŠ¬ë¡¯ì˜ ë°°ê²½ ì´ë¯¸ì§€ì˜ Red ê°’ ë³€ê²½ ****
         public void SetColorBG(float alpha)
 		{
 			Color color = GetComponent<Image>().color;
@@ -174,10 +174,10 @@ namespace jungmin
 
 		public void OnBeginDrag(PointerEventData eventData)
 		{
-			// Å¬¸¯ÇÑ °÷¿¡ ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏ´ÂÁö?
+			// í´ë¦­í•œ ê³³ì— ì•„ì´í…œì´ ì¡´ì¬í•˜ëŠ”ì§€?
 			if (BackPackController.inventory_Activated)
 			{
-				// ¹éÆÑ¿¡ ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏ´Â °æ¿ì
+				// ë°±íŒ©ì— ì•„ì´í…œì´ ì¡´ì¬í•˜ëŠ” ê²½ìš°
 				if (item != null)
 				{
 					DragSlot.instance.transform.position = eventData.position;
@@ -188,7 +188,7 @@ namespace jungmin
 		}
 		public void OnDrag(PointerEventData eventData)
 		{
-			// ÀÌ¹ÌÁö µå·¡±×
+			// ì´ë¯¸ì§€ ë“œë˜ê·¸
 			if (BackPackController.inventory_Activated)
 			{
 				if (item != null)
@@ -198,25 +198,25 @@ namespace jungmin
 			}
 		}
 
-		// Method : ´ë»ó ½½·Ô À§¿¡¼­ µå·¡±× ¾Ø µå·Ó ÀÌº¥Æ® ½Ã ±× ½½·Ô¿¡¼­ È£Ãâ ****
+		// Method : ëŒ€ìƒ ìŠ¬ë¡¯ ìœ„ì—ì„œ ë“œë˜ê·¸ ì•¤ ë“œë¡­ ì´ë²¤íŠ¸ ì‹œ ê·¸ ìŠ¬ë¡¯ì—ì„œ í˜¸ì¶œ ****
 		public void OnDrop(PointerEventData eventData)
 		{
-			if(EquipSlotController.instance.EquipSlot == this)
-			{
+			//if (EquipSlotController.instance.EquipSlot == this)
+			//{
 
-                if(DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
-				{
-					return;
-				}
-				else
-				{
-                    if (this.item != null)
-                    {
-                        ChangeSlot();
-                    }
+			//	if (DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
+			//	{
+			//		return;
+			//	}
+			//	else
+			//	{
+			//		if (this.item != null)
+			//		{
+			//			ChangeSlot();
+			//		}
 
-                }
-            }
+			//	}
+			//}
 
 			if (QuickSlotController.instance.slots.Contains(this))
 			{
@@ -238,25 +238,25 @@ namespace jungmin
                 ChangeSlot();
 			}
 		}
-        // Method : ½½·Ô °£ÀÇ ±³È¯ ****
+        // Method : ìŠ¬ë¡¯ ê°„ì˜ êµí™˜ ****
         void ChangeSlot()
         {
-            // 1. OnDrop ÀÌº¥Æ®°¡ È£ÃâµÈ ½½·ÔÀÇ µ¥ÀÌÅÍµéÀ» ¹Ì¸® º¹»çÇØµĞ´Ù.
+            // 1. OnDrop ì´ë²¤íŠ¸ê°€ í˜¸ì¶œëœ ìŠ¬ë¡¯ì˜ ë°ì´í„°ë“¤ì„ ë¯¸ë¦¬ ë³µì‚¬í•´ë‘”ë‹¤.
             Item tempItem = item;
             int tempItemCount = ItemCount;
 
-            // 2.±âÁ¸ÀÇ ½½·Ô¿¡ ÀÖ´ø ¾ÆÀÌÅÛÀÇ °³¼ö¸¦ 0À¸·Î º¯°æ
+            // 2.ê¸°ì¡´ì˜ ìŠ¬ë¡¯ì— ìˆë˜ ì•„ì´í…œì˜ ê°œìˆ˜ë¥¼ 0ìœ¼ë¡œ ë³€ê²½
             this.ItemCount = 0;
 
-            // 3.  OnDrop ÀÌº¥Æ®°¡ È£ÃâµÈ ½½·Ô¿¡ µå·¡±× ÁßÀÎ ¾ÆÀÌÅÛÀ» Ãß°¡.
+            // 3.  OnDrop ì´ë²¤íŠ¸ê°€ í˜¸ì¶œëœ ìŠ¬ë¡¯ì— ë“œë˜ê·¸ ì¤‘ì¸ ì•„ì´í…œì„ ì¶”ê°€.
             AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
 			
-			// 4. ±âÁ¸ ½½·ÔÀÇ ¾ÆÀÌÅÛÀÇ Á¸Àç À¯¹«¿¡ µû¶ó ±âÁ¸ ½½·ÔÀ» ¾÷µ¥ÀÌÆ®ÇÑ´Ù.
+			// 4. ê¸°ì¡´ ìŠ¬ë¡¯ì˜ ì•„ì´í…œì˜ ì¡´ì¬ ìœ ë¬´ì— ë”°ë¼ ê¸°ì¡´ ìŠ¬ë¡¯ì„ ì—…ë°ì´íŠ¸í•œë‹¤.
             if (tempItem != null)
             {					  
                 DragSlot.instance.dragSlot.AddItem(tempItem, tempItemCount);
 
-				if(tempItem is Bottle) //4.1 ¸¸¾à ¹°º´ ¾ÆÀÌÅÛÀÌ¾ú´Ù¸é, ±âÁ¸ÀÇ ÀÌº¥Æ®¸¦ Á¦°ÅÇÑ´Ù.
+				if(tempItem is Bottle) //4.1 ë§Œì•½ ë¬¼ë³‘ ì•„ì´í…œì´ì—ˆë‹¤ë©´, ê¸°ì¡´ì˜ ì´ë²¤íŠ¸ë¥¼ ì œê±°í•œë‹¤.
 				{
 					Bottle bottle = (Bottle)tempItem;
 					bottle.OnUseBottle -= UpdateSlotCount;
@@ -274,7 +274,7 @@ namespace jungmin
         public void OnEndDrag(PointerEventData eventData)
 		{
 
-			// µå·¡±×ÁßÀÎ ÀÌ¹ÌÁö ¸®ÅÏ
+			// ë“œë˜ê·¸ì¤‘ì¸ ì´ë¯¸ì§€ ë¦¬í„´
 			if (BackPackController.inventory_Activated)
 			{
 				DragSlot.instance.SetColor(0);
@@ -282,11 +282,11 @@ namespace jungmin
 
 			}
 		}
-        // Method : Äü½½·Ô¿¡¼­ ½½·Ô ¼±ÅÃÇÏ±â ****
+        // Method : í€µìŠ¬ë¡¯ì—ì„œ ìŠ¬ë¡¯ ì„ íƒí•˜ê¸° ****
         public void SelectSlot_QuickSlot()
 		{
 
-			if (SelectedSlot_QuickSlot.instance.SelectedSlot != null) //ÀÌÀü¿¡ ¼¿·ºµÈ ½½·ÔÀÌ ÀÖ¾ú´Ù¸é,
+			if (SelectedSlot_QuickSlot.instance.SelectedSlot != null) //ì´ì „ì— ì…€ë ‰ëœ ìŠ¬ë¡¯ì´ ìˆì—ˆë‹¤ë©´,
 			{
 				SelectedSlot_QuickSlot.instance.SelectedSlot.SetColorBG(255);
 				SelectedSlot_QuickSlot.instance.SelectedSlot = this;
@@ -299,15 +299,15 @@ namespace jungmin
 			}
 
 		}
-        // Method : ÀÎº¥Åä¸®¿¡¼­ ½½·Ô ¼±ÅÃÇÏ±â ****
+        // Method : ì¸ë²¤í† ë¦¬ì—ì„œ ìŠ¬ë¡¯ ì„ íƒí•˜ê¸° ****
         void SelectSlot_Inventory()
 		{
-            // 1. Äü½½·ÔÀÇ ¼±ÅÃµÈ ½½·ÔÀÇ ¼±ÅÃ ÀÌ¹ÌÁö¸¦ ÇØÁ¦½ÃÄÑ Çò°¥¸®Áö ¾Ê°Ô ÇÑ´Ù.
+            // 1. í€µìŠ¬ë¡¯ì˜ ì„ íƒëœ ìŠ¬ë¡¯ì˜ ì„ íƒ ì´ë¯¸ì§€ë¥¼ í•´ì œì‹œì¼œ í—·ê°ˆë¦¬ì§€ ì•Šê²Œ í•œë‹¤.
             if (SelectedSlot_QuickSlot.instance.SelectedSlot != null)
             {
                 SelectedSlot_QuickSlot.instance.SelectedSlot.SetColorBG(255);
             }
-			// 2. ¼±ÅÃµÈ ½½·ÔÀº ¹è°æ ÀÌ¹ÌÁöÀÇ Red °ªÀ» ¹Ù²ã¼­ ¼±ÅÃµÈ °ÍÀ» È®ÀÎ½ÃÅ²´Ù.
+			// 2. ì„ íƒëœ ìŠ¬ë¡¯ì€ ë°°ê²½ ì´ë¯¸ì§€ì˜ Red ê°’ì„ ë°”ê¿”ì„œ ì„ íƒëœ ê²ƒì„ í™•ì¸ì‹œí‚¨ë‹¤.
 			if (SelectedSlot_Inventory.instance.SelectedSlot != null)
 			{
 				SelectedSlot_Inventory.instance.SelectedSlot.SetColorBG(255);

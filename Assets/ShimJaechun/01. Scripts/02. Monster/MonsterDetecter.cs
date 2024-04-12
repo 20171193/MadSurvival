@@ -1,6 +1,7 @@
 using Jc;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -27,10 +28,12 @@ namespace Jc
         private Ground playerGround;
         public Ground PlayerGround { get { return playerGround; } set { playerGround = value; } }
 
+        [SerializeField]
         // 현재 추격하는 대상이 플레이어인지 체크
         private bool isTrackingPlayer;
         public bool IsTrackingPlayer { get { return isTrackingPlayer; } }
 
+        [SerializeField]
         private GameObject currentTarget = null;
         public GameObject CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
 
@@ -115,20 +118,25 @@ namespace Jc
                     int nx = dx[i] + curPos.x;
 
                     // 예외처리 
-                    if (nz > Navi.cornerTL.z || nz < Navi.cornerBL.z || nx < Navi.cornerTL.x || nx > Navi.cornerTR.x) continue;
-                    if (visitied[nz - resol, nx - resol]) continue;
-                    if (Navi.gameMap[nz].groundList[nx].type != GroundType.Buildable) continue;
+                    if (nz > Navi.cornerBL.z || nz < Navi.cornerTL.z || nx < Navi.cornerTL.x || nx > Navi.cornerTR.x)
+                        continue;
+                    if (visitied[nz - resol, nx - resol])
+                        continue;
+                    if (Navi.gameMap[nz].groundList[nx].type != GroundType.Buildable)
+                        continue;
 
                     // 진지를 구축할 수 있는 끝점 좌표에 도달한 경우 (벽이 뚫린 경우)
-                    if (nz >= Navi.cornerTL.z || nz <= Navi.cornerBL.z || nx <= Navi.cornerTL.x || nx >= Navi.cornerTR.x)
-                        return true;
+                    if (nz <= Navi.cornerTL.z || nz >= Navi.cornerBL.z || nx <= Navi.cornerTL.x || nx >= Navi.cornerTR.x)
+                        return false;
 
                     q.Enqueue(new GroundPos(nz, nx));
                     visitied[nz - resol, nx - resol] = true;
                 }
             }
+
+            Debug.Log("플레이어는 현재 진지안에 위치해있습니다.");
             // 벽으로 둘러싸인 경우
-            return false;
+            return true;
         }
 
         // 레이캐스트를 통해 가장 가까운 벽 찾기
@@ -136,19 +144,20 @@ namespace Jc
         {
             // 현재 위치에서 가장 가까운 벽을 목적지로 설정
             // 현재위치 -> 플레이어위치 레이캐스팅 [LayerMask = 벽]
-            Vector3 startPos = new Vector3(onGround.transform.position.x, 0.2f, onGround.transform.position.z);
-            Vector3 endPos = new Vector3(playerGround.transform.position.x, 0.2f, onGround.transform.position.z);
-            Debug.DrawLine(startPos, endPos, Color.red, 0.5f);
+            Vector3 startPos = new Vector3(onGround.transform.position.x, 2f, onGround.transform.position.z);
+            Vector3 endPos = new Vector3(playerGround.transform.position.x, 2f, playerGround.transform.position.z);
+            Debug.DrawLine(startPos, endPos, Color.red, 10f);
 
-            // 가장 가까운 벽으로 이동 
-            if (Physics.Raycast(new Ray(startPos, endPos), out RaycastHit hitInfo, (endPos - startPos).magnitude, Manager.Layer.wallLM))
+            // 가장 가까운 벽 찾기
+            if (Physics.Raycast(startPos, (endPos - startPos).normalized, out RaycastHit hit, 200f, Manager.Layer.wallLM))
             {
-                Wall targetWall = hitInfo.transform.GetComponent<Wall>();
-                return targetWall?.OnGround;
+                ITileable targetGround = hit.transform.GetComponent<ITileable>();
+                return targetGround?.GetOnTile();
             }
 
+
             Debug.Log($"{this.gameObject} can't find wall");
-            return null;
+            return playerGround;
         }
         #endregion
 
@@ -174,7 +183,11 @@ namespace Jc
             {
                 // 지정된 타깃 해제
                 if (other.gameObject == currentTarget)
+                {
+                    Debug.Log("목표물 파괴");
                     currentTarget = null;
+                    owner.FSM.ChangeState("Tracking");
+                }
             }
         }
     }
