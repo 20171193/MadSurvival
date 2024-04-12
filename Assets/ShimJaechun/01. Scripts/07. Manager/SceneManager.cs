@@ -3,18 +3,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
+public enum SceneNameType
+{
+    Title,
+    InGame
+}
+
 public class SceneManager : Singleton<SceneManager>
 {
     [SerializeField] Image fade;
     [SerializeField] Slider loadingBar;
     [SerializeField] float fadeTime;
 
-    public void LoadScene(string sceneName)
+    public void LoadScene(SceneNameType type)
     {
-        StartCoroutine(LoadingRoutine(sceneName));
+        StartCoroutine(LoadingRoutine(type));
     }
 
-    IEnumerator LoadingRoutine(string sceneName)
+    IEnumerator LoadingRoutine(SceneNameType type)
     {
         fade.gameObject.SetActive(true);
         yield return FadeOut();
@@ -24,7 +30,7 @@ public class SceneManager : Singleton<SceneManager>
         Time.timeScale = 0f;
         loadingBar.gameObject.SetActive(true);
 
-        AsyncOperation oper = UnitySceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation oper = UnitySceneManager.LoadSceneAsync((int)type);
         while (oper.isDone == false)
         {
             loadingBar.value = oper.progress;

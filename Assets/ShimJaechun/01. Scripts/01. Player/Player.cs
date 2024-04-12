@@ -77,6 +77,10 @@ namespace Jc
         private PlayerBuilder builder;
         public PlayerBuilder Builder { get { return builder; } }
 
+        [SerializeField]
+        private ScoreboardInvoker score;
+        public ScoreboardInvoker Score { get { return score; } }
+
         [Space(3)]
         [Header("Balancing")]
         [Space(2)]
@@ -196,7 +200,7 @@ namespace Jc
         }
         public void OnDie()
         {
-
+            anim.SetBool("IsDie", true);
         }
         #endregion
 

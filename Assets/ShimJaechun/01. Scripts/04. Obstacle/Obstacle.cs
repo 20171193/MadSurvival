@@ -118,6 +118,12 @@ namespace Jc
         {
             // ÆÄ±« Ã³¸®
             DropItem();
+
+            if(obstacleType == ObstacleType.Tree)
+                ScoreboardInvoker.Instance.digTree?.Invoke(ScoreType.Tree);
+            if (obstacleType == ObstacleType.Stone)
+                ScoreboardInvoker.Instance.digStone?.Invoke(ScoreType.Stone);
+
             levelSpecificModel[level].SetActive(false);
             Release();
         }
@@ -155,8 +161,6 @@ namespace Jc
         }
         public void DigUp(float value)
         {
-            Debug.Log($"{gameObject.name} DigUp");
-
             float damage = value - amr;
             if (damage < 1) return;
 
