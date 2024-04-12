@@ -47,14 +47,12 @@ namespace Jc
         private Player player;
 
         [Header("낮 / 밤 변경 시스템")]
-        [SerializeField]
-        private DayAndNight dayController;
+        //private DayAndNight dayController;
         [SerializeField]
         private float fogSpeed;
-        private Vector3 dayRot = new Vector3(70f, 0, 0);     // 정오의 태양 회전값
-        private Vector3 nightRot = new Vector3(270f, 0, 0);  // 자정의 태양 회전값
-        private Vector3 moonDayRot = new Vector3(270, 0, 0);   // 정오의 달 회전값
-        private Vector3 moonNightRot = new Vector3(470, 0, 0);   // 자정의 달 회전값
+        private Vector3 dayRot = new Vector3(70f, -30f, 0f);      // 정오의 태양 회전값
+        private Vector3 dayMiddleRot = new Vector3(180f, -30f, 0);   
+        private Vector3 nightRot = new Vector3(220f, -30f, 0f);  // 자정의 태양 회전값
 
         private float nightFogDensity = 0.18f;
         private float dayFogDensity = 0f;
@@ -129,10 +127,10 @@ namespace Jc
         {
             inst = this;
 
-            dayController.resetTimeValue = dayChangeTime;
-            dayController.dayTimer = dayChangeTime;
+            //dayController.resetTimeValue = dayChangeTime;
+            //dayController.dayTimer = dayChangeTime;
 
-            dayController.OnNight += EnterNight;
+            //dayController.OnNight += EnterNight;
 
             totalTimer = StartCoroutine(TotalGameTimer());
         }
@@ -144,10 +142,6 @@ namespace Jc
 
             // 태양 회전값 적용
             dayLight.transform.eulerAngles = nightRot;
-            // 달 회전값 적용
-            nightLight.transform.eulerAngles = moonNightRot;
-            // 안개 밀도 적용
-            RenderSettings.fog = true;
             // 플레이어 스포트라이트 적용
             playerSpotLight.intensity = 10f;
 
@@ -162,18 +156,13 @@ namespace Jc
         {
             // 태양 회전값 적용
             dayLight.transform.eulerAngles = dayRot;
-            // 달 회전값 적용
-            nightLight.transform.eulerAngles = moonDayRot;
-
-            // 안개 밀도 적용
-            RenderSettings.fog = false;
             // 플레이어 스포트라이트 적용
             playerSpotLight.intensity = 0f;
 
             isNight = false;
 
             // 밤 -> 낮 변경
-            dayController.OnExitNight();
+            //dayController.OnExitNight();
 
             // 날짜 카운팅
             if (maxDay > day)
@@ -198,13 +187,7 @@ namespace Jc
                     DayTime += Time.deltaTime;
                     dayRate = DayTime / DayChangeTime;
 
-                    dayLight.transform.eulerAngles = Vector3.Lerp(dayRot, nightRot, dayRate);      // 태양 회전 값 적용
-                    nightLight.transform.eulerAngles = Vector3.Lerp(moonDayRot, moonNightRot, dayRate);     // 달 회전 값 적용
-                    //if (dayRate >= 0.9f && !isEnterFog)    // 안개 밀도 적용
-                    //{
-                    //    enterFogRoutine = StartCoroutine(EnterFogRoutine());
-                    //    isEnterFog = true;
-                    //}
+                    dayLight.transform.eulerAngles = Vector3.Lerp(dayRot, dayMiddleRot, dayRate);           // 태양 회전 값 적용
                     playerSpotLight.intensity = Mathf.Lerp(0, 10f, dayRate-0.05f);        // 플레이어 스포트라이트 밝기 적용
 
                     if(DayTime >= dayChangeTime)
