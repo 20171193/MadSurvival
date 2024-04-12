@@ -9,15 +9,31 @@ public class Constructed_Turret : PooledObject, ITileable
 {
     //공격할 타겟의 큐 -> 큐의 순서 = 공격 순위
     [SerializeField]
-    List<GameObject> target_List = new List<GameObject>(); //몬스터 큐 
-    /* 
-     *  공격가능한 무언가가 범위에 들어왔다면 큐 삽입.
-     *  큐에 들어온 순서대로 공격.
-     *  타겟이 죽었거나, 범위를 벗어났을 경우 큐에서 제거.
-     */
-
+    public List<GameObject> target_List = new List<GameObject>(); //몬스터 큐 
     [SerializeField]
     private Ground onGround;
+
+    [Header("터렛의 체력")]
+    public int maxHp;
+    public int ownHp;
+
+    public int OwnHp
+    {
+        get
+        {
+            return ownHp;
+        }
+        set
+        {
+            ownHp = value;
+
+            if(ownHp <= 0)
+            {
+                Release();
+            }
+        }
+    }
+
 
     [SerializeField] SphereCollider attack_Range;
     [SerializeField] GameObject Turret_Head;
@@ -31,51 +47,22 @@ public class Constructed_Turret : PooledObject, ITileable
     [Header("터렛의 공격 주기")]
     [SerializeField] float attackCycle_Time;
     [SerializeField] float nowCyle_Time;
-    [Header("터렛의 포신 회전 속도")]
-    [SerializeField] float rotate_Speed;
-    Coroutine attakcoroutine;
+    //[Header("터렛의 포신 회전 속도")]
+    //[SerializeField] float rotate_Speed;
+    public Coroutine attakcoroutine;
     bool IsAttack;
 
     Vector3 TargetDir;
     public Vector3 TargetPos;
 
+
+
     void Start()
     {
         nowCyle_Time = attackCycle_Time;
-    }
-
-    private void OnEnable()
-    {
-        if (attack_Range == null) //만약 시작 시 스피어 콜라이더가 부여되어 있지 않다면 자동 부여.
-        {
-            attack_Range = GetComponent<SphereCollider>();
-        }
         attack_Range.radius = range_Radius; //활성화 시 인스펙터 창에서 저장한 범위 값을 할당.
 
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        CheckMonsterLM(other);
-    }
-    private void OnTriggerExit(Collider other) //범위를 벗어나면 리스트에서 제거.
-    {
-        if (target_List.Count < 0) return;
-
-        if (target_List.Contains(other.gameObject))
-        {
-            target_List.Remove(other.gameObject);
-            if (target_List.Count <= 0) //대상이 없을 경우 터렛 포신방향 원위치.
-            {
-                Turret_Head.transform.forward = gameObject.transform.forward;
-                if (attakcoroutine != null)
-                {
-                    StopCoroutine(attakcoroutine);
-                    attakcoroutine = null;
-                }
-            }
-        }
-    }
-
     void Attack() //실제 공격
     {
         if (target_List.Count <= 0) return;
@@ -127,7 +114,6 @@ public class Constructed_Turret : PooledObject, ITileable
 
         else if (target_List.Count > 0)
         {
-            Debug.Log("Damage");
             IDamageable damageable = target_List[0].GetComponent<IDamageable>();
             damageable.TakeDamage(damageValue);
 
@@ -137,9 +123,9 @@ public class Constructed_Turret : PooledObject, ITileable
             }
         }
     }
-    void CheckMonsterLM(Collider other)
+    public void CheckMonsterLM(Collider other)
     {
-        if (((1 << other.gameObject.layer) & (Manager.Layer.turretTargetableLM.value)) != 0)
+        if ((1 << other.gameObject.layer & Manager.Layer.turretTargetableLM.value) != 0)
         {
             if (!target_List.Contains(other.gameObject) && (other.gameObject.GetComponent<MonsterStat>() || other.gameObject.GetComponent<AnimalStat>()))
             {
@@ -167,6 +153,7 @@ public class Constructed_Turret : PooledObject, ITileable
 
     public override void Release()
     {
+        OwnHp = maxHp;
         onGround.type = GroundType.Buildable;
         onGround = null;
         base.Release();
