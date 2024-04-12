@@ -6,6 +6,7 @@ using Jc;
 using UnityEditor.Experimental.GraphView;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.UIElements;
+using UnityEngine.Events;
 
 namespace jungmin
 {
@@ -16,6 +17,7 @@ namespace jungmin
 
         [Header("고정 Position 값")]
         [SerializeField] bool hasPos;
+        [SerializeField] public UnityAction OnBuild;
 
         // Method : 구조물 건설 ****
         public void Build(Ground socketGround, BuildDirection direction)
@@ -53,6 +55,7 @@ namespace jungmin
                 inst.transform.forward = Dir;
 
             }
+            OnBuild?.Invoke();
            
             socketGround.type = GroundType.Wall;
         }

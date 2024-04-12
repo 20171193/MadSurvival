@@ -46,6 +46,7 @@ namespace jungmin
 		}
 		void CloseInventory()
 		{
+			if(toolTip.activeSelf == true) { TryOpenToolTip(); }
 			inventory_Base.SetActive(false);
             // 1.인벤토리를 닫을 때는 인벤토리에서 선택된 슬롯을 Null로 바꾼다.
             if (SelectedSlot_Inventory.instance.SelectedSlot != null)
