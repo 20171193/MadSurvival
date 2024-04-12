@@ -170,6 +170,7 @@ namespace Jc
         {
             base.Release();
             OnMonsterDie?.Invoke(this);
+            ScoreboardInvoker.Instance.killMonster?.Invoke(ScoreType.Monster);
         }
     }
 }

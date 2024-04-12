@@ -15,5 +15,7 @@ public class Food : Used_Item
     public override void Use(Player player)
     {
         player.Stat.OwnHunger += IncreaseValue;
+        // 심재천 수정
+        ScoreboardInvoker.Instance.eatMeat?.Invoke(ScoreType.Meat);
     }
 }

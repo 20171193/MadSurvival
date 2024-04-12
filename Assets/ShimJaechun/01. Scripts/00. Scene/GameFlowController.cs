@@ -216,12 +216,12 @@ namespace Jc
             if (fadeRoutine != null)
                 StopCoroutine(fadeRoutine);
 
-            fadeRoutine = StartCoroutine(isFadeIn ? FadeInRoutine() : FadeOutRoutine());
+            fadeRoutine = StartCoroutine(isFadeIn ? DayChangeFadeInRoutine() : DayChangeFadeOutRoutine());
         }
         // 페이드인
-        IEnumerator FadeInRoutine()
+        IEnumerator DayChangeFadeInRoutine()
         {
-            Time.timeScale = 0f;
+            Time.timeScale = 0.1f;
             yield return null;
 
             float rate = 0f;
@@ -237,7 +237,7 @@ namespace Jc
             yield return null;
         }
         // 페이드아웃
-        IEnumerator FadeOutRoutine()
+        IEnumerator DayChangeFadeOutRoutine()
         {
             ExitNight();
             lootButtonGroup.SetActive(false);

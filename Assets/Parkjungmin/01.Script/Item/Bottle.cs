@@ -24,6 +24,8 @@ namespace jungmin
                 player.Stat.OwnThirst += usePerValue;
                 ownCapacity -= usePerValue;
                 OnUseBottle();
+                // 심재천 수정
+                ScoreboardInvoker.Instance.drinkWater?.Invoke(ScoreType.Water);
             }
             else //용량이 없다면
             {

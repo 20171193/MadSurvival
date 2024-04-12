@@ -102,6 +102,8 @@ namespace Jc
         }
         public override void Enter()
         {
+            ScoreboardInvoker.Instance.killAnimal?.Invoke(ScoreType.Animal);
+
             // 아이템 드랍
             baseOwner.DropItem();
             baseOwner.Anim.SetBool("IsDie", true);
