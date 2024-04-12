@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Jc;
 using Unity.VisualScripting;
 
-public class Constructed_Turret : PooledObject, ITileable
+public class Constructed_Turret : PooledObject, ITileable, IDamageable
 {
     //공격할 타겟의 큐 -> 큐의 순서 = 공격 순위
     [SerializeField]
@@ -14,10 +14,10 @@ public class Constructed_Turret : PooledObject, ITileable
     private Ground onGround;
 
     [Header("터렛의 체력")]
-    public int maxHp;
-    public int ownHp;
+    public float maxHp;
+    public float ownHp;
 
-    public int OwnHp
+    public float OwnHp
     {
         get
         {
@@ -162,4 +162,8 @@ public class Constructed_Turret : PooledObject, ITileable
         base.Release();
     }
 
+    public void TakeDamage(float damage)
+    {
+        OwnHp -= damage;
+    }
 }

@@ -201,22 +201,22 @@ namespace jungmin
 		// Method : 대상 슬롯 위에서 드래그 앤 드롭 이벤트 시 그 슬롯에서 호출 ****
 		public void OnDrop(PointerEventData eventData)
 		{
-			if(EquipSlotController.instance.EquipSlot == this)
-			{
+			//if (EquipSlotController.instance.EquipSlot == this)
+			//{
 
-                if(DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
-				{
-					return;
-				}
-				else
-				{
-                    if (this.item != null)
-                    {
-                        ChangeSlot();
-                    }
+			//	if (DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
+			//	{
+			//		return;
+			//	}
+			//	else
+			//	{
+			//		if (this.item != null)
+			//		{
+			//			ChangeSlot();
+			//		}
 
-                }
-            }
+			//	}
+			//}
 
 			if (QuickSlotController.instance.slots.Contains(this))
 			{
