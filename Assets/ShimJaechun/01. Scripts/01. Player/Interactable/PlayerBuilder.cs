@@ -40,13 +40,18 @@ namespace Jc
 
         public void EnterBuildMode()
         {
-            if(socketSetRoutine == null)
+            buildSocket.SetActive(true);
+            if (socketSetRoutine == null)
                 socketSetRoutine = StartCoroutine(SocketSetRoutine());
         }
         public void ExitBuildMode()
         {
+            buildSocket.SetActive(false);
             if (socketSetRoutine != null)
+            {
                 StopCoroutine(socketSetRoutine);
+                socketSetRoutine = null;
+            }
         }
 
         public void Build(Build_Base buildItem)
@@ -54,11 +59,10 @@ namespace Jc
             if (buildableGround == null || buildItem == null) return;
 
             owner.ItemController.CurQuickSlot.itemCount--;
-            //owner.ItemController.CurQuickSlot.SetSlotCount(-1);
             if (owner.ItemController.CurQuickSlot.itemCount <= 0 )
             {
-                
                 owner.ItemController.CurQuickSlot.ClearSlot();
+                owner.ItemController.ChangeButton();
             }
 
             buildItem.Build(buildableGround, buildDirection);

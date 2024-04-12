@@ -30,9 +30,8 @@ namespace Jc
             {
                 StopCoroutine(exhaustRoutine);
                 exhaustRoutine = null;
+                fillImage.color = originColor;
             }
-
-            fillImage.color = originColor;
         }
 
         IEnumerator ExhaustRoutine()

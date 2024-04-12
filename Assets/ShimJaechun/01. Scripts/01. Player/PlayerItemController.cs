@@ -56,12 +56,14 @@ namespace Jc
         // 퀵슬롯에 할당된 아이템과 상호작용버튼 연동
         public void ChangeButton()
         {
-            if (curQuickSlot == null) return;
-            if (curQuickSlot.item == null) return;
-
             ResetPrevButton(owner.curButtonMode);
-
             curImage?.SetActive(false);
+
+            if (curQuickSlot.item == null || curQuickSlot.item.itemdata == null)
+            {
+                owner.curButtonMode = InteractButtonMode.None;
+                return;
+            }
 
             switch (curQuickSlot.item.itemdata.itemtype)
             {
@@ -105,7 +107,7 @@ namespace Jc
         public void Equip()
         {
             Slot curSlot = owner.IsOnBackpack ? curInventorySlot : curQuickSlot;
-
+            if (curSlot == null) return;
             Equip_Item item = (Equip_Item)curSlot.item;
             if (item == null) return;
 
