@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: b255bae1f050fe14884ec56ce5a3ec7a, type: 2}
-  durable: 0
-  DecDurableValue: 0
+  durable: 100
+  DecDurableValue: 1
   equipType: 0
-  atkType: 1
+  atkType: 3
   atk: 10

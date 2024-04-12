@@ -69,16 +69,31 @@ namespace jungmin
 			// 3. 슬롯의 아이템의 갯수UI Set On
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //재료,소비,건설 타입 아이템 -> 갯수 UI On
 			{
-				go_CountImage.SetActive(true);
-                text_Count.text = this.ItemCount.ToString();
+				if (item is Bottle)
+				{
+					Bottle bottle = (Bottle)item;
+					// 물병 용량 업데이트 등록
+					bottle.OnUseBottle += UpdateSlotCount;
+					text_Count.text = bottle.ownCapacity.ToString();
+					Debug.Log($"물병의 양 {bottle.ownCapacity}");
+					go_CountImage.SetActive(true);
+					//UpdateSlotCount();
+				}
+				else
+				{
+					go_CountImage.SetActive(true);
+					text_Count.text = this.ItemCount.ToString();
+				}
 			}
 			else													  //장비 타입 아이템 ->  갯수 UI Off + 내구도 표시UI On
 			{
-				Equip_Item equip_Item = (Equip_Item)this.item;
-				this.itemDurable = equip_Item.durable;
-				text_Count.text = "0";
-				go_CountImage.SetActive(false);
-			}
+				Equip_Item equipItem = (Equip_Item)this.item;
+				this.itemDurable = equipItem.durable;
+                go_CountImage.SetActive(true);
+				text_Count.text = $"{equipItem.durable}%";
+				equipItem.OnUse += UpdateSlotCount;
+                //go_CountImage.SetActive(false);
+            }
 			// 4.슬롯의 아이템 이미지 투명도 1로 변경.
 			SetColor(1);
 		}
@@ -98,7 +113,21 @@ namespace jungmin
 		// Method : **** 슬롯의 아이템 갯수 UI를 현재 갯수에 맞게 업데이트 ****
 		public void UpdateSlotCount()
 		{
-			text_Count.text = ItemCount.ToString();
+			if (item is Bottle) //물병 아이템이면
+			{
+				Bottle bottle = (Bottle)item;
+				text_Count.text = bottle.ownCapacity.ToString();
+
+			}
+			else if(item is Equip_Item) //내구도가 있는 장비 아이템이면
+			{
+				Equip_Item equipItem = (Equip_Item)item;
+				text_Count.text = $"{equipItem.durable}%";
+			}
+			else
+			{
+				text_Count.text = ItemCount.ToString();
+			}
 
             if (ItemCount <= 0)
             {
@@ -110,6 +139,11 @@ namespace jungmin
         // Method :  **** 슬롯 초기화 ****
         public void ClearSlot()
 		{
+			if(item is Bottle)
+			{
+				Bottle bottle = (Bottle)item;
+				bottle.OnUseBottle -= UpdateSlotCount;
+			}
 			item = null;
             ItemCount = 0;
 			itemImage.sprite = GetComponent<Image>().sprite; //슬롯의 기본 스프라이트로 변경.
@@ -191,10 +225,19 @@ namespace jungmin
             if (tempItem != null)
             {					  
                 DragSlot.instance.dragSlot.AddItem(tempItem, tempItemCount);
+
+				if(tempItem is Bottle) //4.1 만약 물병 아이템이었다면, 기존의 이벤트를 제거한다.
+				{
+					Bottle bottle = (Bottle)tempItem;
+					bottle.OnUseBottle -= UpdateSlotCount;
+
+                }
+				
             }
             else
             { 
                 DragSlot.instance.dragSlot.ClearSlot();
+
             }
         }
 
@@ -251,11 +294,6 @@ namespace jungmin
 
 		public void OnPointerClick(PointerEventData eventData)
 		{
-			/* 인벤토리가 켜져있을 땐 툴팁 On / 사용 버리기 선택.
-			 * 인벤토리가 꺼져있을 땐 퀵슬롯의 슬롯 선택
-			 * 
-			 */
-			//Debug.Log("OnPointerClick event");
 			if (BackPackController.inventory_Activated && BackPackController.instance.slots.Contains(this)) 
 			{
 				SelectSlot_Inventory();

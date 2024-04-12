@@ -13,12 +13,13 @@ namespace jungmin
         public Axe(ItemData itemdata_) : base(itemdata_) { }
         public override void Equip(Player player)
         {
-            player.Stat.MonsterATK += atk;
+            player.Stat.TreeATK += atk;
+            OnUse();
         }
 
         public override void UnEquip(Player player)
         {
-            player.Stat.MonsterATK -= atk;
+            player.Stat.TreeATK -= atk;
         }
     }
 }
