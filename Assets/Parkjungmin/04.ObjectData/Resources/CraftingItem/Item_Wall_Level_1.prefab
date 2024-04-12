@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5843674420317999525}
   - component: {fileID: -6630474669590291295}
   - component: {fileID: 6281097596046807948}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Item_Wall_Level_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,10 +104,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.1999998, y: 1, z: 0.19999999}
-  m_Center: {x: -0.000000059604645, y: 0.5, z: 0}
+  m_Size: {x: 1.82, y: 1.67, z: 0.17}
+  m_Center: {x: 0, y: 0.81884885, z: 0.08}
 --- !u!114 &5843674420317999525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +122,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 5b2ff7fa24075e54f8206324ecd4cbd5, type: 2}
   bulidPrefab: {fileID: -6630474669590291295}
-  building_hp: 100
   hasPos: 1
 --- !u!114 &-6630474669590291295
 MonoBehaviour:
@@ -137,6 +136,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 10
+  onGround: {fileID: 0}
+  maxHp: 100
+  ownHp: 100
 --- !u!208 &6281097596046807948
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -147,9 +149,9 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.1}
+  m_Extents: {x: 0.5, y: 0.5, z: 0.07}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0.015000001, y: 0.81900007, z: 0.1}
+  m_Center: {x: 0.015000001, y: 0, z: -0.26}
   m_TimeToStationary: 0.5

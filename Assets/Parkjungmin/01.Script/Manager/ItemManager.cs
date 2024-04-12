@@ -36,6 +36,7 @@ public class ItemManager : Singleton<ItemManager>
                 {
                     string name = item.itemdata.itemName;
                     //Debug.Log($"Craft: {name}");
+                    if (craftingItemDic.ContainsKey(name)) { continue; }
                     craftingItemDic.Add(name, item);
 
                 }
@@ -46,6 +47,7 @@ public class ItemManager : Singleton<ItemManager>
                 { 
                     string name = item.itemdata.itemName;
                     //Debug.Log($"IGD : {name}");
+                    if (ingredientItemDic.ContainsKey(name)) { continue; }
                     ingredientItemDic.Add(name, item);
 
                 }
