@@ -35,7 +35,10 @@ namespace jungmin
             onGround = ground;
             onGround.type = GroundType.Wall;
         }
-
+        public Ground GetOnTile()
+        {
+            return onGround;
+        }
         public override void Release()
         {
             ownHp = maxHp;

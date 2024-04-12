@@ -158,7 +158,10 @@ namespace Jc
         {
             detecter.OnGround = ground;
         }
-
+        public Ground GetOnTile()
+        {
+            return detecter.OnGround;
+        }
         // 플레이어 위치가 변경될 경우 호출될 함수
         public void OnChangeTarget(Ground playerGround)
         {

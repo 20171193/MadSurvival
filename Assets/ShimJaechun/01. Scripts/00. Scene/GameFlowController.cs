@@ -137,6 +137,8 @@ namespace Jc
 
         public void EnterNight()
         {
+            Debug.Log("EnterNight");
+
             // 동물 리턴
             animalSpawner.ReturnAllAnimal();
 
@@ -168,6 +170,7 @@ namespace Jc
             if (maxDay > day)
                 day++;
 
+            Debug.Log("EnterDay");
             OnEnterDay?.Invoke(day);
             obstacleSpawner.SpawnObstacle(day);
             animalSpawner.OnSpawn(day);

@@ -79,12 +79,12 @@ namespace Jc
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.gameObject.tag == "Player")
-            {
-                // 플레이어가 현재 위치한 타일을 길찾기 관리자에 할당
-                // 길찾기 관리자에서 플레이어를 탐색하고있는 모든 몬스터 액션을 실행
-                Manager.Navi.EnterPlayerGround(this);
-            }
+            //if(other.gameObject.tag == "Player")
+            //{
+            //    // 플레이어가 현재 위치한 타일을 길찾기 관리자에 할당
+            //    // 길찾기 관리자에서 플레이어를 탐색하고있는 모든 몬스터 액션을 실행
+            //    Manager.Navi.EnterPlayerGround(this);
+            //}
 
             // 타일에 위치할 수 있는 오브젝트에 현재 타일을 할당
             ITileable obj = other.GetComponent<ITileable>();

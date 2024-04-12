@@ -150,7 +150,10 @@ public class Constructed_Turret : PooledObject, ITileable
         onGround = ground;
         onGround.type = GroundType.Wall;
     }
-
+    public Ground GetOnTile()
+    {
+        return onGround;
+    }
     public override void Release()
     {
         OwnHp = maxHp;
