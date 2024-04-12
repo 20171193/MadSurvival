@@ -32,19 +32,19 @@ namespace jungmin
                 switch (direction)
                 {
                     case BuildDirection.Front:
-                        Pos = new Vector3(socketGround.transform.position.x, 1.2f,socketGround.transform.position.z + 0.3f);
+                        Pos = new Vector3(socketGround.transform.position.x, 1.2f,socketGround.transform.position.z - 0.3f);
                         Dir = transform.forward;
                         break;
                     case BuildDirection.Back:
-                        Pos = new Vector3(socketGround.transform.position.x, 1.2f, socketGround.transform.position.z - 0.3f);
+                        Pos = new Vector3(socketGround.transform.position.x, 1.2f, socketGround.transform.position.z + 0.3f);
                         Dir = -transform.forward;
                         break;
                     case BuildDirection.Left:
-                        Pos = new Vector3(socketGround.transform.position.x - 0.3f, 1.2f, socketGround.transform.position.z);
+                        Pos = new Vector3(socketGround.transform.position.x + 0.3f, 1.2f, socketGround.transform.position.z);
                         Dir = -transform.right;
                         break;
                     case BuildDirection.Right:
-                        Pos = new Vector3(socketGround.transform.position.x +0.3f, 1.2f, socketGround.transform.position.z);
+                        Pos = new Vector3(socketGround.transform.position.x-0.3f, 1.2f, socketGround.transform.position.z);
                         Dir = transform.right;
                         break;
 
