@@ -80,7 +80,6 @@ namespace Jc
                     curMaxSpeed = maxSpeed;
                 }
 
-
                 OnChangeStamina?.Invoke(ownStamina, maxStamina);
             }
         }
@@ -259,9 +258,9 @@ namespace Jc
                     else if (isIncrease == false)
                     {
                         if (causedType == CoreStatType.Thirst && hpThirstDecRoutine == null)
-                            hpThirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
+                            hpThirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime, CoreStatType.Thirst));
                         else if (causedType == CoreStatType.Hunger && hpHungerDecRoutine == null)
-                            hpHungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
+                            hpHungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime, CoreStatType.Hunger));
                     }
                     break;
                 case CoreStatType.Stamina:

@@ -85,6 +85,8 @@ namespace Jc
             DrawBuildableGround();
             waterSpawner.Spawn();
             GameFlowController.Inst.ExitNight();
+
+            DontDestroyOnLoad(gameObject);
         }
 
 

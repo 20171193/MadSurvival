@@ -69,6 +69,8 @@ namespace Jc
                     SpawnWaterGround(i);
                 }
             }
+
+            DontDestroyOnLoad(gameObject);
         }
 
         public void SpawnWaterGround(int index)

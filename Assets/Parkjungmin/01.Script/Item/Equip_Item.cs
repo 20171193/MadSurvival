@@ -23,6 +23,7 @@ namespace jungmin
             Weapon,
             Armor
         }
+
         [Header("장비의 내구도")]
         public int durable = 100; //아이템의 내구도
         [SerializeField] public float DecDurableValue;
