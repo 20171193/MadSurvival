@@ -13,18 +13,6 @@ namespace jungmin
     {
         [SerializeField] PooledObject bulidPrefab; //실제 구조물을 건설 시 프리팹.
         public Build_Base(ItemData itemdata_) : base(itemdata_) { }
-        [Header("구조물의 체력")]
-        [SerializeField] public float building_hp;
-
-        public float HP {  get { return building_hp; }
-            set { building_hp = value;
-                if(building_hp <= 0)
-                {
-                    BuildingLost();
-                }
-            
-            }
-        }
 
         [Header("고정 Position 값")]
         [SerializeField] bool hasPos;
@@ -67,11 +55,6 @@ namespace jungmin
             }
            
             socketGround.type = GroundType.Wall;
-        }
-
-        public void BuildingLost()
-        {
-            this.bulidPrefab.Release();
         }
     }
 }

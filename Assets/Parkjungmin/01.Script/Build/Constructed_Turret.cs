@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Jc;
 using Unity.VisualScripting;
 
-public class Constructed_Turret : PooledObject
+public class Constructed_Turret : PooledObject, ITileable
 {
     //공격할 타겟의 큐 -> 큐의 순서 = 공격 순위
     [SerializeField]
@@ -15,6 +15,9 @@ public class Constructed_Turret : PooledObject
      *  큐에 들어온 순서대로 공격.
      *  타겟이 죽었거나, 범위를 벗어났을 경우 큐에서 제거.
      */
+
+    [SerializeField]
+    private Ground onGround;
 
     [SerializeField] SphereCollider attack_Range;
     [SerializeField] GameObject Turret_Head;
@@ -154,6 +157,19 @@ public class Constructed_Turret : PooledObject
         {
             target_List.RemoveAt(0);
         }
+    }
+
+    public void OnTile(Ground ground)
+    {
+        onGround = ground;
+        onGround.type = GroundType.Wall;
+    }
+
+    public override void Release()
+    {
+        onGround.type = GroundType.Buildable;
+        onGround = null;
+        base.Release();
     }
 
 }

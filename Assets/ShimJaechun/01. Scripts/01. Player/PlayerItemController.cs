@@ -42,7 +42,7 @@ namespace Jc
         public Equip_Item CurArmorItem { get { return curArmorItem; } }
         [SerializeField]
         private Slot curQuickSlot;
-        public Slot CurQuickSlot { get { return curQuickSlot; }  }
+        public Slot CurQuickSlot { get { return curQuickSlot; } }
 
         [SerializeField]
         private Slot curInventorySlot;
@@ -90,9 +90,9 @@ namespace Jc
         // 이전 버튼 비활성화처리
         private void ResetPrevButton(InteractButtonMode prevMode)
         {
-            switch(prevMode)
+            switch (prevMode)
             {
-                case InteractButtonMode.None: 
+                case InteractButtonMode.None:
                     break;
                 case InteractButtonMode.Attack:
                     UnEquip(Equip_Item.EquipType.Weapon);
@@ -174,12 +174,12 @@ namespace Jc
 
             // 아이템이 존재하지 않거나 아이템의 개수가 없을경우 리턴
             if (item == null ||
-                curSlot.ItemCount < 1) 
+                curSlot.ItemCount < 1)
                 return;
             // 무한히 사용하는 아이템이 아닌 경우
-            if(!item.isInfinite)
+            if (!item.isInfinite)
                 curSlot.ItemCount--;
-            
+
             item.Use(owner);
 
             if ((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
