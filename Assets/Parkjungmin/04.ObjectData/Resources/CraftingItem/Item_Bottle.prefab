@@ -47,5 +47,5 @@ MonoBehaviour:
   itemdata: {fileID: 11400000, guid: d3d943a818033094aad3bf94ad2d131a, type: 2}
   isInfinite: 1
   maxCapacity: 100
-  ownCapacity: 20.63
+  ownCapacity: 0
   usePerValue: 10
