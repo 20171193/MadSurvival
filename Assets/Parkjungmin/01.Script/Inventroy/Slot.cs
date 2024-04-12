@@ -199,13 +199,22 @@ namespace jungmin
 
 			if(QuickSlotController.instance.slots.Contains(this))
 			{
+				foreach (Slot slot in QuickSlotController.instance.slots)
+				{
+					//Debug.Log("?");
+					slot.SetColorBG(255);
+				}
 				SelectedSlot_QuickSlot.instance.selectedSlot = this;
 				SelectSlot_QuickSlot();
 
             }
 			if (DragSlot.instance.dragSlot != null)
 			{
-				ChangeSlot();
+                foreach (Slot slot in BackPackController.instance.slots)
+                {
+                    slot.SetColorBG(255);
+                }
+                ChangeSlot();
 			}
 		}
         // Method : 슬롯 간의 교환 ****
@@ -294,6 +303,11 @@ namespace jungmin
 
 		public void OnPointerClick(PointerEventData eventData)
 		{
+
+			if(item == null && BackPackController.instance.slots.Contains(this))
+			{
+				return;
+			}
 			if (BackPackController.inventory_Activated && BackPackController.instance.slots.Contains(this)) 
 			{
 				SelectSlot_Inventory();

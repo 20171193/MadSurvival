@@ -15,6 +15,17 @@ namespace jungmin
         public Build_Base(ItemData itemdata_) : base(itemdata_) { }
         [Header("구조물의 체력")]
         [SerializeField] public float building_hp;
+
+        public float HP {  get { return building_hp; }
+            set { building_hp = value;
+                if(building_hp <= 0)
+                {
+                    BuildingLost();
+                }
+            
+            }
+        }
+
         [Header("고정 Position 값")]
         [SerializeField] bool hasPos;
 
@@ -58,8 +69,9 @@ namespace jungmin
             socketGround.type = GroundType.Wall;
         }
 
-        //  앞
-        // 좌 우
-        //  뒤
+        public void BuildingLost()
+        {
+            this.bulidPrefab.Release();
+        }
     }
 }
