@@ -15,9 +15,10 @@ namespace jungmin
         public Build_Base(ItemData itemdata_) : base(itemdata_) { }
         [Header("구조물의 체력")]
         [SerializeField] public float building_hp;
+        [Header("고정 Position 값")]
         [SerializeField] bool hasPos;
 
-        // 플레이어 기준 방향을 받아옴
+        // Method : 구조물 건설 ****
         public void Build(Ground socketGround, BuildDirection direction)
         {
             Debug.Log($"Build : {socketGround}");
@@ -51,12 +52,6 @@ namespace jungmin
 
                 PooledObject inst = Manager.Pool.GetPool(bulidPrefab,Pos,Quaternion.identity);
                 inst.transform.forward = Dir;
-
-                //if(BuildController.Slot != null)
-                //{
-                //    BuildController.Slot.SetSlotCount(-1);
-                //    Debug.Log("카운트 내려감");
-                //}
 
             }
            

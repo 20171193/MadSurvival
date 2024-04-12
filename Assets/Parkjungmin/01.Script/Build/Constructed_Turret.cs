@@ -28,7 +28,8 @@ public class Constructed_Turret : PooledObject
     [Header("터렛의 공격 주기")]
     [SerializeField] float attackCycle_Time;
     [SerializeField] float nowCyle_Time;
-
+    [Header("터렛의 포신 회전 속도")]
+    [SerializeField] float rotate_Speed;
     Coroutine attakcoroutine;
     bool IsAttack;
 
@@ -91,9 +92,17 @@ public class Constructed_Turret : PooledObject
     {
         if (target_List.Count <= 0) return;
 
-        TargetPos = target_List[0].gameObject.transform.position;
+        TargetPos = target_List[0].gameObject.transform.position; 
         TargetDir = (target_List[0].gameObject.transform.position - Turret_Head.transform.position).normalized;
+
+        //if(Turret_Head.transform.forward != TargetDir.normalized)
+        //{
+        //    Turret_Head.transform.Rotate(new Vector3(0,TargetDir.y,0) * rotate_Speed * Time.deltaTime);
+
+        //}
         Turret_Head.transform.forward = TargetDir;
+
+
     }
     IEnumerator AttackCoroutine()
     {
