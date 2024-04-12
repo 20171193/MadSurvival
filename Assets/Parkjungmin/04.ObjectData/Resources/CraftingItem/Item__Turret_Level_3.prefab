@@ -378,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6789253591211375010}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.5, y: -0.02, z: -15.500001}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
@@ -407,8 +407,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.87791663
+  m_Center: {x: 0, y: 0.37791666, z: 0}
 --- !u!208 &7168147863083069419
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -419,9 +419,9 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_Extents: {x: 0.15, y: 0.835, z: 0.15}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
@@ -446,6 +446,7 @@ MonoBehaviour:
   range_Radius: 20
   attackCycle_Time: 0.4
   nowCyle_Time: 0
+  rotate_Speed: 0
   TargetPos: {x: 0, y: 0, z: 0}
 --- !u!114 &2448393361130677993
 MonoBehaviour:
