@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/ShimJaechun/00. Scenes/TitleScene.unity
+    guid: a6010816338c8b4489a70fa66a0de873
+  - enabled: 1
     path: Assets/ShimJaechun/00. Scenes/TestScene_Battle.unity
     guid: 561edaf7741893d4fade34e6f6ef02d9
   m_configObjects: {}

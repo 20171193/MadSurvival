@@ -12,6 +12,7 @@ public enum SceneNameType
 public class SceneManager : Singleton<SceneManager>
 {
     [SerializeField] Image fade;
+    [SerializeField] GameObject loadingImage;
     [SerializeField] Slider loadingBar;
     [SerializeField] float fadeTime;
 
@@ -28,17 +29,26 @@ public class SceneManager : Singleton<SceneManager>
         Manager.Pool.ClearPool();
 
         Time.timeScale = 0f;
+        loadingImage.SetActive(true);
         loadingBar.gameObject.SetActive(true);
-
         AsyncOperation oper = UnitySceneManager.LoadSceneAsync((int)type);
         while (oper.isDone == false)
         {
-            loadingBar.value = oper.progress;
+            if(loadingBar.value < 0.7f)
+                loadingBar.value = oper.progress;
             yield return null;
         }
+        // 페이크로딩 실행
+        while (loadingBar.value < 1f)
+        {
+            loadingBar.value += 0.1f;
+            yield return new WaitForSeconds(0.5f);
+        }
 
+        loadingImage.SetActive(false);
         loadingBar.gameObject.SetActive(false);
         Time.timeScale = 1f;
+        yield return null;
 
         yield return FadeIn();
         fade.gameObject.SetActive(false);
