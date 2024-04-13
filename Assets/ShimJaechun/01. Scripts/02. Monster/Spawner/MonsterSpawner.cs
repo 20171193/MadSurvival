@@ -10,7 +10,8 @@ namespace Jc
     {
         [SerializeField]
         private GameFlowController gameFlow;
-
+        [SerializeField]
+        private List<Monster> monsterPrefabs;
         [SerializeField]
         private float waveSpawnTime;
 
@@ -52,6 +53,10 @@ namespace Jc
                 new MapThreshold(new GroundPos(19,0), new GroundPos(39, 19)), new MapThreshold(new GroundPos(19,39), new GroundPos(39,59)),
                 new MapThreshold(new GroundPos(39, 0), new GroundPos(59, 19)), new MapThreshold(new GroundPos(39, 19), new GroundPos(59,39)),new MapThreshold(new GroundPos(39, 39), new GroundPos(59,59))
             };
+
+            // 몬스터 풀링
+            foreach(Monster monster in monsterPrefabs)
+                Manager.Pool.CreatePool(monster, monster.Size, 20);
         }
 
         public void OnSpawn(int day)

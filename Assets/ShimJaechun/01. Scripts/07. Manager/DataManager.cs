@@ -96,8 +96,6 @@ public class DataManager : Singleton<DataManager>
             if (monsterDic.ContainsKey(name)) continue;
 
             monsterDic.Add(name, monster);
-            // 몬스터 등록 시 풀링
-            Manager.Pool.CreatePool(monster, monster.Size, 20);
         }
     }
     private void RegistAnimal()
@@ -115,7 +113,6 @@ public class DataManager : Singleton<DataManager>
             if (animalDic.ContainsKey(name)) continue;
 
             animalDic.Add(name, animal);
-            Manager.Pool.CreatePool(animal, animal.Size, 15);
         }
     }
 

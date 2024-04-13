@@ -103,7 +103,9 @@ namespace Jc
 
         [SerializeField]
         private bool isOnWater = false;
-        public bool IsOnWater { get { return isOnWater; } set { isOnWater = value; } } 
+        public bool IsOnWater { get { return isOnWater; } set { isOnWater = value; } }
+
+        public UnityAction OnPlayerDie;
 
         private Coroutine damageRoutine;
         private Coroutine atsRoutine;
@@ -221,6 +223,7 @@ namespace Jc
         public void OnDie()
         {
             anim.SetBool("IsDie", true);
+            OnPlayerDie?.Invoke();
         }
         #endregion
 

@@ -22,6 +22,9 @@ namespace Jc
         private GameObject dayLight;
         [SerializeField]
         private GameObject nightLight;
+        [SerializeField]
+        private GameObject scoreboardCanvas;
+
 
         [SerializeField]
         private int maxDay;
@@ -131,7 +134,8 @@ namespace Jc
             //dayController.dayTimer = dayChangeTime;
 
             //dayController.OnNight += EnterNight;
-
+            // 플레이어 사망시 게임종료
+            player.OnPlayerDie += OnEndGame;
             totalTimer = StartCoroutine(TotalGameTimer());
         }
 
@@ -180,8 +184,6 @@ namespace Jc
         IEnumerator TotalGameTimer()
         {
             float dayRate = 0f;
-            bool isEnterFog = false;
-
             while(true)
             {
                 TotalTime += Time.deltaTime;
@@ -258,7 +260,6 @@ namespace Jc
             Time.timeScale = 1f;
             yield return null;
         }
-
         private void SetPlayerPosition()
         {
             // 플레이어의 초기위치 지정
@@ -270,6 +271,21 @@ namespace Jc
             player.transform.Translate(Vector3.up * 1f);
             player.currentGround = playerGround;
             Manager.Navi.EnterPlayerGround(playerGround);
+        }
+
+        // 플레이어 사망 이후 게임종료 -> 타이머 종료, 스코어보드 출력
+        private void OnEndGame()
+        {
+            StopCoroutine(totalTimer);
+
+            // 플레이어 사망 애니메이션 대기
+            StartCoroutine(Extension.DelayRoutine(1.5f, () => OpenScoreBoard()));
+        }
+
+        private void OpenScoreBoard()
+        {
+            scoreboardCanvas.SetActive(true);
+            scoreboardCanvas.GetComponent<ScoreboardController>().OnRenderScoreboard();
         }
     }
 }

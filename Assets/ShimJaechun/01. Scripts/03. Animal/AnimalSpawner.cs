@@ -11,6 +11,9 @@ namespace Jc
         private GroundPos[] spawnablePos;
         private MapThreshold[] mapThresholds;
 
+        [SerializeField]
+        private List<Animal> animalPrefabs;
+
         private List<Animal> spawnedAnimal;
 
         private void Awake()
@@ -32,6 +35,9 @@ namespace Jc
                 new MapThreshold(new GroundPos(39, 0), new GroundPos(59, 19)),new MapThreshold(new GroundPos(39, 20), new GroundPos(59,39)),new MapThreshold(new GroundPos(39, 39), new GroundPos(59,59))
             };
 
+            // 동물 풀링
+            foreach(Animal animal in animalPrefabs)
+                Manager.Pool.CreatePool(animal, animal.Size, 15);
         }
 
         // 모든 동물들을 비활성화
