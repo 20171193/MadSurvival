@@ -261,10 +261,15 @@ namespace Jc
 
         private void SetPlayerPosition()
         {
-            player.transform.position =
-                Manager.Navi.gameMap[Manager.Navi.cornerTL.z + (Manager.Navi.cornerBL.z - Manager.Navi.cornerTL.z) / 2].
-                groundList[Manager.Navi.cornerTL.x + (Manager.Navi.cornerTR.x - Manager.Navi.cornerTL.x) / 2].transform.position;
+            // 플레이어의 초기위치 지정
+
+            Ground playerGround = Manager.Navi.gameMap[Manager.Navi.cornerTL.z + (Manager.Navi.cornerBL.z - Manager.Navi.cornerTL.z) / 2].
+                groundList[Manager.Navi.cornerTL.x + (Manager.Navi.cornerTR.x - Manager.Navi.cornerTL.x) / 2];
+
+            player.transform.position = playerGround.transform.position;
             player.transform.Translate(Vector3.up * 1f);
+            player.currentGround = playerGround;
+            Manager.Navi.EnterPlayerGround(playerGround);
         }
     }
 }

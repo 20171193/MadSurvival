@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using jungmin;
 using static UnityEngine.UI.GridLayoutGroup;
-
+using Unity.VisualScripting;
 
 namespace Jc
 {
@@ -120,6 +120,7 @@ namespace Jc
 
         private void GroundCheck()
         {
+            // 레이캐스트를 통한 현재 그라운드 체킹
             if (Physics.Raycast(transform.position, -transform.up, out RaycastHit hitInfo, 2f, Manager.Layer.groundLM))
             {
                 Debug.DrawRay(transform.position + Vector3.up, -transform.up, Color.red, 0.1f);

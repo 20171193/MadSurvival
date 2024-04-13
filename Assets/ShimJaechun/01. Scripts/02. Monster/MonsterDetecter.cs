@@ -34,6 +34,10 @@ namespace Jc
         public bool IsTrackingPlayer { get { return isTrackingPlayer; } }
 
         [SerializeField]
+        private List<GameObject> targetList = new List<GameObject>();
+        public List<GameObject> TargetList { get { return targetList; } }
+
+        [SerializeField]
         private GameObject currentTarget = null;
         public GameObject CurrentTarget { get { return currentTarget; } set { currentTarget = value; } }
 
@@ -48,7 +52,45 @@ namespace Jc
         private void OnEnable()
         {
             gameMap = Navi.gameMap;
+            Navi.OnChangePlayerGround += OnChangePlayerGround;
         }
+        private void OnDisable()
+        {
+            Navi.OnChangePlayerGround -= OnChangePlayerGround;
+            // 타깃 리스트 클리어
+            targetList.Clear();
+        }
+
+        #region 몬스터 추격 알고리즘 : 추격대상 = Player
+        // 플레이어 위치가 변경될 경우 호출될 함수
+        public void OnChangePlayerGround(Ground playerGround)
+        {
+            this.playerGround = playerGround;
+            // 현재 추격중일 경우 변경된 위치로 추격
+            if(owner.FSM.FSM.CurState == "Tracking")
+                owner.Agent.destination = playerGround.transform.position;
+        }
+
+        public void RemoveList(GameObject target)
+        {
+            Debug.Log($"{target} : 이 파괴되었습니다.");
+            targetList.Remove(target);
+            CheckTarget();
+        }
+        private GameObject CheckTarget()
+        {
+            // 변경할 타깃이 없는경우
+            if (targetList.Count < 1)
+            {
+                currentTarget = null;
+                return null;
+            }
+            // 타깃이 있는 경우
+            else
+                return targetList[0];
+        }
+
+        #endregion
 
         #region 몬스터 추격 알고리즘
         // 목적지 세팅
@@ -163,30 +205,71 @@ namespace Jc
 
         private void OnTriggerEnter(Collider other)
         {
-            // 데미지를 입을 수 있는 즉, 공격이 가능한 객체일 경우 액션 
-            if (other.GetComponent<IDamageable>() != null)
-            {
-                if (owner.FSM.FSM.CurState == "Tracking" &&
-                (isTrackingPlayer && other.gameObject.tag == "Player" ||
-                !isTrackingPlayer && Manager.Layer.wallLM.Contain(other.gameObject.layer)))
-                {
-                    // 타깃으로 지정
-                    currentTarget = other.gameObject;
+            if (owner.FSM.FSM.CurState == "Die" || owner.FSM.FSM.CurState == "Pooled") return;
 
-                    owner.FSM.ChangeState("Attack");
+            // 타깃으로 지정할 수 있는 오브젝트일 경우
+            if (Manager.Layer.targetableLM.Contain(other.gameObject.layer))
+            {
+                Construct target = other.gameObject.GetComponent<Construct>();
+                // 타깃이 플레이어가 아닌 벽일경우
+                if (target != null)
+                {
+                    // 타겟리스트에 추가
+                    targetList.Add(other.gameObject);
+                    target.OnDestroyWall += RemoveList;
+                    // 추격중이라면 공격상태로 전이
+                    if (owner.FSM.FSM.CurState == "Tracking")
+                    {
+                        currentTarget = target.gameObject;
+                        owner.FSM.ChangeState("Attack");
+                    }
+                }
+                // 타깃이 플레이어인 경우
+                else
+                {
+                    // 추격중이라면 공격상태로 전이
+                    if (owner.FSM.FSM.CurState == "Tracking")
+                    {
+                        currentTarget = other.gameObject;
+                        owner.FSM.ChangeState("Attack");
+                    }
                 }
             }
         }
         private void OnTriggerExit(Collider other)
         {
-            if (other.GetComponent<IDamageable>() != null)
+            if (owner.FSM.FSM.CurState == "Die" || owner.FSM.FSM.CurState == "Pooled") return;
+
+            // 지정된 타깃 해제
+            if (Manager.Layer.targetableLM.Contain(other.gameObject.layer))
             {
-                // 지정된 타깃 해제
-                if (other.gameObject == currentTarget)
+                Construct target = other.gameObject.GetComponent<Construct>();
+                // 벗어난 타깃이 벽일 경우
+                if (target != null)
                 {
-                    Debug.Log("목표물 파괴");
-                    currentTarget = null;
-                    owner.FSM.ChangeState("Tracking");
+                    target.OnDestroyWall -= RemoveList;
+                    targetList.Remove(other.gameObject);
+                    
+                    GameObject nextTarget = CheckTarget();
+                    // 인접한 다른 타깃이 없는 경우
+                    // 상태전이 -> 추격
+                    if (nextTarget == null)
+                    {
+                        currentTarget = null;
+                        owner.FSM.ChangeState("Tracking");
+                    }
+                    // 다른 타깃이 있는 경우
+                    // 타깃만 변경
+                    else
+                        currentTarget = nextTarget;
+                }
+                // 벗어난 타깃이 플레이어일 경우
+                else
+                {
+                    // 공격중이라면 추격상태로 전이
+                    if (owner.FSM.FSM.CurState == "Attack")
+                        owner.FSM.ChangeState("Tracking");
+                    
                 }
             }
         }

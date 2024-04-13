@@ -43,7 +43,6 @@ namespace Jc
 
     public class MonsterTracking : MonsterBaseState
     {
-        private Coroutine trackingRoutine;
         public MonsterTracking(Monster owner)
         {
             this.owner = owner;
@@ -53,38 +52,23 @@ namespace Jc
         {
             // 타겟지점으로 트래킹 실행
             owner.Agent.isStopped = false;
-            trackingRoutine = owner.StartCoroutine(TrackingRoutine());
+            owner.Agent.destination = owner.Detecter.PlayerGround.transform.position;
         }
-
-        public override void Update()
+        public override void LateUpdate()
         {
             owner.Anim.SetFloat("MoveSpeed", owner.Agent.velocity.sqrMagnitude);
         }
-
         public override void Exit()
         {
-            if (trackingRoutine != null)
-                owner.StopCoroutine(trackingRoutine);
-
             owner.Anim.SetFloat("MoveSpeed", 0f);
             // 탈출 시 멈춤
-            owner.Agent.isStopped = true;
-        }
-
-        IEnumerator TrackingRoutine()
-        {
-            while(true)
-            {
-                // 0.1초에 한번 씩 길찾기 갱신
-                yield return new WaitForSeconds(1.0f);
-                owner.Detecter.Tracking(owner.Detecter.PlayerGround);
-            }
+            //owner.Agent.isStopped = true;
         }
     }
     public class MonsterAttack : MonsterBaseState
     {
         private Coroutine attackRoutine;
-        private GameObject currentTarget;
+
         public MonsterAttack(Monster owner)
         {
             this.owner = owner;
@@ -92,10 +76,10 @@ namespace Jc
         public override void Enter()
         {
             // 공격 중 멈춤
-            owner.Agent.isStopped = true;
+            //owner.Agent.isStopped = true;
+            owner.Agent.destination = owner.Detecter.CurrentTarget.transform.position;
 
-            currentTarget = owner.Detecter.CurrentTarget;
-            if(attackRoutine == null)
+            if (attackRoutine == null)
                 attackRoutine = owner.StartCoroutine(AttackRoutine());
         }
         public override void Exit()
@@ -106,28 +90,33 @@ namespace Jc
                 attackRoutine = null;
             }
         }
+        public override void Update()
+        {
+            if(owner.Agent.remainingDistance < 0.5f)
+                owner.Agent.isStopped = true;
+            else   
+                owner.Agent.isStopped = false;
+
+        }
+
         private void Attack()
         {
             // 회전
-            owner.transform.forward = (currentTarget.transform.position - owner.transform.position).normalized;
+            owner.transform.forward = (owner.Detecter.CurrentTarget.transform.position - owner.transform.position).normalized;
             // 공격
             owner.Anim.SetTrigger("OnAttack");
         }
 
         IEnumerator AttackRoutine()
         {
-            Attack();
-            yield return null;
-
-            while (owner.Detecter.CurrentTarget == currentTarget)
+            while (owner.Detecter.CurrentTarget != null && owner.Detecter.CurrentTarget.activeSelf)
             {
-                Debug.Log($"owner : {owner.Detecter.CurrentTarget}, state : {currentTarget}");
-                yield return new WaitForSeconds(owner.Stat.ATS);
                 Attack();
+                yield return new WaitForSeconds(owner.Stat.ATS);
             }
 
-            attackRoutine = null;
             owner.FSM.ChangeState("Tracking");
+            attackRoutine = null;
             yield return null;
         }
     }
