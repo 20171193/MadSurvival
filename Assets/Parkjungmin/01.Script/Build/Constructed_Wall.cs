@@ -2,10 +2,12 @@ using Jc;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace jungmin
 {
-    public class Constructed_Wall : PooledObject, ITileable, IDamageable
+    // 심재천 수정 상속 -> Construct
+    public class Constructed_Wall : Construct, ITileable, IDamageable
     {
         [SerializeField]
         private Ground onGround;
@@ -41,6 +43,11 @@ namespace jungmin
         }
         public override void Release()
         {
+            // 심재천 추가
+            // 몬스터/동물에서 등록된 함수 실행
+            // 길찾기에 활용
+            OnDestroyWall?.Invoke(gameObject);
+
             ownHp = maxHp;
             onGround.type = GroundType.Buildable;
             onGround = null;

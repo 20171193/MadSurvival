@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Jc;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
-public class Constructed_Turret : PooledObject, ITileable, IDamageable
+// 심재천 수정 상속 -> Construct
+public class Constructed_Turret : Construct, ITileable, IDamageable
 {
     //공격할 타겟의 큐 -> 큐의 순서 = 공격 순위
     [SerializeField]
@@ -156,6 +158,11 @@ public class Constructed_Turret : PooledObject, ITileable, IDamageable
     }
     public override void Release()
     {
+        // 심재천 추가
+        // 몬스터/동물에서 등록된 함수 실행
+        // 길찾기에 활용
+        OnDestroyWall?.Invoke(gameObject);
+
         OwnHp = maxHp;
         onGround.type = GroundType.Buildable;
         onGround = null;

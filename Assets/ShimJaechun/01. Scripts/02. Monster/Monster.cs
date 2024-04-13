@@ -73,8 +73,6 @@ namespace Jc
 
         private void OnEnable()
         {
-            // 플레이어의 타일 위치가 변경될 경우 발생할 액션
-            Navi.OnChangePlayerGround += OnChangeTarget;
             // 게임맵 할당
             detecter.PlayerGround = Navi.OnPlayerGround;
         }
@@ -86,7 +84,6 @@ namespace Jc
 
         private void OnDisable()
         {
-            Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
 
         #region 데미지 처리
@@ -109,12 +106,10 @@ namespace Jc
                 stat.OwnHp -= damage;
             }
         }
-
         public void Knockback(float power, float time, Vector3 suspectPos)
         {
             knockBackTimer = StartCoroutine(KnockBackRoutine(power, time, suspectPos));
         }
-
         IEnumerator KnockBackRoutine(float power, float time, Vector3 suspectPos)
         {
             // 네비메시 비활성화
@@ -161,11 +156,6 @@ namespace Jc
         public Ground GetOnTile()
         {
             return detecter.OnGround;
-        }
-        // 플레이어 위치가 변경될 경우 호출될 함수
-        public void OnChangeTarget(Ground playerGround)
-        {
-            detecter.PlayerGround = playerGround;
         }
         #endregion
 

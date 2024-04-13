@@ -41,9 +41,17 @@ namespace Jc
             fsm.FSM.AddState("Attack", new AnimalAttack(this));
 
             fsm.FSM.Init("Pooled");
+        }
 
+        private void OnEnable()
+        {
             Manager.Navi.OnChangePlayerGround += OnPlayerGround;
         }
+        private void OnDisable()
+        {
+            Manager.Navi.OnChangePlayerGround -= OnPlayerGround;
+        }
+
         protected override void Start()
         {
             base.Start();
