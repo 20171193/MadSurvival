@@ -36,19 +36,20 @@ public class SceneManager : Singleton<SceneManager>
         {
             if(loadingBar.value < 0.7f)
                 loadingBar.value = oper.progress;
+            
             yield return null;
         }
-        // 페이크로딩 실행
-        while (loadingBar.value < 1f)
-        {
-            loadingBar.value += 0.1f;
-            yield return new WaitForSeconds(0.5f);
-        }
+
+        //// 페이크로딩 실행
+        //while (loadingBar.value < 1f)
+        //{
+        //    loadingBar.value += 0.1f;
+        //    yield return new WaitForSeconds(0.5f);
+        //}
 
         loadingImage.SetActive(false);
         loadingBar.gameObject.SetActive(false);
         Time.timeScale = 1f;
-        yield return null;
 
         yield return FadeIn();
         fade.gameObject.SetActive(false);

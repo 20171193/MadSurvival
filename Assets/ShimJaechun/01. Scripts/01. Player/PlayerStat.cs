@@ -43,6 +43,8 @@ namespace Jc
             {
                 ownHp = value;
                 OnChangeHP?.Invoke(ownHp, maxHp);
+                if (ownHp <= 0f)
+                    owner.OnDie();
             }
         }
 

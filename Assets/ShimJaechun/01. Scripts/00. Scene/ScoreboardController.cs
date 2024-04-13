@@ -31,7 +31,8 @@ namespace Jc
 
         public void OnRenderScoreboard()
         {
-            Time.timeScale = 0f;
+            LoadScore();
+
             anim.SetTrigger("OnRender");
         }
 

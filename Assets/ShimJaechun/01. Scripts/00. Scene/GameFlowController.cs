@@ -23,7 +23,7 @@ namespace Jc
         [SerializeField]
         private GameObject nightLight;
         [SerializeField]
-        private ScoreboardController scoreboardController;
+        private GameObject scoreboardCanvas;
 
 
         [SerializeField]
@@ -284,8 +284,8 @@ namespace Jc
 
         private void OpenScoreBoard()
         {
-            scoreboardController.gameObject.SetActive(true);
-            scoreboardController.OnRenderScoreboard();
+            scoreboardCanvas.SetActive(true);
+            scoreboardCanvas.GetComponent<ScoreboardController>().OnRenderScoreboard();
         }
     }
 }

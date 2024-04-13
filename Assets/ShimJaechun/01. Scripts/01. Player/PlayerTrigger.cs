@@ -26,9 +26,7 @@ namespace Jc
                     owner.ItemController.UnEquip(Equip_Item.EquipType.Armor);
             }
             owner.Stat.OwnHp -= damage;
-            if(owner.Stat.OwnHp <= 0)
-                owner.OnDie();
-            else
+            if(owner.Stat.OwnHp > 0)
                 owner.OnTakeDamage();
         }
         public void GetItem(Item item)
