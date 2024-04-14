@@ -21,6 +21,9 @@ namespace Jc
 
     public class GroundSet : MonoBehaviour
     {
+        // 싱글턴 사용
+        private static GroundSet inst;
+
         [Header("Component")]
         [Space(2)]
         [SerializeField]
@@ -66,27 +69,37 @@ namespace Jc
 
         private void Start()
         {
-            // 길찾기 매니저에 게임 맵을 할당
-            if (groundLists.Count > 0)
-                Navi.AssginGameMap(groundLists);
+            if (inst == null)
+            {
+                inst = this;
 
-            // 맵 크기 할당
-            Navi.mapZsize = zCount;
-            Navi.mapXsize = xCount;
+                // 길찾기 매니저에 게임 맵을 할당
+                if (groundLists.Count > 0)
+                    Navi.AssginGameMap(groundLists);
 
-            // 플레이어 진지 좌표 할당
-            Navi.cornerTL = new GroundPos(zCount / 3 - 1, xCount / 3 - 1);
-            Navi.cornerTR = new GroundPos(zCount / 3 - 1, xCount / 3*2 - 1);
-            Navi.cornerBL = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 - 1);
-            Navi.cornerBR = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 * 2 - 1);
+                // 맵 크기 할당
+                Navi.mapZsize = zCount;
+                Navi.mapXsize = xCount;
 
-            waterSpawner.SettingGroundSize();
+                // 플레이어 진지 좌표 할당
+                Navi.cornerTL = new GroundPos(zCount / 3 - 1, xCount / 3 - 1);
+                Navi.cornerTR = new GroundPos(zCount / 3 - 1, xCount / 3 * 2 - 1);
+                Navi.cornerBL = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 - 1);
+                Navi.cornerBR = new GroundPos(zCount / 3 * 2 - 1, xCount / 3 * 2 - 1);
 
-            DrawBuildableGround();
-            waterSpawner.Spawn();
+                waterSpawner.SettingGroundSize();
+
+
+
+                DrawBuildableGround();
+                waterSpawner.Spawn();
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
             GameFlowController.Inst.ExitNight();
-
-            DontDestroyOnLoad(gameObject);
         }
 
 
@@ -136,7 +149,7 @@ namespace Jc
             {
                 for (int x = Navi.cornerTL.x; x <= Navi.cornerTR.x; x++)
                 {
-                    if(z == Navi.cornerTL.z + (Navi.cornerBL.z - Navi.cornerTL.z)/2 &&
+                    if (z == Navi.cornerTL.z + (Navi.cornerBL.z - Navi.cornerTL.z) / 2 &&
                         x == Navi.cornerTL.x + (Navi.cornerTR.x - Navi.cornerTL.x) / 2)
                     {
                         groundLists[z].groundList[x].type = GroundType.PlayerSpawn;
