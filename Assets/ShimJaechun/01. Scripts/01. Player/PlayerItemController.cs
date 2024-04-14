@@ -140,6 +140,7 @@ namespace Jc
             {
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem.UnEquip(owner);
+                    owner.Anim.SetBool("IsPickAxe", false);
                     owner.Anim.SetBool("IsTwoHand", false);
                     break;
                 case Equip_Item.EquipType.Armor:
@@ -152,6 +153,7 @@ namespace Jc
         private void SetEquipModel(Equip_Item.ATKType atkType, int level = 0)
         {
             curWeaponModel?.SetActive(false);
+            owner.Anim.SetBool("IsPickAxe", false);
 
             switch (atkType)
             {
@@ -163,6 +165,7 @@ namespace Jc
                     break;
                 case Equip_Item.ATKType.Stone:
                     curWeaponModel = pickAxeModel[level];
+                    owner.Anim.SetBool("IsPickAxe", true);
                     break;
             }
             curWeaponModel?.SetActive(true);

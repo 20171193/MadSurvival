@@ -7,6 +7,9 @@ namespace Jc
 {
     public class WaterSet : MonoBehaviour
     {
+        // 싱글턴 사용
+        private static WaterSet inst; 
+
         [Serializable]
         public struct WaterGround
         {
@@ -46,34 +49,43 @@ namespace Jc
         [ContextMenu("Spawn")]
         public void Spawn()
         {
-            // 랜덤으로 spawnSize 만큼만 뽑아서 스폰
-            if(isRandomSpawn)
+            if(inst == null)
             {
-                List<int> idxList = new List<int>();
-                for(int i = 0; i< groundList.Count; i++)
+                inst = this;
+
+                // 랜덤으로 spawnSize 만큼만 뽑아서 스폰
+                if (isRandomSpawn)
                 {
-                    idxList.Add(i);
+                    List<int> idxList = new List<int>();
+                    for (int i = 0; i < groundList.Count; i++)
+                    {
+                        idxList.Add(i);
+                    }
+
+                    int cnt = spawnSize;
+                    while (cnt > 0)
+                    {
+                        int rand = UnityEngine.Random.Range(0, idxList.Count - 1);
+                        SpawnWaterGround(idxList[rand]);
+                        idxList.RemoveAt(rand);
+                        cnt--;
+                    }
+                }
+                // 랜덤스폰이 아닌경우 스폰할 수 있는 모든 지역에 스폰
+                else
+                {
+                    for (int i = 0; i < groundList.Count; i++)
+                    {
+                        SpawnWaterGround(i);
+                    }
                 }
 
-                int cnt = spawnSize;
-                while (cnt > 0)
-                {
-                    int rand = UnityEngine.Random.Range(0, idxList.Count - 1);
-                    SpawnWaterGround(idxList[rand]);
-                    idxList.RemoveAt(rand);
-                    cnt--;
-                }
+                DontDestroyOnLoad(gameObject);
             }
-            // 랜덤스폰이 아닌경우 스폰할 수 있는 모든 지역에 스폰
             else
             {
-                for(int i =0; i<groundList.Count; i++)
-                {
-                    SpawnWaterGround(i);
-                }
+                Destroy(gameObject);
             }
-
-            DontDestroyOnLoad(gameObject);
         }
 
         public void SpawnWaterGround(int index)
