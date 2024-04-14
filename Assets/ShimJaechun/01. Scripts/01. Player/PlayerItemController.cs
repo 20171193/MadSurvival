@@ -25,11 +25,12 @@ namespace Jc
 
         [Header("캐릭터 무기 모델")]
         [SerializeField]
-        private GameObject monsterWeaponModel;
+        private GameObject[] swordModel;
         [SerializeField]
-        private GameObject treeWeaponModel;
+        private GameObject[] axeModel;
         [SerializeField]
-        private GameObject stoneWeaponModel;
+        private GameObject[] pickAxeModel;
+
         private GameObject curWeaponModel;
 
         [Header("Balancing")]
@@ -115,6 +116,7 @@ namespace Jc
             UnEquip(item.equipType);
             switch (item.equipType)
             {
+                // 추가 : 무기 레벨에 따른 다른모델
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
                     owner.Anim.SetBool("IsTwoHand", true);
@@ -147,20 +149,20 @@ namespace Jc
             curWeaponItem = null;
         }
         // 아이템 모델 적용
-        private void SetEquipModel(Equip_Item.ATKType atkType)
+        private void SetEquipModel(Equip_Item.ATKType atkType, int level = 0)
         {
             curWeaponModel?.SetActive(false);
 
             switch (atkType)
             {
                 case Equip_Item.ATKType.Monster:
-                    curWeaponModel = monsterWeaponModel;
+                    curWeaponModel = swordModel[level];
                     break;
                 case Equip_Item.ATKType.Tree:
-                    curWeaponModel = treeWeaponModel;
+                    curWeaponModel = axeModel[level];
                     break;
                 case Equip_Item.ATKType.Stone:
-                    curWeaponModel = stoneWeaponModel;
+                    curWeaponModel = pickAxeModel[level];
                     break;
             }
             curWeaponModel?.SetActive(true);

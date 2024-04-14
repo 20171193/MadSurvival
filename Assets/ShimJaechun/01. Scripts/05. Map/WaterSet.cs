@@ -34,6 +34,9 @@ namespace Jc
         [Header("8방향 스폰위치 {0~3:모서리, 4:윗변, 5:아랫변, 6:좌측변, 7:우측변}")]
         [SerializeField]
         private List<WaterGround> groundList;
+        [SerializeField]
+        private List<GameObject> waterList;
+
 
         private void Awake()
         {
@@ -80,6 +83,8 @@ namespace Jc
                 Debug.Log("SpawnWaterGround : 인덱스 범위 벗어남");
                 return;
             }
+            // 해당 위치의 물 활성화
+            waterList[index].SetActive(true);
 
             WaterGround waterGround = groundList[index];
             for (int z = waterGround.startPos.z; z < waterGround.startPos.z + waterGround.zSize; z++)
@@ -88,9 +93,9 @@ namespace Jc
                 {
                     Ground ground = Manager.Navi.gameMap[z].groundList[x];
                     Destroy(ground.transform.GetChild(0).gameObject);
-                    GameObject water = Instantiate(waterPrefab, ground.transform.position + Vector3.up, Quaternion.identity);
-                    water.transform.parent = transform;
-                    water.name = $"{z},{x}_Water";
+                    //GameObject water = Instantiate(waterPrefab, ground.transform.position + Vector3.up, Quaternion.identity);
+                    //water.transform.parent = transform;
+                    //water.name = $"{z},{x}_Water";
                     ground.type = GroundType.Water;
                     ground.OriginType = GroundType.Water;
                 }
