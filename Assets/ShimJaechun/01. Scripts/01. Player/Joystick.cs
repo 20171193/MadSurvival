@@ -76,9 +76,6 @@ namespace Jc
         {
             isEnable = true;
             back.anchoredPosition = mousePos - sizeDelta;
-            // 이미지 알파값 +
-            backGroundImage.color = new Color32(255, 255, 255, 150);
-            leverImage.color = new Color32(255, 255, 255, 255);
         }
         public void DisableJoystick()
         {
@@ -89,10 +86,6 @@ namespace Jc
             lever.anchoredPosition = Vector2.zero;
             leverDistance = 0f;
             moveDir = Vector3.zero;
-
-            // 이미지 알파값 -
-            backGroundImage.color = new Color32(255, 255, 255, 80);
-            leverImage.color = new Color32(255, 255, 255, 120);
         }
     }
 }
