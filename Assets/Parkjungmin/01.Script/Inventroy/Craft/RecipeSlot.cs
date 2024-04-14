@@ -17,7 +17,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     void OnEnable()
     {
         recipe_name = recipe.name;
-        resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
+        resultItem = ItemManager.Instance.ItemDic[recipe.name];
 
 
         bg_image = GetComponent<Image>();
@@ -37,7 +37,7 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
     }
     public void ResetSlot()
     {
-        resultItem = ItemManager.Instance.craftingItemDic[recipe.name];
+        resultItem = ItemManager.Instance.ItemDic[recipe.name];
         item_image.sprite = resultItem.itemdata.itemImage;
         recipe_name = recipe.name;
     }

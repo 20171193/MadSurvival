@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bottle2
   m_EditorClassIdentifier: 
   itemName: Bottle2
-  itemImage: {fileID: 21300000, guid: 902e852ce8161964a8bd9f8520604cc5, type: 3}
+  itemImage: {fileID: 21300000, guid: 213d0e97ba5270c4a9a764f70494f8bc, type: 3}
   itemtype: 1
   itemInfo: "\uBB3C\uBCD12"
   recipe:

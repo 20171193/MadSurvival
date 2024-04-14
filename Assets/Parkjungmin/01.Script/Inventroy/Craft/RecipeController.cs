@@ -96,7 +96,7 @@ namespace jungmin
         void ReadRecipeCSV()
         {
             // 1. 크래프팅 Dic의 개수만큼, CSV 파일에서 크래프팅 제조법 갯수를 읽어온다. 
-            for(int x=0;x<ItemManager.Instance.craftingItemDic.Count; x++)
+            for(int x=0;x<ItemManager.Instance.ItemDic.Count; x++)
             {
                 Recipe recipe = new Recipe();
                 recipe.name = (string)reader[x]["result"];
