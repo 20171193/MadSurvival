@@ -38,7 +38,7 @@ namespace Jc
         private GameObject meatModel;
         [SerializeField]
         private GameObject niceMeatModel;
-
+        private GameObject curItemModel;
         [Header("Balancing")]
         [Space(2)]
         [SerializeField]
@@ -65,6 +65,7 @@ namespace Jc
         {
             ResetPrevButton(owner.curButtonMode);
             curImage?.SetActive(false);
+            curItemModel?.SetActive(false);
 
             if (curQuickSlot.item == null || curQuickSlot.item.itemdata == null)
             {
