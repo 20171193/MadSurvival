@@ -27,6 +27,9 @@ namespace jungmin
         [Header("장비의 내구도")]
         public int durable = 100; //아이템의 내구도
         [SerializeField] public float DecDurableValue;
+        [Header("무기 레벨")]
+        public int Weapon_Level;
+
         public EquipType equipType;
         public ATKType atkType; //어떤 타입에게 공격을 할지.
         public UnityAction OnUse;

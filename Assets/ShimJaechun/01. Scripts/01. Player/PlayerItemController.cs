@@ -129,7 +129,7 @@ namespace Jc
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
                     owner.Anim.SetBool("IsTwoHand", true);
-                    SetEquipModel(curWeaponItem.atkType);
+                    SetEquipModel(curWeaponItem.atkType, curWeaponItem.Weapon_Level);
                     break;
                 case Equip_Item.EquipType.Armor:
                     curArmorItem = item;
