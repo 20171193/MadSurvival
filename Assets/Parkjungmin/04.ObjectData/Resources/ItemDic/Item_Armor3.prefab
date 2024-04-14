@@ -49,4 +49,6 @@ MonoBehaviour:
   DecDurableValue: 1
   equipType: 1
   atkType: 0
-  def: 50
+  level: 3
+  def: 100
+  player: {fileID: 0}

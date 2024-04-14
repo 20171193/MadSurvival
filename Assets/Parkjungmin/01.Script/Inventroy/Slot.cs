@@ -41,9 +41,8 @@ namespace jungmin
 		[SerializeField] TMP_Text text_Count;
 		[SerializeField] GameObject go_CountImage;
 
-
-		// **** Method : 새로운 아이템 추가 시, 그 슬롯의 UI를 업데이트하는 함수 ****
-		public void AddItem(Item newItem, int newitemCount = 1)
+        // **** Method : 새로운 아이템 추가 시, 그 슬롯의 UI를 업데이트하는 함수 ****
+        public void AddItem(Item newItem, int newitemCount = 1)
 		{
 			// 1. 새로운 아이템과 기존의 아이템을 비교해, 슬롯에 아이템 정보와 갯수 설정
 
@@ -56,6 +55,7 @@ namespace jungmin
 			{
                 this.item = newItem;
                 this.ItemCount += newitemCount;
+
             }
 			// 2. Dic에서 아이템 이미지 불러오기
 			if (ItemManager.Instance.ItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
@@ -201,22 +201,31 @@ namespace jungmin
 		// Method : 대상 슬롯 위에서 드래그 앤 드롭 이벤트 시 그 슬롯에서 호출 ****
 		public void OnDrop(PointerEventData eventData)
 		{
-			//if (EquipSlotController.instance.EquipSlot == this)
-			//{
+			if (EquipSlotController.instance.EquipSlot == this)
+			{
 
-			//	if (DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
-			//	{
-			//		return;
-			//	}
-			//	else
-			//	{
-			//		if (this.item != null)
-			//		{
-			//			ChangeSlot();
-			//		}
+				if (DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
+				{
+					return;
+				}
+				else if(DragSlot.instance.dragSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
+				{
+					if (DragSlot.instance.dragSlot.item is Armor)
+					{
+						if (this.item != null)
+						{
+							Armor equipitem = (Armor)DragSlot.instance.dragSlot.item;
+                            ChangeSlot();
+					
+						}
+					}
+					else
+					{
+						return;
+					}
 
-			//	}
-			//}
+				}
+			}
 
 			if (QuickSlotController.instance.slots.Contains(this))
 			{
@@ -245,11 +254,11 @@ namespace jungmin
             Item tempItem = item;
             int tempItemCount = ItemCount;
 
-            // 2.기존의 슬롯에 있던 아이템의 개수를 0으로 변경
-            this.ItemCount = 0;
+			// 2.기존의 슬롯에 있던 아이템의 개수를 0으로 변경
+			this.ItemCount = 0;
 
-            // 3.  OnDrop 이벤트가 호출된 슬롯에 드래그 중인 아이템을 추가.
-            AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
+			// 3.  OnDrop 이벤트가 호출된 슬롯에 드래그 중인 아이템을 추가.
+			AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
 			
 			// 4. 기존 슬롯의 아이템의 존재 유무에 따라 기존 슬롯을 업데이트한다.
             if (tempItem != null)
