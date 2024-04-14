@@ -49,5 +49,5 @@ MonoBehaviour:
   DecDurableValue: 1
   equipType: 0
   atkType: 3
-  Weapon_Level: 0
+  Weapon_Level: 2
   atk: 10

@@ -41,9 +41,8 @@ namespace jungmin
 		[SerializeField] TMP_Text text_Count;
 		[SerializeField] GameObject go_CountImage;
 
-
-		// **** Method : 새로운 아이템 추가 시, 그 슬롯의 UI를 업데이트하는 함수 ****
-		public void AddItem(Item newItem, int newitemCount = 1)
+        // **** Method : 새로운 아이템 추가 시, 그 슬롯의 UI를 업데이트하는 함수 ****
+        public void AddItem(Item newItem, int newitemCount = 1)
 		{
 			// 1. 새로운 아이템과 기존의 아이템을 비교해, 슬롯에 아이템 정보와 갯수 설정
 
@@ -202,22 +201,31 @@ namespace jungmin
 		// Method : 대상 슬롯 위에서 드래그 앤 드롭 이벤트 시 그 슬롯에서 호출 ****
 		public void OnDrop(PointerEventData eventData)
 		{
-			//if (EquipSlotController.instance.EquipSlot == this)
-			//{
+			if (EquipSlotController.instance.EquipSlot == this)
+			{
 
-			//	if (DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
-			//	{
-			//		return;
-			//	}
-			//	else
-			//	{
-			//		if (this.item != null)
-			//		{
-			//			ChangeSlot();
-			//		}
+				if (DragSlot.instance.dragSlot.item.itemdata.itemtype != ItemData.ItemType.Equipment)
+				{
+					return;
+				}
+				else if(DragSlot.instance.dragSlot.item.itemdata.itemtype == ItemData.ItemType.Equipment)
+				{
+					if (DragSlot.instance.dragSlot.item is Armor)
+					{
+						if (this.item != null)
+						{
+							Armor equipitem = (Armor)DragSlot.instance.dragSlot.item;
+                            ChangeSlot();
+					
+						}
+					}
+					else
+					{
+						return;
+					}
 
-			//	}
-			//}
+				}
+			}
 
 			if (QuickSlotController.instance.slots.Contains(this))
 			{
