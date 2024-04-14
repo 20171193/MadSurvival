@@ -31,6 +31,7 @@ namespace Jc
             // 데미지 처리
             else
             {
+                OnTakeDamage?.Invoke();
                 owner.Anim.SetTrigger("OnHit");
                 owner.Stat.OwnHp -= damage;
             }

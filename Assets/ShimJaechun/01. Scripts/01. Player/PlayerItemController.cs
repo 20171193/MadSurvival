@@ -67,7 +67,9 @@ namespace Jc
             curImage?.SetActive(false);
             curItemModel?.SetActive(false);
 
-            if (curQuickSlot.item == null || curQuickSlot.item.itemdata == null)
+            if (curQuickSlot.item == null || 
+                curQuickSlot.item.itemdata == null || 
+                curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Ingredient)
             {
                 owner.curButtonMode = InteractButtonMode.None;
                 return;

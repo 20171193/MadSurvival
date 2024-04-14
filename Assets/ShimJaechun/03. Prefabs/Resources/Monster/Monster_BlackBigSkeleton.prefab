@@ -265,6 +265,9 @@ MonoBehaviour:
   gameMap: []
   onGround: {fileID: 0}
   playerGround: {fileID: 0}
+  isTrackingPlayer: 0
+  targetList: []
+  currentTarget: {fileID: 0}
 --- !u!1001 &2835245383536653201
 PrefabInstance:
   m_ObjectHideFlags: 0

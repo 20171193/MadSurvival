@@ -92,10 +92,6 @@ namespace Jc
         }
         public override void Update()
         {
-            if(owner.Agent.remainingDistance < 0.5f)
-                owner.Agent.isStopped = true;
-            else   
-                owner.Agent.isStopped = false;
 
         }
 
@@ -109,7 +105,8 @@ namespace Jc
 
         IEnumerator AttackRoutine()
         {
-            while (owner.Detecter.CurrentTarget != null && owner.Detecter.CurrentTarget.activeSelf)
+            while (owner.Detecter.CurrentTarget != null 
+                && owner.Detecter.CurrentTarget.activeSelf)
             {
                 Attack();
                 yield return new WaitForSeconds(owner.Stat.ATS);
@@ -133,12 +130,19 @@ namespace Jc
             owner.DropItem();
             owner.Agent.isStopped = true;
             owner.Agent.enabled = false;
+            owner.Anim.SetBool("IsDie", true);
             owner.GetComponent<CapsuleCollider>().enabled = false;
-            dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.5f, ()=> owner.FSM.ChangeState("Pooled")));
+            dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(1.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }
 
         public override void Exit()
         {
+            if(dieRoutine != null)
+            {
+                owner.StopCoroutine(dieRoutine);
+                dieRoutine = null;
+            }
+            owner.Anim.SetBool("IsDie", false);
             owner.Release();
         }
     }

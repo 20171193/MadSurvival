@@ -26,8 +26,11 @@ namespace Jc
                     owner.ItemController.UnEquip(Equip_Item.EquipType.Armor);
             }
             owner.Stat.OwnHp -= damage;
-            if(owner.Stat.OwnHp > 0)
+            if (owner.Stat.OwnHp > 0)
+            {
+                owner.Anim.SetTrigger("OnHit");
                 owner.OnTakeDamage();
+            }
         }
         public void GetItem(Item item)
         {
