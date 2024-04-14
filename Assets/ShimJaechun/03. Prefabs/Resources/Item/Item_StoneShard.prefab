@@ -156,7 +156,7 @@ MonoBehaviour:
   ownerCol: {fileID: 5169645174889809706}
   obCol: {fileID: 8675061976809851401}
   autoRotate: 0
-  rotSpeed: 30
+  rotSpeed: 60
   getSpeed: 0.9
 --- !u!1001 &3452980765095238152
 PrefabInstance:

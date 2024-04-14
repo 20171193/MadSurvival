@@ -33,6 +33,12 @@ namespace Jc
 
         private GameObject curWeaponModel;
 
+        [Header("캐릭터 아이템 모델")]
+        [SerializeField]
+        private GameObject meatModel;
+        [SerializeField]
+        private GameObject niceMeatModel;
+
         [Header("Balancing")]
         [Space(2)]
         [SerializeField]
