@@ -56,6 +56,7 @@ namespace jungmin
 			{
                 this.item = newItem;
                 this.ItemCount += newitemCount;
+
             }
 			// 2. Dic에서 아이템 이미지 불러오기
 			if (ItemManager.Instance.ItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
@@ -245,11 +246,11 @@ namespace jungmin
             Item tempItem = item;
             int tempItemCount = ItemCount;
 
-            // 2.기존의 슬롯에 있던 아이템의 개수를 0으로 변경
-            this.ItemCount = 0;
+			// 2.기존의 슬롯에 있던 아이템의 개수를 0으로 변경
+			this.ItemCount = 0;
 
-            // 3.  OnDrop 이벤트가 호출된 슬롯에 드래그 중인 아이템을 추가.
-            AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
+			// 3.  OnDrop 이벤트가 호출된 슬롯에 드래그 중인 아이템을 추가.
+			AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.ItemCount);
 			
 			// 4. 기존 슬롯의 아이템의 존재 유무에 따라 기존 슬롯을 업데이트한다.
             if (tempItem != null)
