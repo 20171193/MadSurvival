@@ -128,7 +128,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.53, y: 1.1, z: -1.99}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7602473769244123145}
@@ -232,6 +232,7 @@ MonoBehaviour:
   niceMeat: {fileID: 5530291736414995612, guid: 6b8ae0c505d7fe94eb3cba956e4bebcb, type: 3}
   dropMeatCount: 0
   dropNiceMeatCount: 0
+  dropNiceMeatPercent: 0
   fsm: {fileID: 3776662757149283201}
   stat: {fileID: 6478689953151346174}
   detecter: {fileID: 2815696963632481287}
