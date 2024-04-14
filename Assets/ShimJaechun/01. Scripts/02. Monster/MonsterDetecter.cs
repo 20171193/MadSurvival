@@ -266,10 +266,10 @@ namespace Jc
                 // 벗어난 타깃이 플레이어일 경우
                 else
                 {
+                    currentTarget = null;
                     // 공격중이라면 추격상태로 전이
                     if (owner.FSM.FSM.CurState == "Attack")
                         owner.FSM.ChangeState("Tracking");
-                    
                 }
             }
         }
