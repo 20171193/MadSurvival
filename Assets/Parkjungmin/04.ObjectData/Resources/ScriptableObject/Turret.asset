@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Turret
   m_EditorClassIdentifier: 
   itemName: Turret
-  itemImage: {fileID: 21300000, guid: 1e867646f9bf7eb4db1ebc1a1d919ce9, type: 3}
+  itemImage: {fileID: 21300000, guid: a2b264112031ad64ab855ed8c8e43500, type: 3}
   itemtype: 3
+  itemInfo: 
   recipe:
     name: 
     IGD_1:

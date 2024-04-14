@@ -58,13 +58,13 @@ namespace jungmin
                 this.ItemCount += newitemCount;
             }
 			// 2. Dic에서 아이템 이미지 불러오기
-			if (ItemManager.Instance.ingredientItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
+			if (ItemManager.Instance.ItemDic.ContainsKey($"{newItem.itemdata.itemName}"))
 			{
                 // 아이템의 이름을 Dic에서 검색해 해당되는 데이터에 저장된 아이템의 이미지를 가져온다.
-                itemImage.sprite = ItemManager.Instance.ingredientItemDic[newItem.itemdata.itemName].itemdata.itemImage;
+                itemImage.sprite = ItemManager.Instance.ItemDic[newItem.itemdata.itemName].itemdata.itemImage;
 			}
 			else
-				itemImage.sprite = ItemManager.Instance.craftingItemDic[newItem.itemdata.itemName].itemdata.itemImage;
+				itemImage.sprite = ItemManager.Instance.ItemDic[newItem.itemdata.itemName].itemdata.itemImage;
 
 			// 3. 슬롯의 아이템의 갯수UI Set On
 			if (item.itemdata.itemtype != ItemData.ItemType.Equipment) //재료,소비,건설 타입 아이템 -> 갯수 UI On

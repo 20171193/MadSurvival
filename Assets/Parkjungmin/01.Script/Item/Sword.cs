@@ -7,6 +7,8 @@ namespace jungmin
 {
     public class Sword : Equip_Item
     {
+        [Header("검의 레벨")]
+        [SerializeField] int Weapon_Level;
         [Header("검 공격력")]
         [SerializeField] float atk; //공격력
 
