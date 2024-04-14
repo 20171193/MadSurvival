@@ -46,10 +46,12 @@ namespace Jc
         private void OnEnable()
         {
             Manager.Navi.OnChangePlayerGround += OnPlayerGround;
+            Trigger.OnTakeDamage += OnTracking;
         }
         private void OnDisable()
         {
             Manager.Navi.OnChangePlayerGround -= OnPlayerGround;
+            Trigger.OnTakeDamage -= OnTracking;
         }
 
         protected override void Start()
@@ -57,12 +59,14 @@ namespace Jc
             base.Start();
 
             attacker.Range = stat.AtkRange;
-            attackTrigger.AtkCol.radius = stat.AtkRange - 0.1f;
+            attackTrigger.AtkCol.radius = stat.AtkRange/2f;
         }
 
         public void OnTracking()
         {
-            if (fsm.FSM.CurState == "Die" || fsm.FSM.CurState == "ReturnPool") return;
+            if (fsm.FSM.CurState == "Die" || fsm.FSM.CurState == "ReturnPool") 
+                return;
+
             fsm.FSM.ChangeState("Tracking");
         }
 

@@ -62,6 +62,8 @@ namespace Jc
         }
         private bool IsArrived()
         {
+            if (!baseOwner.Agent.enabled)
+                return false;
             return baseOwner.Agent.remainingDistance < 0.9f;
         }
         private void SetDestination()

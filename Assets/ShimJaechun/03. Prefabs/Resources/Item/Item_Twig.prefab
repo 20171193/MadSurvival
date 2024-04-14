@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 30
-  item: {fileID: 6828006482830567573, guid: a16466a7d19fced429fbdf0ce9087fbc, type: 3}
+  item: {fileID: 6828006482830567573, guid: 50d5e8838e4bab84d981bf469538798f, type: 3}
   rigid: {fileID: 462675362554930891}
   obTr: {fileID: 3500258002708329512}
   ownerCol: {fileID: 5169645174889809706}
