@@ -66,7 +66,7 @@ namespace Jc
             ResetPrevButton(owner.curButtonMode);
             curImage?.SetActive(false);
             curItemModel?.SetActive(false);
-
+            
             if (curQuickSlot.item == null || 
                 curQuickSlot.item.itemdata == null || 
                 curQuickSlot.item.itemdata.itemtype == ItemData.ItemType.Ingredient)
@@ -81,6 +81,14 @@ namespace Jc
                     potionImage.SetActive(true);
                     curImage = potionImage;
                     owner.curButtonMode = InteractButtonMode.Use;
+
+                    // 고기 장착
+                    if(curQuickSlot.item.itemdata.name == "Meat" || curQuickSlot.item.itemdata.name == "NiceMeat")
+                    {
+                        curItemModel = curQuickSlot.item.itemdata.name == "Meat" ? meatModel : niceMeatModel;
+                        curItemModel.SetActive(true);
+                    }
+
                     break;
                 case ItemData.ItemType.Equipment:
                     weaponImage.SetActive(true);
@@ -129,7 +137,7 @@ namespace Jc
                 case Equip_Item.EquipType.Weapon:
                     curWeaponItem = item;
                     owner.Anim.SetBool("IsTwoHand", true);
-                    SetEquipModel(curWeaponItem.atkType);
+                    SetEquipModel(curWeaponItem.atkType, curWeaponItem.Weapon_Level);
                     break;
                 case Equip_Item.EquipType.Armor:
                     curArmorItem = item;
@@ -199,6 +207,13 @@ namespace Jc
             if ((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
             {
                 curImage?.SetActive(false);
+
+                // 고기일경우 장착해제
+                if (curSlot.item != null && (curQuickSlot.item.itemdata.name == "Meat" || curQuickSlot.item.itemdata.name == "NiceMeat"))
+                {
+                    curItemModel.SetActive(false);
+                    curItemModel = null;
+                }
             }
         }
         public void OnSelectQuickSlot(Slot slot)

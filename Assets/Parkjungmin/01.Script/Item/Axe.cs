@@ -8,9 +8,6 @@ namespace jungmin
     [CreateAssetMenu(fileName = "Axe", menuName = "Item/EquipItem/Axe")]
     public class Axe : Equip_Item //µµ³¢
     {
-
-        [Header("µµ³¢ÀÇ ·¹º§")]
-        [SerializeField] int Weapon_Level;
         [Header("µµ³¢ °ø°Ý·Â")]
         [SerializeField] float atk; //°ø°Ý·Â
         public Axe(ItemData itemdata_) : base(itemdata_) { }
