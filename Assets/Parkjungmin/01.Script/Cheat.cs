@@ -14,6 +14,10 @@ public class Cheat : MonoBehaviour
             BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Bottle"], 1);
             BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["PickAxe"], 1);
             BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
+            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
+            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
+            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
+
             isOnce = true;
         }
     }

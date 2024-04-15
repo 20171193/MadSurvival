@@ -21,11 +21,20 @@ namespace jungmin
             // 용량이 있다면
             if (ownCapacity >= usePerValue)
             {
-                player.Stat.OwnThirst += usePerValue;
-                ownCapacity -= usePerValue;
-                OnUseBottle();
-                // 심재천 수정
-                ScoreboardInvoker.Instance.drinkWater?.Invoke(ScoreType.Water);
+                if (!player.IsOnWater)
+                {
+
+                    player.Stat.OwnThirst += usePerValue;
+                    ownCapacity -= usePerValue;
+                    OnUseBottle();
+                    // 심재천 수정
+                    ScoreboardInvoker.Instance.drinkWater?.Invoke(ScoreType.Water);
+                }
+                else
+                {
+                    ownCapacity = maxCapacity;
+                    OnUseBottle();
+                }
             }
             else //용량이 없다면
             {
@@ -36,7 +45,6 @@ namespace jungmin
 
                     ownCapacity = maxCapacity;
                     OnUseBottle();
-
             }
 
         }
