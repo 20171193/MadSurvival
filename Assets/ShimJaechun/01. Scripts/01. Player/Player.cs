@@ -24,6 +24,9 @@ namespace Jc
         private BackPackController backPack;
 
         [SerializeField]
+        private GameObject backPackPanel;
+
+        [SerializeField]
         private Animator anim;
         public Animator Anim { get { return anim; } }
 
@@ -275,6 +278,12 @@ namespace Jc
         {
             backPack.TryOpenInventory();
             isOnBackpack = BackPackController.inventory_Activated;
+
+            // 일시정지
+            Time.timeScale = isOnBackpack ? 0f : 1f;
+
+            // 페널 활성화
+            backPackPanel.SetActive(isOnBackpack);
 
             // 조이스틱, 상호작용 버튼 활성화/비활성화
             interactButton.SetActive(!isOnBackpack);
