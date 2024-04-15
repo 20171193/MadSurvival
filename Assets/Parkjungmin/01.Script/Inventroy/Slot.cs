@@ -88,6 +88,11 @@ namespace jungmin
 				{
 					go_CountImage.SetActive(true);
 					text_Count.text = this.ItemCount.ToString();
+					if(item is Food)
+					{
+						Food food = (Food)item;
+						food.OnUse += UpdateSlotCount;
+					}
 				}
 			}
 			else													  //장비 타입 아이템 ->  갯수 UI Off + 내구도 표시UI On
@@ -271,7 +276,19 @@ namespace jungmin
 					bottle.OnUseBottle -= UpdateSlotCount;
 
                 }
-				
+                if (tempItem is Food)
+                {
+                    Food food = (Food)tempItem;
+                    food.OnUse -= UpdateSlotCount;
+
+                }
+                if (tempItem is Build_Base) 
+                {
+                    Build_Base builditem = (Build_Base)tempItem;
+                    builditem.OnBuild -= UpdateSlotCount;
+
+                }
+
             }
             else
             { 
