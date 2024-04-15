@@ -26,17 +26,6 @@ namespace jungmin
 
 			}
 		}
-        [Header("아이템의 내구도")]
-        public int itemDurable;
-		public int ItemDurable
-		{
-			get { return itemDurable; }
-			set
-			{
-				itemCount = value;
-			}
-		}
-
 		[SerializeField] public Image itemImage; //슬롯 위에 보여질 아이템 이미지.
 		[SerializeField] TMP_Text text_Count;
 		[SerializeField] GameObject go_CountImage;
@@ -95,14 +84,10 @@ namespace jungmin
 					}
 				}
 			}
-			else													  //장비 타입 아이템 ->  갯수 UI Off + 내구도 표시UI On
+			else//장비 타입 아이템 ->  갯수 UI Off + 내구도 표시UI On
 			{
 				Equip_Item equipItem = (Equip_Item)this.item;
-				this.itemDurable = equipItem.Durable;
-                go_CountImage.SetActive(true);
-				text_Count.text = $"{equipItem.Durable}%";
-				equipItem.OnUse += UpdateSlotCount;
-                //go_CountImage.SetActive(false);
+                go_CountImage.SetActive(false);
             }
 			// 4.슬롯의 아이템 이미지 투명도 1로 변경.
 			SetColor(1);
@@ -127,12 +112,6 @@ namespace jungmin
 			{
 				Bottle bottle = (Bottle)item;
 				text_Count.text = bottle.ownCapacity.ToString();
-
-			}
-			else if(item is Equip_Item) //내구도가 있는 장비 아이템이면
-			{
-				Equip_Item equipItem = (Equip_Item)item;
-				text_Count.text = $"{equipItem.Durable}%";
 			}
 			else
 			{
@@ -154,7 +133,12 @@ namespace jungmin
 				Bottle bottle = (Bottle)item;
 				bottle.OnUseBottle -= UpdateSlotCount;
 			}
-			item = null;
+            if (item is Equip_Item)
+            {
+                Equip_Item equipitem = (Equip_Item)item;
+                equipitem.OnUse -= UpdateSlotCount;
+            }
+            item = null;
             ItemCount = 0;
 			itemImage.sprite = GetComponent<Image>().sprite; //슬롯의 기본 스프라이트로 변경.
 			SetColor(0);
@@ -236,7 +220,6 @@ namespace jungmin
 			{
 				foreach (Slot slot in QuickSlotController.instance.slots)
 				{
-					//Debug.Log("?");
 					slot.SetColorBG(255);
 				}
 				SelectedSlot_QuickSlot.instance.selectedSlot = this;

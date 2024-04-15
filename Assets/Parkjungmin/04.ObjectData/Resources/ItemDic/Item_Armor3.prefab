@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 3c4847c860056c34f8e2cd14364adc65, type: 2}
-  durable: 100
-  DecDurableValue: 1
+  Maxdurable: 100
+  Owndurable: 0
+  Weapon_Level: 0
   equipType: 1
   atkType: 0
   level: 3
   def: 100
-  player: {fileID: 0}
