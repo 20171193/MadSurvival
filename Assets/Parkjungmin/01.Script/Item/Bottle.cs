@@ -9,7 +9,7 @@ namespace jungmin
     [CreateAssetMenu(fileName = "Stamina_Potion", menuName = "Item/Used_Item/Potion/Stamina_Potion")]
     public class Bottle : Used_Item
     {
-        [SerializeField] int maxCapacity; //최대 용량
+        [SerializeField] public int maxCapacity; //최대 용량
         [SerializeField] public int ownCapacity; //현재 용량
         [SerializeField] int usePerValue; //한번 마실 때 갈증이 해소되는 값.
 
