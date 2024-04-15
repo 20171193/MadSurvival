@@ -26,6 +26,22 @@ namespace Jc
         [SerializeField]
         private GameObject backPackPanel;
 
+        [Header("버튼 상호작용 효과음")]
+        [SerializeField]
+        private AudioSource interactableSource;
+        public AudioSource InteractableSource { get { return interactableSource; } }
+        [Header("음식 섭취, 공격")]
+        [SerializeField]
+        private AudioClip[] interactableClips;
+        public AudioClip[] InteractableClips { get { return interactableClips; } }
+        [Header("피격")]
+        [SerializeField]
+        private AudioSource playerSource;
+        public AudioSource PlayerSource { get { return playerSource; } }
+        [SerializeField]
+        private AudioClip[] playerClips;
+        public AudioClip[] PlayerClips { get { return playerClips; } }
+
         [SerializeField]
         private Animator anim;
         public Animator Anim { get { return anim; } }
@@ -171,8 +187,8 @@ namespace Jc
         public void OnEnterDay()
         {
             Debug.Log("EnterDayInvoker");
-            stat.StartTimer(false, CoreStatType.Hunger, 1f);
-            stat.StartTimer(false, CoreStatType.Thirst, 1f);
+            stat.StartTimer(false, CoreStatType.Hunger, 1f, 2f);
+            stat.StartTimer(false, CoreStatType.Thirst, 1f, 4f);
         }
         public void OnEnableMode(bool isEnable)
         {
@@ -249,14 +265,6 @@ namespace Jc
                         // 공격 쿨타임 적용
                         isAttackCoolTime = true;
                         atsRoutine = StartCoroutine(AttackSpeedRoutine());
-                        // 무기를 장착하고 있는 경우
-                        if (ItemController.CurWeaponItem != null)
-                        {
-                            ItemController.CurWeaponItem.Durable--;
-                            // 무기 내구도가 모두 소모된 경우
-                            if(ItemController.CurWeaponItem.Durable < 1)
-                                ItemController.UnEquip(Equip_Item.EquipType.Weapon);
-                        }
                         break;
                     }
                 case InteractButtonMode.Use:

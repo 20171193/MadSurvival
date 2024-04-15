@@ -202,6 +202,10 @@ namespace Jc
             if (!item.isInfinite)
             {
                 curSlot.ItemCount--;
+
+                owner.InteractableSource.clip = owner.InteractableClips[0];
+                owner.InteractableSource.Play();
+
                 // 고기일경우 장착해제
                 if (curSlot.ItemCount < 1 && (curQuickSlot.item.itemdata.name == "Meat" || curQuickSlot.item.itemdata.name == "NiceMeat"))
                 {

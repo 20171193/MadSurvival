@@ -15,6 +15,9 @@ public static class Manager
     // JM - 
     public static ItemManager Item { get { return ItemManager.Instance; } }
 
+    // JC - Sound : 사운드매니저 (BGM, UI 효과음)
+    public static SoundManager Sound { get { return SoundManager.Instance;} }
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initialize()
     {
@@ -25,6 +28,7 @@ public static class Manager
         DataManager.ReleaseInstance();
         ItemManager.ReleaseInstance();
         SceneManager.ReleaseInstance();
+        SoundManager.ReleaseInstance();
 
         // 싱글턴 객체생성
         PoolManager.CreateInstance();
@@ -33,5 +37,6 @@ public static class Manager
         DataManager.CreateInstance();
         ItemManager.CreateInstance();
         SceneManager.CreateInstance();
+        SoundManager.CreateInstance();
     }
 }
