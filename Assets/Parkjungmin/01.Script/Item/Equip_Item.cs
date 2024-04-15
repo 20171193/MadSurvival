@@ -25,8 +25,20 @@ namespace jungmin
         }
 
         [Header("장비의 내구도")]
-        public int durable = 100; //아이템의 내구도
-        [SerializeField] public float DecDurableValue;
+        [SerializeField]
+        private int durable; //아이템의 내구도
+        public int Durable
+        {
+            get { return durable; }
+            set
+            {
+                durable = value;
+                OnUse?.Invoke();
+            }
+        }
+
+        public UnityAction OnUse;
+
         [Header("무기 레벨")]
         public int Weapon_Level;
 

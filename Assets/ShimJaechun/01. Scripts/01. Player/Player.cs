@@ -252,9 +252,9 @@ namespace Jc
                         // 무기를 장착하고 있는 경우
                         if (ItemController.CurWeaponItem != null)
                         {
-                            ItemController.CurWeaponItem.durable--;
+                            ItemController.CurWeaponItem.Durable--;
                             // 무기 내구도가 모두 소모된 경우
-                            if(ItemController.CurWeaponItem.durable < 1)
+                            if(ItemController.CurWeaponItem.Durable < 1)
                                 ItemController.UnEquip(Equip_Item.EquipType.Weapon);
                         }
                         break;
