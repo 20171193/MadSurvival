@@ -98,9 +98,9 @@ namespace jungmin
 			else													  //장비 타입 아이템 ->  갯수 UI Off + 내구도 표시UI On
 			{
 				Equip_Item equipItem = (Equip_Item)this.item;
-				this.itemDurable = equipItem.durable;
+				this.itemDurable = equipItem.Durable;
                 go_CountImage.SetActive(true);
-				text_Count.text = $"{equipItem.durable}%";
+				text_Count.text = $"{equipItem.Durable}%";
 				equipItem.OnUse += UpdateSlotCount;
                 //go_CountImage.SetActive(false);
             }
@@ -132,7 +132,7 @@ namespace jungmin
 			else if(item is Equip_Item) //내구도가 있는 장비 아이템이면
 			{
 				Equip_Item equipItem = (Equip_Item)item;
-				text_Count.text = $"{equipItem.durable}%";
+				text_Count.text = $"{equipItem.Durable}%";
 			}
 			else
 			{

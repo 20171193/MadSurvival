@@ -19,10 +19,10 @@ namespace Jc
             // 방어구가 있을 경우
             if (owner.ItemController.CurArmorItem != null)
             {
-                owner.ItemController.CurArmorItem.durable--;
+                owner.ItemController.CurArmorItem.Durable--;
 
                 // 방어구 내구도가 모두 소모된 경우
-                if(owner.ItemController.CurArmorItem.durable < 1)
+                if(owner.ItemController.CurArmorItem.Durable < 1)
                     owner.ItemController.UnEquip(Equip_Item.EquipType.Armor);
             }
             owner.Stat.OwnHp -= damage;
