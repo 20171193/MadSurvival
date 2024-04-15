@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 namespace Jc
 {
     public class PauseController : MonoBehaviour
@@ -10,6 +10,15 @@ namespace Jc
         [SerializeField]
         private GameObject pausePopUp;
 
+        [Header("마스터 슬라이더")]
+        [SerializeField]
+        private Slider masterSlider;
+        [Header("배경음 슬라이더")]
+        [SerializeField]
+        private Slider bgmSlider;
+        [Header("효과음 슬라이더")]
+        [SerializeField]
+        private Slider sfxSlider;
         public void OnClickPauseButton()
         {
             pausePopUp.SetActive(!pausePopUp.activeSelf);
@@ -20,6 +29,19 @@ namespace Jc
         {
             Time.timeScale = 1f;
             Manager.Scene.LoadScene(SceneNameType.Title);
+        }
+
+        public void OnChangeMasterValue()
+        {
+            Manager.Sound.AudioMixer.SetFloat("Master", masterSlider.value);
+        }
+        public void OnChangeBGMValue()
+        {
+            Manager.Sound.AudioMixer.SetFloat("BGM",bgmSlider.value);
+        }
+        public void OnChangeSFXValue()
+        {
+            Manager.Sound.AudioMixer.SetFloat("SFX", sfxSlider.value);
         }
     }
 }

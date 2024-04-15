@@ -7,6 +7,7 @@ using Jc;
 using System.Linq;
 using UnityEngine.UIElements;
 using UnityEngine.Rendering;
+using System.Reflection;
 
 namespace Jc
 {
@@ -60,6 +61,9 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<string, AnimalData> animalDataDic;
     public Dictionary<int, List<DaysAnimalInfo>> daysAnimalDataDic;
 
+    private PlayerData prData;
+    public PlayerData PrData { get { return prData; } }
+
     private void OnEnable()
     {
         monsterDataDic = new Dictionary<string, MonsterData>();
@@ -69,6 +73,10 @@ public class DataManager : Singleton<DataManager>
         animalDataDic = new Dictionary<string, AnimalData>();
         daysAnimalDataDic = new Dictionary<int, List<DaysAnimalInfo>>();
 
+        // 플레이어 데이터 로드
+        prData = new PlayerData();
+        LoadPlayerData();
+
         LoadData(DataType.MonsterData);
         // 몬스터 등록
         RegistMonster();
@@ -77,6 +85,53 @@ public class DataManager : Singleton<DataManager>
         // 동물 등록
         RegistAnimal();
         LoadData(DataType.DaysAnimalData);
+    }
+
+    private void OnDisable()
+    {
+        SavePlayerData();
+    }
+
+    public void SavePlayerData()
+    {
+        if(Directory.Exists($"{dataPath}/JsonData") == false)
+        {
+            Directory.CreateDirectory($"{dataPath}/JsonData");
+        }
+
+        // 수치적용
+        prData.extraMonsterATK = prData.prevMonsterATK + prData.extraMonsterATK*0.03f;
+        prData.extraTreeATK = prData.prevTreeATK + prData.extraTreeATK*0.03f;
+        prData.extraStoneATK = prData.prevStoneATK + prData.extraStoneATK * 0.03f;
+        prData.extraHunger = prData.prevHunger + prData.extraHunger * 0.03f;
+        prData.extraThirst = prData.prevThirst + prData.extraThirst * 0.03f;
+
+        string json = JsonUtility.ToJson(prData, true);
+        File.WriteAllText($"{dataPath}/JsonData/PlayerData.txt", json);
+    }
+    public void LoadPlayerData()
+    {
+        if (File.Exists($"{dataPath}/JsonData/PlayerData.txt") == false)
+        {
+            return;
+        }
+
+        string json = File.ReadAllText($"{dataPath}/JsonData/PlayerData.txt");
+        try
+        {
+            prData = JsonUtility.FromJson<PlayerData>(json);
+            prData.prevMonsterATK = prData.extraMonsterATK;
+            prData.prevTreeATK = prData.extraTreeATK;
+            prData.prevStoneATK = prData.extraStoneATK;
+            prData.prevHunger = prData.extraHunger;
+            prData.prevThirst = prData.extraThirst;
+            GameObject.FindWithTag("Player").GetComponent<PlayerStat>().LoadBaseStat(prData);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"Load data fail : { ex.Message}");
+            return;
+        }
     }
 
     private void RegistMonster()

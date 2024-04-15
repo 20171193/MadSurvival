@@ -73,6 +73,7 @@ namespace Jc
         IEnumerator SpawnRoutine(int day)
         {
             int spawnWave = 0;
+            Spawn(day, spawnWave++);
             yield return null;
 
             while(spawnWave <= 2)
