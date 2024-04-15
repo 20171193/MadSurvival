@@ -5,12 +5,16 @@ using UnityEngine;
 
 public class Cheat : MonoBehaviour
 {
+    bool isOnce = false;
+
     private void OnEnable()
     {
-        BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Potion"], 10);
-        BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Knife"], 1);
-        BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Meat"], 15);
-
-
+        if (!isOnce)
+        {
+            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Bottle"], 1);
+            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["PickAxe"], 1);
+            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
+            isOnce = true;
+        }
     }
 }

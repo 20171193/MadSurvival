@@ -200,20 +200,21 @@ namespace Jc
                 return;
             // 무한히 사용하는 아이템이 아닌 경우
             if (!item.isInfinite)
+            {
                 curSlot.ItemCount--;
+                // 고기일경우 장착해제
+                if (curSlot.ItemCount < 1 && (curQuickSlot.item.itemdata.name == "Meat" || curQuickSlot.item.itemdata.name == "NiceMeat"))
+                {
+                    curItemModel.SetActive(false);
+                    curItemModel = null;
+                }
+            }
 
             item.Use(owner);
 
             if ((curSlot == curQuickSlot) && curSlot.item == null || curSlot.itemCount < 1)
             {
                 curImage?.SetActive(false);
-
-                // 고기일경우 장착해제
-                if (curSlot.item != null && (curQuickSlot.item.itemdata.name == "Meat" || curQuickSlot.item.itemdata.name == "NiceMeat"))
-                {
-                    curItemModel.SetActive(false);
-                    curItemModel = null;
-                }
             }
         }
         public void OnSelectQuickSlot(Slot slot)

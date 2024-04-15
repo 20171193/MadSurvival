@@ -246,13 +246,13 @@ namespace Jc
                     if (isIncrease == true && thirstIncRoutine == null)
                         thirstIncRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
                     else if (isIncrease == false && thirstDecRoutine == null)
-                        thirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
+                        thirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, 4f, maxTime));
                     break;
                 case CoreStatType.Hunger:
                     if (isIncrease == true && hungerIncRoutine == null)
                         hungerIncRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
                     else if (isIncrease == false && hungerDecRoutine == null)
-                        hungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
+                        hungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, 2f, maxTime));
                     break;
                 case CoreStatType.HP:
                     if (isIncrease == true && hpIncRoutine == null)

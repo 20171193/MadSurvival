@@ -14,8 +14,6 @@ namespace jungmin
         public override void Equip(Player player)
         {
             player.Stat.StoneATK += atk;
-            OnUse();
-
         }
 
         public override void UnEquip(Player player)
