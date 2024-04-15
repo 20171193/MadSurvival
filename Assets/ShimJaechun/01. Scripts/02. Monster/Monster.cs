@@ -15,6 +15,14 @@ namespace Jc
         [Header("Components")]
         [Space(2)]
         [SerializeField]
+        private AudioSource audioSource;
+        public AudioSource AudioSource { get { return audioSource; } }
+        [Header("사망 시 효과음")]
+        [SerializeField]
+        private AudioClip[] audioClips;
+        public AudioClip[] AudioClips { get { return audioClips; } }
+
+        [SerializeField]
         private Rigidbody rigid;
 
         [SerializeField]

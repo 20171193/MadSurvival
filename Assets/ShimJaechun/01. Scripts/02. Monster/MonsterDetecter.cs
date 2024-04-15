@@ -236,6 +236,7 @@ namespace Jc
                 }
             }
         }
+
         private void OnTriggerExit(Collider other)
         {
             if (owner.FSM.FSM.CurState == "Die" || owner.FSM.FSM.CurState == "Pooled") return;

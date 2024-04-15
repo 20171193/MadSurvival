@@ -23,6 +23,9 @@ namespace Jc
         [Header("Editor Setting")]
         [Space(2)]
         [SerializeField]
+        private AudioSource diggedAudio;
+
+        [SerializeField]
         private float popItemPower;
         [Range(0, 10f)]
         [SerializeField]
@@ -123,9 +126,8 @@ namespace Jc
 
         public virtual void Digged()
         {
-            Debug.Log($"{onGround} : return");
+            diggedAudio.Play();
             onGround.type = originType;
-
             // ÆÄ±« Ã³¸®
             DropItem();
 
@@ -135,7 +137,8 @@ namespace Jc
                 ScoreboardInvoker.Instance.digStone?.Invoke(ScoreType.Stone);
 
             levelSpecificModel[level].SetActive(false);
-            Release();
+
+            StartCoroutine(Extension.DelayRoutine(1.5f, () => Release()));
         }
         protected virtual void DropItem()
         {
