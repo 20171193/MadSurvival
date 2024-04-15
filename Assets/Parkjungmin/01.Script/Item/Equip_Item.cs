@@ -47,7 +47,11 @@ namespace jungmin
         
         public abstract void Equip(Player player);
         public abstract void UnEquip(Player player);
-        
+
+        private void Start()
+        {
+            
+        }
 
 
         public Equip_Item(ItemData itemdata_) : base(itemdata_) { }
