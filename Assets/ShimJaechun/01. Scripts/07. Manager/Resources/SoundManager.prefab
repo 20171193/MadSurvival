@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 2248673773396367673}
   sfxSource: {fileID: 2935719542016581127}
+  audioMixer: {fileID: 24100000, guid: 7fba7a5523cf721499cd8da8af14eca7, type: 2}
   sfxClips:
   - {fileID: 8300000, guid: 76f96c9b3b4b96947b8333f219315b92, type: 3}
   - {fileID: 8300000, guid: de775d6a99becd945bb8c48310df532b, type: 3}

@@ -24,7 +24,8 @@ namespace Jc
         private GameObject nightLight;
         [SerializeField]
         private GameObject scoreboardCanvas;
-
+        [SerializeField]
+        private LootController lootController;
 
         [SerializeField]
         private int maxDay;
@@ -245,7 +246,6 @@ namespace Jc
         // ÆäÀÌµå¾Æ¿ô
         IEnumerator DayChangeFadeOutRoutine()
         {
-            ExitNight();
             lootButtonGroup.SetActive(false);
             yield return null;
 
@@ -257,6 +257,7 @@ namespace Jc
                 yield return null;
             }
 
+            ExitNight();
             fadeImage.color = fadeOutColor;
             Time.timeScale = 1f;
             yield return null;

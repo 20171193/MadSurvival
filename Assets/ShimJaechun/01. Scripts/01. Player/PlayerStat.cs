@@ -98,7 +98,7 @@ namespace Jc
         [Header("갈증")]
         [SerializeField]
         private float maxThirst;
-        public float MaxThirst { get { return maxThirst; } }
+        public float MaxThirst { get { return maxThirst; } set { maxThirst = value; } }
 
         [SerializeField]
         private float ownThirst;
@@ -164,14 +164,25 @@ namespace Jc
 
         [Header("공격력")]
         [SerializeField]
+        private float baseMonsterATK;
+        public float BaseMonsterATK { get { return baseMonsterATK; } set { baseMonsterATK = value; } }
+
+        [SerializeField]
         private float monsterAtk;  // 공격력
         public float MonsterATK
         { get { return monsterAtk; } set { monsterAtk = value; } }
+
+        [SerializeField]
+        private float baseTreeAtk;
+        public float BaseTreeAtk { get { return baseTreeAtk; } set { baseTreeAtk = value; } }
 
         [SerializeField]        // 트리 대상 공격력
         private float treeAtk;
         public float TreeATK { get { return treeAtk; } set { treeAtk = value; } }
 
+        [SerializeField]
+        private float baseStoneAtk;
+        public float BaseStoneAtk { get { return baseStoneAtk; } set { baseStoneAtk = value; } }
         [SerializeField]
         private float stoneAtk; // 바위 대상 공격력
         public float StoneATK { get { return stoneAtk; } set { stoneAtk = value; } }
@@ -249,6 +260,19 @@ namespace Jc
             OwnHunger = maxHunger;
             OwnThirst = maxThirst;
         }
+
+        public void LoadBaseStat(PlayerData lodedData)
+        {
+            if (lodedData == null) return;
+
+            monsterAtk += lodedData.extraMonsterATK;
+            treeAtk += lodedData.extraTreeATK;
+            stoneAtk += lodedData.extraStoneATK;
+
+            MaxHunger += lodedData.extraHunger;
+            MaxThirst += lodedData.extraThirst;
+        }
+
         // 스텟 증/감 타이머 시작
         public void StartTimer(bool isIncrease, CoreStatType type, float value, float time = 1f, float maxTime = 0f, CoreStatType causedType = CoreStatType.NULL)
         {

@@ -52,12 +52,12 @@ namespace Jc
             }
 
             MonsterData loadedData = Manager.Data.monsterDataDic[owner.MonsterName];
-            Speed = loadedData.speed;
-            atk = loadedData.atk;
-            ats = loadedData.ats;
-            maxHp = loadedData.hp;
+            Speed = loadedData.speed + ((GameFlowController.Inst.Day-1) * loadedData.speed * 0.03f);
+            atk = loadedData.atk + ((GameFlowController.Inst.Day-1) * loadedData.atk * 0.03f);
+            ats = loadedData.ats + ((GameFlowController.Inst.Day-1) * loadedData.ats * 0.03f);
+            maxHp = loadedData.hp + ((GameFlowController.Inst.Day-1) * loadedData.hp * 0.03f);
             ownHp = maxHp;
-            amr = loadedData.amr;
+            amr = loadedData.amr + ((GameFlowController.Inst.Day-1) * loadedData.hp * 0.03f);
             dropMeatPercent = loadedData.dropMeatPercent;
         }
 

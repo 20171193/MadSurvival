@@ -48,9 +48,9 @@ namespace Jc
             hungerTXT.text = stat.OwnHunger.ToString();
             thirstTXT.text = stat.OwnThirst.ToString();
             amorTXT.text = stat.AMR.ToString();
-            monsteratkTXT.text = stat.MonsterATK.ToString();
-            treeatkTXT.text = stat.TreeATK.ToString();
-            stoneatkTXT.text = stat.StoneATK.ToString();
+            monsteratkTXT.text = (stat.BaseMonsterATK + stat.MonsterATK).ToString();
+            treeatkTXT.text = (stat.BaseTreeAtk + stat.TreeATK).ToString();
+            stoneatkTXT.text = (stat.BaseStoneAtk + stat.StoneATK).ToString();
         }
 
         private void OnEnable()
