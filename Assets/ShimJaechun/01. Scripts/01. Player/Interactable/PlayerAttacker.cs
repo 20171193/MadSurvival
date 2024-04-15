@@ -54,7 +54,7 @@ namespace Jc
 
                 // 공격대상
                 IDamageable damagable = colliders[i].GetComponent<IDamageable>();
-                damagable?.TakeDamage(owner.Stat.MonsterATK);
+                damagable?.TakeDamage(owner.Stat.BaseMonsterATK + owner.Stat.MonsterATK);
 
                 IKnockbackable knockbackable = colliders[i].GetComponent<IKnockbackable>();
                 knockbackable?.Knockback(owner.Stat.KnockbackPower, owner.Stat.KnockbackTime, transform.position);
@@ -67,10 +67,10 @@ namespace Jc
                     switch(diggable.GetObstacleType())
                     {
                         case ObstacleType.Tree:
-                            value = owner.Stat.TreeATK;
+                            value = owner.Stat.BaseTreeAtk + owner.Stat.TreeATK;
                             break;
                         case ObstacleType.Stone:
-                            value = owner.Stat.StoneATK;
+                            value = owner.Stat.BaseStoneAtk + owner.Stat.StoneATK;
                             break;
                         default:
                             break;

@@ -3,6 +3,7 @@ using UnityEngine;
 using Jc;
 using System;
 using System.Linq;
+using UnityEngine.Audio;
 
 namespace Jc
 {
@@ -19,6 +20,10 @@ public class SoundManager : Singleton<SoundManager>
     private AudioSource bgmSource;
     [SerializeField]
     private AudioSource sfxSource;
+
+    [SerializeField]
+    private AudioMixer audioMixer;
+    public AudioMixer AudioMixer { get { return audioMixer; }  }
 
     [Header("기본버튼, 시작버튼")]
     [SerializeField]

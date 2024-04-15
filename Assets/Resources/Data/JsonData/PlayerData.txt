@@ -1,0 +1,12 @@
+{
+    "prevMonsterATK": 0.0,
+    "prevTreeATK": 0.0,
+    "prevStoneATK": 0.0,
+    "prevHunger": 0.0,
+    "prevThirst": 0.0,
+    "extraMonsterATK": 0.0,
+    "extraTreeATK": 0.0,
+    "extraStoneATK": 0.0,
+    "extraHunger": 0.0,
+    "extraThirst": 0.0
+}
