@@ -7,18 +7,16 @@ public class Cheat : MonoBehaviour
 {
     bool isOnce = false;
 
-    private void OnEnable()
+    private void Start()
     {
         if (!isOnce)
         {
-            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Bottle"], 1);
-            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["PickAxe"], 1);
-            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
-            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
-            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
-            BackPackController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
-
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["PickAxe"], 1);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Bottle"], 1);
             isOnce = true;
         }
+        Destroy(gameObject);
     }
+
 }
