@@ -105,10 +105,8 @@ GameObject:
   - component: {fileID: 5815602430827940019}
   - component: {fileID: 6089089748021675427}
   - component: {fileID: 3881546870310596616}
-  - component: {fileID: 9034362737844547609}
   - component: {fileID: 294584353059427922}
   - component: {fileID: 8173882206585810819}
-  - component: {fileID: 9214282735029137595}
   m_Layer: 19
   m_Name: Item_BoneFire
   m_TagString: Untagged
@@ -182,27 +180,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9034362737844547609
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1463275580883074045}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.78, y: 0.4652093, z: 1.23}
-  m_Center: {x: 0.06976879, y: 0.2259494, z: 0.016719982}
 --- !u!114 &294584353059427922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,19 +211,3 @@ MonoBehaviour:
   onGround: {fileID: 0}
   maxHp: 100
   ownHp: 100
---- !u!208 &9214282735029137595
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1463275580883074045}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.39, y: 0.5, z: 0.295}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0.015000001, y: 0, z: 0}
-  m_TimeToStationary: 0.5
