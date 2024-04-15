@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using jungmin;
 using Jc;
-using UnityEditor.Experimental.GraphView;
-using Unity.VisualScripting.Antlr3.Runtime;
-using UnityEngine.UIElements;
 using UnityEngine.Events;
 
 namespace jungmin

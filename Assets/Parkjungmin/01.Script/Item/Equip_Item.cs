@@ -32,7 +32,6 @@ namespace jungmin
 
         public EquipType equipType;
         public ATKType atkType; //어떤 타입에게 공격을 할지.
-        public UnityAction OnUse;
         
         public abstract void Equip(Player player);
         public abstract void UnEquip(Player player);

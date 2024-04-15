@@ -47,7 +47,7 @@ MonoBehaviour:
   itemdata: {fileID: 11400000, guid: b255bae1f050fe14884ec56ce5a3ec7a, type: 2}
   durable: 100
   DecDurableValue: 1
+  Weapon_Level: 0
   equipType: 0
   atkType: 3
-  Weapon_Level: 0
   atk: 10
