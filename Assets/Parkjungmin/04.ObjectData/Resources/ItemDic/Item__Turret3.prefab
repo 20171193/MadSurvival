@@ -116,7 +116,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 3959332356745046451}
+  - {fileID: 7691459280771826240}
   - {fileID: 1273387763061063611}
   - {fileID: 2154408692020005045}
   m_Father: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 8220552399987692504}
   - component: {fileID: 6802801011576045365}
   m_Layer: 0
-  m_Name: Turret_Foot
+  m_Name: Turret_Foot_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -375,13 +375,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129098154786284676}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 8.106553e-17, z: -5.1644436e-17, w: 0.7071067}
-  m_LocalPosition: {x: -0.0000000037252903, y: 0.44, z: -0.040831383}
-  m_LocalScale: {x: 4.26, y: 4.26, z: 4.26}
-  m_ConstrainProportionsScale: 1
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4.6, y: 4.6, z: 5}
+  m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4153386027807747246}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 7691459280771826240}
+  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
 --- !u!33 &8220552399987692504
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -458,13 +458,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5851684225820339252}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 8.106553e-17, z: -5.1644436e-17, w: 0.7071067}
-  m_LocalPosition: {x: -0.037785213, y: -0.13099998, z: -0.029648146}
-  m_LocalScale: {x: 6.897346, y: 6.897346, z: 6.897346}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
+  m_LocalScale: {x: 4.53, y: 2.764789, z: 4.53}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1273387763061063611}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
 --- !u!33 &8385288291129275253
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -515,6 +515,38 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7458471807037038591
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7691459280771826240}
+  m_Layer: 19
+  m_Name: Turret_Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7691459280771826240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7458471807037038591}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3959332356745046451}
+  m_Father: {fileID: 4153386027807747246}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8377783748466642477
 GameObject:
   m_ObjectHideFlags: 0
