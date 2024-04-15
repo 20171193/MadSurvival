@@ -103,10 +103,15 @@ namespace Jc
             owner.Anim.SetTrigger("OnAttack");
         }
 
+        private bool TargetCheck()
+        {
+            return owner.Detecter.CurrentTarget && owner.Detecter.CurrentTarget.activeSelf &&
+                (owner.Detecter.CurrentTarget.transform.position - owner.transform.position).sqrMagnitude < 2f;
+        }
+
         IEnumerator AttackRoutine()
         {
-            while (owner.Detecter.CurrentTarget != null 
-                && owner.Detecter.CurrentTarget.activeSelf)
+            while (TargetCheck())
             {
                 Attack();
                 yield return new WaitForSeconds(owner.Stat.ATS);
@@ -127,6 +132,8 @@ namespace Jc
 
         public override void Enter()
         {
+            DieSoundPlay();
+
             owner.DropItem();
             owner.Agent.isStopped = true;
             owner.Agent.enabled = false;
@@ -134,6 +141,14 @@ namespace Jc
             owner.GetComponent<CapsuleCollider>().enabled = false;
             dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(1.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }
+
+        private void DieSoundPlay()
+        {
+            if (owner.AudioSource == null) return;
+            owner.AudioSource.clip = owner.AudioClips[0];
+            owner.AudioSource.Play();
+        }
+
 
         public override void Exit()
         {

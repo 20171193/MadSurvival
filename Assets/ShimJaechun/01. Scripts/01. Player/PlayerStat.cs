@@ -23,7 +23,7 @@ namespace Jc
         [Header("이동속도")]
         [SerializeField]
         private float maxSpeed;
-        public float MaxSpeed { get { return maxSpeed; } }
+        public float MaxSpeed { get { return maxSpeed; }  set { maxSpeed = value; } }
         [SerializeField]
         private float curMaxSpeed;
         public float CurMaxSpeed { get { return curMaxSpeed; } }
@@ -41,8 +41,14 @@ namespace Jc
             get { return ownHp; }
             set
             {
+
                 ownHp = value;
+                
+                if (ownHp >= maxHp)
+                    ownHp = maxHp;
+
                 OnChangeHP?.Invoke(ownHp, maxHp);
+
                 if (ownHp <= 0f)
                     owner.OnDie();
             }
@@ -136,6 +142,12 @@ namespace Jc
                 // 최대 수치 적용
                 if (ownHunger > maxHunger)
                     ownHunger = maxHunger;
+
+                // 허기수치가 80이상인 경우
+                if (ownHunger >= 80f)
+                    StartTimer(true, CoreStatType.HP, 5f, 3f, 0);
+                else
+                    StopTimer(CoreStatType.HP, true);
 
                 // 허기수치가 0인 경우  
                 if (ownHunger <= 0f)
@@ -246,13 +258,13 @@ namespace Jc
                     if (isIncrease == true && thirstIncRoutine == null)
                         thirstIncRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
                     else if (isIncrease == false && thirstDecRoutine == null)
-                        thirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, 4f, maxTime));
+                        thirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
                     break;
                 case CoreStatType.Hunger:
                     if (isIncrease == true && hungerIncRoutine == null)
                         hungerIncRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
                     else if (isIncrease == false && hungerDecRoutine == null)
-                        hungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, 2f, maxTime));
+                        hungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
                     break;
                 case CoreStatType.HP:
                     if (isIncrease == true && hpIncRoutine == null)

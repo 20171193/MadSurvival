@@ -137,6 +137,15 @@ namespace Jc
             // 플레이어 사망시 게임종료
             player.OnPlayerDie += OnEndGame;
             totalTimer = StartCoroutine(TotalGameTimer());
+            
+        }
+        private void OnEnable()
+        {
+            Manager.Sound.PlayBGM();
+        }
+        private void OnDisable()
+        {
+            Manager.Sound.StopBGM();
         }
 
         public void EnterNight()
@@ -150,6 +159,7 @@ namespace Jc
             dayLight.transform.eulerAngles = nightRot;
             // 플레이어 스포트라이트 적용
             playerSpotLight.intensity = 10f;
+            RenderSettings.ambientIntensity = 0.1f;
 
             isNight = true;
             OnEnterNight?.Invoke();
@@ -164,6 +174,7 @@ namespace Jc
             dayLight.transform.eulerAngles = dayRot;
             // 플레이어 스포트라이트 적용
             playerSpotLight.intensity = 0f;
+            RenderSettings.ambientIntensity = 1f;
 
             isNight = false;
 
@@ -194,24 +205,14 @@ namespace Jc
 
                     dayLight.transform.eulerAngles = Vector3.Lerp(dayRot, dayMiddleRot, dayRate);           // 태양 회전 값 적용
                     playerSpotLight.intensity = Mathf.Lerp(0, 10f, dayRate-0.05f);        // 플레이어 스포트라이트 밝기 적용
-
-                    if(DayTime >= dayChangeTime)
+                    RenderSettings.ambientIntensity = Mathf.Lerp(1f, 0.1f, dayRate);
+                    if (DayTime >= dayChangeTime)
                     {
                         EnterNight();
                         DayTime = 0f;
                         //isEnterFog = false;
                     }
                 }
-                yield return null;
-            }
-        }
-        IEnumerator EnterFogRoutine()
-        {
-            float rate = 0f;
-            while(rate < 1f)
-            {
-                rate += Time.deltaTime * fogSpeed;
-                RenderSettings.fogDensity = Mathf.Lerp(dayFogDensity, nightFogDensity, rate);
                 yield return null;
             }
         }
