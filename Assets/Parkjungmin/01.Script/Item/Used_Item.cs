@@ -9,6 +9,7 @@ namespace jungmin
     {
         public bool isInfinite; 
         // 이 아이템을 사용해도 인벤토리에서 없어지지 않음 여부.
+        
         public Used_Item(ItemData itemdata_) : base(itemdata_){}
         public abstract void Use(Player player);
 
