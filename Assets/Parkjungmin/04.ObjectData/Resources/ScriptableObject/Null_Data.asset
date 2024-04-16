@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: Null_Data
   m_EditorClassIdentifier: 
-  itemName: Null
+  itemName: Null Data
   itemImage: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
   itemtype: 0
+  itemInfo: 
   recipe:
     name: 
     IGD_1:

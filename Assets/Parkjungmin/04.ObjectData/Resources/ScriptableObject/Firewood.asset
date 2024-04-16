@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: Firewood
   m_EditorClassIdentifier: 
-  itemName: Firewood
+  itemName: "\uC7A5\uC791"
   itemImage: {fileID: 21300000, guid: 8e11419cf2db5944da20c690bba82282, type: 3}
   itemtype: 2
-  itemInfo: 
+  itemInfo: "DIY\uC758 \uC2DC\uC791\uC740 \uB098\uBB34\uC5D0\uC11C\uBD80\uD130."
   recipe:
     name: 
     IGD_1:

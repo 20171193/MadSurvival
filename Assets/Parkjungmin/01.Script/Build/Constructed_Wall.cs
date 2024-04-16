@@ -49,7 +49,7 @@ namespace jungmin
             OnDestroyWall?.Invoke(gameObject);
 
             ownHp = maxHp;
-            onGround.type = GroundType.Buildable;
+            onGround.SetOriginType();
             onGround = null;
             base.Release();
         }

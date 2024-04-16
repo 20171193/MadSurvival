@@ -28,6 +28,7 @@ public class ItemManager : Singleton<ItemManager>
         foreach (Item item in items)
         {
             string name = item.itemdata.itemName;
+            Debug.Log($"{name}");
             if (ItemDic.ContainsKey(name)) { continue; } // 만약 딕셔너리가 이 아이템을 이미 포함하고 있었다면 제외.
             ItemDic.Add(name, item);
 

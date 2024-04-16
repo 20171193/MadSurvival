@@ -44,6 +44,7 @@ namespace jungmin
             recipe_slots = Slot_parent.GetComponentsInChildren<RecipeSlot>();
             Page_index = 0;
             PutRecipeInSlot();
+            Debug.Log($"{recipeList.Count}");
             Max_index = (recipeList.Count % 6 == 0) ? recipeList.Count/6 : (recipeList.Count+5)/6;
         } // 기댓값 24 -> recipeList.Count = 22 ,recipeList.Count%6 = 4
 
@@ -51,21 +52,20 @@ namespace jungmin
         void PutRecipeInSlot()
         {
             for(int x = 0; x < recipe_slots.Length; x++)
-            {  //1.만일 레시피 리스트의 카운터를 넘어서는 경우 오류 레시피 넣기.
+            {  //1.만일 레시피 리스트의 카운터를 넘어서는 경우는 끝내기
                 if (x + (6 * Page_index) < recipeList.Count)
                 {
                     recipe_slots[x].recipe = recipeList[x + (6 * Page_index)];
                 }
                 else if(x + (6 * Page_index) >= recipeList.Count)
                 {
-                    recipe_slots[x].recipe = recipeList[0];
+                    break;
                 }
             }
         }
         // Method : 크래프팅 슬롯의 다음 페이지로 이동 ****
         public void NextRecipePage()
         {
-            Debug.Log("Next");
             if (Page_index < Max_index)
             {
                 Debug.Log($"{Page_index}");
@@ -80,7 +80,6 @@ namespace jungmin
         // Method : 크래프팅 슬롯의 이전 페이지로 이동 ****
         public void PastRecipePage()
         {
-            Debug.Log("Past");
             if (Page_index > Min_index)
             {
                 Debug.Log($"{Page_index}");
@@ -147,9 +146,6 @@ namespace jungmin
                 {
                     text.Append($"+{SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Name}*{SelectedSlot_Recipe.instance.slot.recipe.IGD_3.IGD_Count}");
                 }
-
-                Debug.Log(text);
-
                 Recipe_Info.text = text.ToString();
             }
         
