@@ -131,6 +131,7 @@ namespace Jc
 
         private void Awake()
         {
+            Manager.Data.LoadPlayerData();
             trigger.owner = this;
         }
         private void Update()
@@ -152,11 +153,6 @@ namespace Jc
                     Manager.Navi.EnterPlayerGround(currentGround);
                 }
             }
-        }
-
-        private void Gravity()
-        {
-
         }
 
         private void Move()

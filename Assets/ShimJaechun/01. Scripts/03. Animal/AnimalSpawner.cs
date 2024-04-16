@@ -58,6 +58,9 @@ namespace Jc
 
         public void OnSpawn(int day)
         {
+            // 16일 이후는 16일차의 동물을 계속해서 스폰
+            if (day > 16) day = 16;
+
             if (!Manager.Data.daysAnimalDataDic.ContainsKey(day)) 
                 return;
 

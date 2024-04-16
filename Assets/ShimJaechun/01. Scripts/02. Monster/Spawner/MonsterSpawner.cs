@@ -64,8 +64,22 @@ namespace Jc
             if (spawnRoutine != null)
                 StopCoroutine(spawnRoutine);
 
+            // 16일 이후는 16일차의 몬스터를 계속해서 스폰
+            if (day > 16) day = 16;
+
             if (!Manager.Data.daysWaveDataDic.ContainsKey(day))
                 return;
+
+            spawnCount = 0;
+
+            // 총 몬스터 스폰갯수 체크
+            for (int i =0; i< Manager.Data.daysWaveDataDic[day].spawnList.Count; i++)
+            {
+                for(int j =0; j< Manager.Data.daysWaveDataDic[day].spawnList[i].monsterList.Count; j++)
+                {
+                    spawnCount += Manager.Data.daysWaveDataDic[day].spawnList[i].monsterList[j];
+                }
+            }
 
             spawnRoutine = StartCoroutine(SpawnRoutine(day));
         }
@@ -103,7 +117,6 @@ namespace Jc
                     Monster spawned = (Monster)Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
                     spawned.OnMonsterDie += MonsterDie;
                     spawned.FSM.ChangeState("Idle");
-                    spawnCount++;
                 }
             }
         }
