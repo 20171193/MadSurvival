@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Jc
 {
@@ -26,7 +27,5 @@ namespace Jc
 
             OffDetectTarget?.Invoke();
         }
-
-
     }
 }

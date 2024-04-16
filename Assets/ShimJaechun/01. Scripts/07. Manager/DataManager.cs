@@ -5,6 +5,9 @@ using UnityEngine.Playables;
 using System.Collections.Generic;
 using Jc;
 using System.Linq;
+using UnityEngine.UIElements;
+using UnityEngine.Rendering;
+using System.Reflection;
 
 namespace Jc
 {
@@ -17,6 +20,17 @@ namespace Jc
         DaysAnimalData,
         DaysObstacleData,
         ItemData
+    }
+
+    public struct DaysAnimalInfo
+    {
+        public string animalName;
+        public int spawnCount;
+        public DaysAnimalInfo(string animalName, int spawnCount)
+        {
+            this.animalName = animalName;
+            this.spawnCount = spawnCount;
+        }
     }
 }
 
@@ -35,29 +49,91 @@ public class DataManager : Singleton<DataManager>
     private string daysAnimalDataName = "Data/DaysAnimalData";
     private string itemPrefabName = "Item/Item_";
 
-    // key : 몬스터 이름 / value : 몬스터 프리팹
+    // key : 이름 / value : 프리팹
     public Dictionary<string, Monster> monsterDic;
+    public Dictionary<string, Animal> animalDic;
 
     // 로드해서 관리될 Dictionary
     public Dictionary<string, MonsterData> monsterDataDic;
     public Dictionary<string, Dictionary<int,ObstacleData>> obstacleDataDic;
-    public Dictionary<int, Dictionary<int, WaveData>> daysWaveDataDic;
+    public Dictionary<int, WaveData> daysWaveDataDic;
     public Dictionary<int, DaysObstacleData> daysObstacleDataDic;
     public Dictionary<string, AnimalData> animalDataDic;
-    //Dictionary<int,Dictionary<Animal, int>>
+    public Dictionary<int, List<DaysAnimalInfo>> daysAnimalDataDic;
+
+    [SerializeField]
+    private PlayerData prData;
+    public PlayerData PrData { get { return prData; } }
 
     private void OnEnable()
     {
         monsterDataDic = new Dictionary<string, MonsterData>();
         obstacleDataDic = new Dictionary<string, Dictionary<int, ObstacleData>>();
-        daysWaveDataDic = new Dictionary<int, Dictionary<int, WaveData>>();
+        daysWaveDataDic = new Dictionary<int, WaveData>();
         daysObstacleDataDic = new Dictionary<int, DaysObstacleData>();
         animalDataDic = new Dictionary<string, AnimalData>();
+        daysAnimalDataDic = new Dictionary<int, List<DaysAnimalInfo>>();
+
+        // 플레이어 데이터 로드
+        prData = new PlayerData();
+        LoadPlayerData();
 
         LoadData(DataType.MonsterData);
         // 몬스터 등록
         RegistMonster();
         LoadData(DataType.DaysWaveData);
+        LoadData(DataType.AnimalData);
+        // 동물 등록
+        RegistAnimal();
+        LoadData(DataType.DaysAnimalData);
+    }
+
+    private void OnDisable()
+    {
+        SavePlayerData();
+    }
+
+    public void SavePlayerData()
+    {
+        if(Directory.Exists($"{dataPath}/JsonData") == false)
+        {
+            Directory.CreateDirectory($"{dataPath}/JsonData");
+        }
+
+        // 수치적용
+        float monsterATKValue = prData.extraMonsterATK * 0.1f;
+        prData.extraMonsterATK = prData.prevMonsterATK + prData.extraMonsterATK * 0.1f;
+        prData.extraTreeATK = prData.prevTreeATK + prData.extraTreeATK * 0.1f;
+        prData.extraStoneATK = prData.prevStoneATK + prData.extraStoneATK * 0.1f;
+        prData.extraHunger = prData.prevHunger + prData.extraHunger * 0.1f;
+        prData.extraThirst = prData.prevThirst + prData.extraThirst * 0.1f;
+
+        string json = JsonUtility.ToJson(prData, true);
+        File.WriteAllText($"{dataPath}/JsonData/PlayerData.txt", json);
+    }
+    public void LoadPlayerData()
+    {
+        if (File.Exists($"{dataPath}/JsonData/PlayerData.txt") == false)
+        {
+            return;
+        }
+
+        string json = File.ReadAllText($"{dataPath}/JsonData/PlayerData.txt");
+        try
+        {
+            prData = JsonUtility.FromJson<PlayerData>(json);
+            prData.prevMonsterATK = prData.extraMonsterATK;
+            prData.prevTreeATK = prData.extraTreeATK;
+            prData.prevStoneATK = prData.extraStoneATK;
+            prData.prevHunger = prData.extraHunger;
+            prData.prevThirst = prData.extraThirst;
+            GameObject.FindWithTag("Player").GetComponent<PlayerStat>().LoadBaseStat(prData);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogWarning($"Load data fail : { ex.Message}");
+            return;
+        }
     }
 
     private void RegistMonster()
@@ -67,7 +143,7 @@ public class DataManager : Singleton<DataManager>
         Monster[] monsterPrefabs = Resources.LoadAll<Monster>("Monster");
         if(monsterPrefabs.Length < 1)
         {
-            Debug.Log("몬스터 데이터가 없습니다.");
+            Debug.Log("몬스터 프리팹데이터가 없습니다.");
             return;
         }
 
@@ -77,8 +153,23 @@ public class DataManager : Singleton<DataManager>
             if (monsterDic.ContainsKey(name)) continue;
 
             monsterDic.Add(name, monster);
-            // 몬스터 등록 시 풀링
-            Manager.Pool.CreatePool(monster, monster.Size, 20);
+        }
+    }
+    private void RegistAnimal()
+    {
+        animalDic = new Dictionary<string, Animal>();
+        Animal[] animalPrefabs = Resources.LoadAll<Animal>("Animal");
+        if(animalPrefabs.Length < 1)
+        {
+            Debug.Log("동물 프리팹 데이터가 없습니다.");
+            return;
+        }
+        foreach(Animal animal in animalPrefabs)
+        {
+            string name = animal.AnimalName;
+            if (animalDic.ContainsKey(name)) continue;
+
+            animalDic.Add(name, animal);
         }
     }
 
@@ -111,7 +202,7 @@ public class DataManager : Singleton<DataManager>
             case DataType.AnimalData:
                 try
                 {
-                    CSVToMonsterDataDic(CSVReader.Read(animalDataName));
+                    CSVToAnimalDataDic(CSVReader.Read(animalDataName));
                     return;
                 }
                 catch (Exception ex)
@@ -138,7 +229,18 @@ public class DataManager : Singleton<DataManager>
                 }
                 catch (Exception ex)
                 {
-                    Debug.Log("날짜별 장애물 스폰 데이터가 존재하지 않습니다.");
+                    Debug.Log(ex.Message);
+                    return;
+                }
+            case DataType.DaysAnimalData:
+                try
+                {
+                    CSVToDaysAnimalDataDic(CSVReader.Read(daysAnimalDataName));
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    Debug.Log(ex.Message);
                     return;
                 }
             default:
@@ -171,6 +273,7 @@ public class DataManager : Singleton<DataManager>
             // 3 ats
             // 4 hp
             // 5 amr
+            // 6 dropMeatPercent
             MonsterData loadedData = ScriptableObject.CreateInstance<MonsterData>();
             loadedData.monsterName = (string)csvData[i]["monsterName"];
             loadedData.speed = (float)csvData[i]["speed"];
@@ -178,6 +281,7 @@ public class DataManager : Singleton<DataManager>
             loadedData.ats = (float)csvData[i]["ats"];
             loadedData.hp = (float)csvData[i]["hp"];
             loadedData.amr = (float)csvData[i]["amr"];
+            loadedData.dropMeatPercent = (float)csvData[i]["dropMeatPercent"];
             monsterDataDic.Add(loadedData.monsterName, loadedData);
         }
     }
@@ -230,25 +334,33 @@ public class DataManager : Singleton<DataManager>
         {
             int day = (int)csvData[i]["day"];
 
+            WaveData lodedData = null;
             if (!daysWaveDataDic.ContainsKey(day))
-                daysWaveDataDic.Add(day, new Dictionary<int, WaveData>());
-
-            int waveNum = (int)csvData[i]["wave"];
-            if (!daysWaveDataDic[day].ContainsKey(waveNum))
             {
-                WaveData lodedData = ScriptableObject.CreateInstance<WaveData>();
-                lodedData.spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
-                daysWaveDataDic[day].Add(waveNum, lodedData);
+                lodedData = ScriptableObject.CreateInstance<WaveData>();
+                daysWaveDataDic.Add(day, lodedData);
             }
             else
-                daysWaveDataDic[day][waveNum].spawnList.Add(new SpawnInfo((string)csvData[i]["monsterName"], (int)csvData[i]["spawnCount"]));
+            {
+                lodedData = daysWaveDataDic[day];
+            }
+
+            int waveNum = (int)csvData[i]["wave"] - 1;
+            // 기존 웨이브에 대한 데이터가 없는경우
+            for(int j =0; j<10; j++)     // 총 몬스터의 개수만큼 반복
+            {
+                string monsterName = Define.TryGetMonsterName((Define.MonsterName)j);
+                // 해당 몬스터가 없을 경우
+                int spawnCount = (int)csvData[i][monsterName];
+                lodedData.spawnList[waveNum].monsterList.Add(spawnCount);
+            }
         }
     }
     private void CSVToDaysObstacleDataDic(List<Dictionary<string, object>> csvData)
     {
         for (int i = 0; i < csvData.Count; i++)
         {
-            if (!daysObstacleDataDic.ContainsKey((int)csvData[i]["Day"]))
+            if (!daysObstacleDataDic.ContainsKey((int)csvData[i]["day"]))
             {
                 DaysObstacleData inst = ScriptableObject.CreateInstance<DaysObstacleData>();
 
@@ -258,9 +370,47 @@ public class DataManager : Singleton<DataManager>
                     inst.stones[j] = (int)csvData[i][$"Stone_{j}"];
                 }
 
-                daysObstacleDataDic.Add((int)csvData[i]["Day"], inst);
+                daysObstacleDataDic.Add((int)csvData[i]["day"], inst);
             }
         }
 
+    }
+
+    private void CSVToAnimalDataDic(List<Dictionary<string, object>> csvData)
+    {
+        foreach(Dictionary<string,object> dic in csvData)
+        {
+            string name = (string)dic["animalName"];
+            if (animalDataDic.ContainsKey(name)) continue;
+
+            AnimalData data = ScriptableObject.CreateInstance<AnimalData>();
+            data.hp = (float)dic["hp"];
+            data.speed = (float)dic["speed"];
+            data.atk = (float)dic["atk"];
+            data.ats = (float)dic["ats"];
+            data.amr = (float)dic["amr"];
+            data.detectRange = (float)dic["detectRange"];
+            data.wonderRange = (float)dic["wonderRange"];
+            data.atkRange = (float)dic["atkRange"];
+            data.dropMeatCount = (int)dic["dropMeat"];
+            data.dropNiceMeatCount = (int)dic["dropNiceMeat"];
+            animalDataDic.Add(name, data);
+        }
+    }
+    private void CSVToDaysAnimalDataDic(List<Dictionary<string, object>> csvData)
+    {
+        foreach (Dictionary<string, object> dic in csvData)
+        {
+            int day = (int)dic["day"];
+            if (daysAnimalDataDic.ContainsKey(day)) continue;
+            daysAnimalDataDic.Add(day, new List<DaysAnimalInfo>());
+
+            for(int i =0; i<6; i++)
+            {
+                if (string.IsNullOrEmpty((string)dic[$"animal{i}"])) continue;
+                string[] temp = dic[$"animal{i}"].ToString().Split('_');
+                daysAnimalDataDic[day].Add(new DaysAnimalInfo(temp[0], int.Parse(temp[1])));
+            }
+        }
     }
 }

@@ -1,2 +1,11 @@
-monsterName,speed,atk,ats,hp,amr
-Skeleton,2.5,2.5,1.0,10.0,1.0
+monsterName,speed,atk,ats,hp,amr,dropMeatPercent
+Skeleton,2.0,5.0,1.0,50.0,2.0,0.0
+GreenSkeleton,3.0,8.0,0.9,40.0,0.0,0.0
+RedSkeleton,2.0,15.0,1.3,100.0,0.0,0.1
+BlackSkeleton,2.0,20.0,1.0,150.0,10.0,0.2
+BigSkeleton,3.0,22.0,0.9,200.0,12.0,0.0
+GreenBigSkeleton,3.5,25.0,0.7,300.0,8.0,0.0
+RedBigSkeleton,3.0,45.0,1.1,700.0,8.0,1.0
+BlackBigSkeleton,3.5,30.0,0.7,500.0,6.0,0.0
+Golem,4.0,50.0,0.5,600.0,20.0,0.5
+BlackGolem,2.5,60.0,1.0,800.0,50.0,0.0

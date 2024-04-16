@@ -8,13 +8,20 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
-
 namespace Jc
 {
     public class Monster : PooledObject, ITileable, IDamageable, IKnockbackable
     {
         [Header("Components")]
         [Space(2)]
+        [SerializeField]
+        private AudioSource audioSource;
+        public AudioSource AudioSource { get { return audioSource; } }
+        [Header("사망 시 효과음")]
+        [SerializeField]
+        private AudioClip[] audioClips;
+        public AudioClip[] AudioClips { get { return audioClips; } }
+
         [SerializeField]
         private Rigidbody rigid;
 
@@ -25,6 +32,12 @@ namespace Jc
         [SerializeField]
         private Animator anim;
         public Animator Anim { get { return anim; } }
+
+        [SerializeField]
+        private ExplosionInvoker explosionInvoker;
+
+        [SerializeField]
+        private DropItem meat;
 
         [Space(3)]
         [Header("Linked Class")]
@@ -68,13 +81,8 @@ namespace Jc
 
         private void OnEnable()
         {
-            // 플레이어의 타일 위치가 변경될 경우 발생할 액션
-            Navi.OnChangePlayerGround += OnChangeTarget;
             // 게임맵 할당
             detecter.PlayerGround = Navi.OnPlayerGround;
-
-            // 상태변경
-            fsm.ChangeState("Idle");
         }
 
         private void Update()
@@ -84,7 +92,6 @@ namespace Jc
 
         private void OnDisable()
         {
-            Manager.Navi.OnChangePlayerGround -= OnChangeTarget;
         }
 
         #region 데미지 처리
@@ -107,12 +114,10 @@ namespace Jc
                 stat.OwnHp -= damage;
             }
         }
-
         public void Knockback(float power, float time, Vector3 suspectPos)
         {
             knockBackTimer = StartCoroutine(KnockBackRoutine(power, time, suspectPos));
         }
-
         IEnumerator KnockBackRoutine(float power, float time, Vector3 suspectPos)
         {
             // 네비메시 비활성화
@@ -136,17 +141,29 @@ namespace Jc
         }
         #endregion
 
+        public void DropItem()
+        {
+            // 아이템 확률 적용
+            if (stat.DropMeatPercent == 0) return;
+
+            float rand = Random.Range(1, 10) / 10f;
+            if (rand > stat.DropMeatPercent) return;
+
+            Manager.Pool.GetPool(meat, transform.position + Vector3.up, Quaternion.identity);
+
+            ExplosionInvoker invoker = (ExplosionInvoker)Manager.Pool.GetPool(explosionInvoker, transform.position, Quaternion.identity);
+            invoker.OnExplosion();
+        }
+
         #region 인터페이스 오버라이드
         // 몬스터가 타일에 진입한 경우 세팅
         public void OnTile(Ground ground)
         {
             detecter.OnGround = ground;
         }
-
-        // 플레이어 위치가 변경될 경우 호출될 함수
-        public void OnChangeTarget(Ground playerGround)
+        public Ground GetOnTile()
         {
-            detecter.PlayerGround = playerGround;
+            return detecter.OnGround;
         }
         #endregion
 
@@ -154,6 +171,7 @@ namespace Jc
         {
             base.Release();
             OnMonsterDie?.Invoke(this);
+            ScoreboardInvoker.Instance.killMonster?.Invoke(ScoreType.Monster);
         }
     }
 }

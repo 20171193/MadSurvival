@@ -1,0 +1,60 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using jungmin;
+using Jc;
+using UnityEngine.Events;
+
+namespace jungmin
+{
+    public class Build_Base : Item //구조물이 아이템으로 존재할 때 데이터
+    {
+        [SerializeField] PooledObject bulidPrefab; //실제 구조물을 건설 시 프리팹.
+        public Build_Base(ItemData itemdata_) : base(itemdata_) { }
+
+        [Header("고정 Position 값")]
+        [SerializeField] bool hasPos;
+        [SerializeField] public UnityAction OnBuild;
+
+        // Method : 구조물 건설 ****
+        public void Build(Ground socketGround, BuildDirection direction)
+        {
+            Debug.Log($"Build : {socketGround}");
+            if (!hasPos)
+                Manager.Pool.GetPool(bulidPrefab, socketGround.transform.position, Quaternion.identity);
+            else
+            {
+                Vector3 Pos = Vector3.zero;
+                Vector3 Dir = Vector3.zero;
+
+                switch (direction)
+                {
+                    case BuildDirection.Front:
+                        Pos = new Vector3(socketGround.transform.position.x, 1.2f,socketGround.transform.position.z - 0.8f);
+                        Dir = transform.forward;
+                        break;
+                    case BuildDirection.Back:
+                        Pos = new Vector3(socketGround.transform.position.x, 1.2f, socketGround.transform.position.z + 0.8f);
+                        Dir = -transform.forward;
+                        break;
+                    case BuildDirection.Left:
+                        Pos = new Vector3(socketGround.transform.position.x + 0.8f, 1.2f, socketGround.transform.position.z);
+                        Dir = -transform.right;
+                        break;
+                    case BuildDirection.Right:
+                        Pos = new Vector3(socketGround.transform.position.x-0.8f, 1.2f, socketGround.transform.position.z);
+                        Dir = transform.right;
+                        break;
+
+                }
+
+                PooledObject inst = Manager.Pool.GetPool(bulidPrefab,Pos,Quaternion.identity);
+                inst.transform.forward = Dir;
+
+            }
+            OnBuild?.Invoke();
+           
+            socketGround.type = GroundType.Wall;
+        }
+    }
+}

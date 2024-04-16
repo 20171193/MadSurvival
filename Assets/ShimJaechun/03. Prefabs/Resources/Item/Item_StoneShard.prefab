@@ -150,13 +150,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 30
-  item: {fileID: 7130706432260541210, guid: 371f96330e74b8944826fcd392fc5fa8, type: 3}
+  item: {fileID: -2509482309887584126, guid: 5b878b9bcdbb6894ab4c8a5c0cd02765, type: 3}
   rigid: {fileID: 462675362554930891}
   obTr: {fileID: 7005000834214821678}
   ownerCol: {fileID: 5169645174889809706}
   obCol: {fileID: 8675061976809851401}
   autoRotate: 0
-  rotSpeed: 30
+  rotSpeed: 60
   getSpeed: 0.9
 --- !u!1001 &3452980765095238152
 PrefabInstance:
@@ -241,7 +241,7 @@ BoxCollider:
     m_Bits: 16777216
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 14680064
+    m_Bits: 251134007
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0

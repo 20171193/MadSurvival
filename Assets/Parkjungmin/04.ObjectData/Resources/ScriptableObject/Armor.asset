@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
+  m_Name: Armor
+  m_EditorClassIdentifier: 
+  itemName: "\uAE09\uC870\uD55C \uAC11\uC637"
+  itemImage: {fileID: 21300000, guid: c3ae175e9e7be154ab105ab09a3ba05a, type: 3}
+  itemtype: 0
+  itemInfo: "\uAE09\uC870\uD574\uC11C \uB9CC\uB4E0 \uAC11\uC637. \uC544\uBB34 \uAC83\uB3C4
+    \uC548 \uC785\uB294 \uAC83\uBCF4\uB2E4\uB294 \uB0AB\uB2E4."
+  recipe:
+    name: 
+    IGD_1:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_2:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_3:
+      IGD_Name: 
+      IGD_Count: 0

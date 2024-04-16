@@ -6,6 +6,7 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static Unity.VisualScripting.Member;
 
 namespace Jc
 {
@@ -19,9 +20,17 @@ namespace Jc
         [SerializeField]
         private ExplosionInvoker explosionInvoker;
 
+        [SerializeField]
+        private GameObject digParticleOb;
+
         [Space(3)]
         [Header("Editor Setting")]
         [Space(2)]
+        [SerializeField]
+        private AudioSource aSource;
+        [Header("데미지, 채굴")]
+        [SerializeField]
+        private AudioClip[] aClips;
         [SerializeField]
         private float popItemPower;
         [Range(0, 10f)]
@@ -113,13 +122,27 @@ namespace Jc
         {
             onGround = ground;
         }
-
+        public Ground GetOnTile()
+        {
+            return onGround;
+        }
         public virtual void Digged()
         {
+            aSource.clip = aClips[1];
+            aSource.Play();
+
+            onGround.SetOriginType();
             // 파괴 처리
             DropItem();
+
+            if(obstacleType == ObstacleType.Tree)
+                ScoreboardInvoker.Instance.digTree?.Invoke(ScoreType.Tree);
+            if (obstacleType == ObstacleType.Stone)
+                ScoreboardInvoker.Instance.digStone?.Invoke(ScoreType.Stone);
+
             levelSpecificModel[level].SetActive(false);
-            Release();
+
+            StartCoroutine(Extension.DelayRoutine(1.5f, () => Release()));
         }
         protected virtual void DropItem()
         {
@@ -146,7 +169,7 @@ namespace Jc
                     // 해당 아이템의 스폰위치 지정
                     Vector3 spawnPos = new Vector3(transform.position.x + rand.x, transform.position.y + 0.1f, transform.position.z + rand.y);
 
-                    DropItem getItem = (DropItem)Manager.Pool.GetPool(prefab, spawnPos, Quaternion.identity);
+                    Manager.Pool.GetPool(prefab, spawnPos, Quaternion.identity);
                 }
             }
             // 스폰할 기준점을 중심으로 ExplosionForce를 적용
@@ -155,12 +178,23 @@ namespace Jc
         }
         public void DigUp(float value)
         {
-            Debug.Log($"{gameObject.name} DigUp");
+            float damage = value - amr;
+            if (damage < 1) return;
+
+            digParticleOb.SetActive(true);
+            digParticleOb.GetComponent<ParticleSystem>().Play();
+            StartCoroutine(Extension.DelayRoutine(0.5f, () => digParticleOb.SetActive(false)));
+
             // 데미지 처리
-            ownHp -= 10f;
+            ownHp -= damage;
             if (ownHp <= 0f)
             {
                 Digged();
+            }
+            else
+            {
+                aSource.clip = aClips[0];
+                aSource.Play();
             }
         }
         public ObstacleType GetObstacleType()

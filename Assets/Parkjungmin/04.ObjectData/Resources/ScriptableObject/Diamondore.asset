@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
+  m_Name: Diamondore
+  m_EditorClassIdentifier: 
+  itemName: "\uB2E4\uC774\uC544\uBAAC\uB4DC \uC6D0\uC11D"
+  itemImage: {fileID: 21300000, guid: d284cf543339e1d429b82de8573cd2af, type: 3}
+  itemtype: 2
+  itemInfo: "\uC138\uC0C1\uC5D0\uC11C \uAC00\uC7A5 \uB2E8\uB2E8\uD558\uB2E4\uACE0
+    \uC0DD\uAC01\uB418\uB294 \uBCF4\uC11D\uC758 \uC6D0\uC11D. \uBC18\uC9DD\uAC70\uB9AC\uB294
+    \uAC83\uC744 \uBCF4\uBA74 \uAE30\uBD84\uC774 \uC88B\uC544\uC9C4\uB2E4."
+  recipe:
+    name: 
+    IGD_1:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_2:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_3:
+      IGD_Name: 
+      IGD_Count: 0

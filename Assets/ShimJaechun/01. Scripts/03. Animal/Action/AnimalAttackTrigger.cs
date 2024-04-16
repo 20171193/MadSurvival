@@ -13,7 +13,8 @@ namespace Jc
         private AttackAnimal owner;
 
         [SerializeField]
-        private SphereCollider col;
+        private SphereCollider atkCol;
+        public SphereCollider AtkCol { get { return atkCol; } }
 
         [Space(3)]
         [Header("Balancing")]
@@ -26,7 +27,6 @@ namespace Jc
 
         private void Awake()
         {
-            col.radius = owner.AttackRange - 0.1f;
         }
 
         private void OnTriggerEnter(Collider other)

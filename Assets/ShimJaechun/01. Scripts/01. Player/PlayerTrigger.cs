@@ -7,27 +7,45 @@ using jungmin;
 namespace Jc
 {
     // 충돌관련 이벤트처리
-    public class PlayerTrigger : MonoBehaviour, ITileable, IDamageable
+    public class PlayerTrigger : MonoBehaviour, IDamageable
     {
         public Player owner;
 
-        public void OnTile(Ground ground)
+        public void TakeDamage(float value)
         {
-            owner.currentGround = ground;
-        }
+            float damage = value - owner.Stat.AMR;
+            if (damage < 1) return;
 
-        public void TakeDamage(float damage)
-        {
+
             owner.Stat.OwnHp -= damage;
-            if(owner.Stat.OwnHp <= 0)
-                owner.OnDie();
-            else
+            if (owner.Stat.OwnHp > 0)
+            {
+                owner.Anim.SetTrigger("OnHit");
                 owner.OnTakeDamage();
+            }
         }
-
         public void GetItem(Item item)
         {
             owner.GetItem(item);
+        }
+
+
+        private void OnTriggerStay(Collider other)
+        {
+            // 물에 근접하고 있는 경우
+            if(Manager.Layer.waterLM.Contain(other.gameObject.layer))
+            {
+                owner.IsOnWater = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            // 물에서 벗어난 경우
+            if (Manager.Layer.waterLM.Contain(other.gameObject.layer))
+            {
+                owner.IsOnWater = false;
+            }
         }
     }
 }

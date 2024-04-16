@@ -10,8 +10,13 @@ public static class Manager
     public static DataManager Data {  get { return DataManager.Instance;} }
     // JC - Pool : 오브젝트 풀링
     public static PoolManager Pool { get { return PoolManager.Instance;} }
+    // JC - Scene : 씬 전환 매니저 (비동기 씬 로드)
+    public static SceneManager Scene { get { return SceneManager.Instance; } }
     // JM - 
     public static ItemManager Item { get { return ItemManager.Instance; } }
+
+    // JC - Sound : 사운드매니저 (BGM, UI 효과음)
+    public static SoundManager Sound { get { return SoundManager.Instance;} }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initialize()
@@ -22,6 +27,8 @@ public static class Manager
         LayerManager.ReleaseInstance();
         DataManager.ReleaseInstance();
         ItemManager.ReleaseInstance();
+        SceneManager.ReleaseInstance();
+        SoundManager.ReleaseInstance();
 
         // 싱글턴 객체생성
         PoolManager.CreateInstance();
@@ -29,5 +36,7 @@ public static class Manager
         LayerManager.CreateInstance();
         DataManager.CreateInstance();
         ItemManager.CreateInstance();
+        SceneManager.CreateInstance();
+        SoundManager.CreateInstance();
     }
 }

@@ -7,6 +7,9 @@ namespace Jc
 {
     public class WaterSet : MonoBehaviour
     {
+        // 싱글턴 사용
+        private static WaterSet inst; 
+
         [Serializable]
         public struct WaterGround
         {
@@ -34,6 +37,9 @@ namespace Jc
         [Header("8방향 스폰위치 {0~3:모서리, 4:윗변, 5:아랫변, 6:좌측변, 7:우측변}")]
         [SerializeField]
         private List<WaterGround> groundList;
+        [SerializeField]
+        private List<GameObject> waterList;
+
 
         private void Awake()
         {
@@ -43,31 +49,42 @@ namespace Jc
         [ContextMenu("Spawn")]
         public void Spawn()
         {
-            // 랜덤으로 spawnSize 만큼만 뽑아서 스폰
-            if(isRandomSpawn)
+            if(inst == null)
             {
-                List<int> idxList = new List<int>();
-                for(int i = 0; i< groundList.Count; i++)
+                inst = this;
+
+                // 랜덤으로 spawnSize 만큼만 뽑아서 스폰
+                if (isRandomSpawn)
                 {
-                    idxList.Add(i);
+                    List<int> idxList = new List<int>();
+                    for (int i = 0; i < groundList.Count; i++)
+                    {
+                        idxList.Add(i);
+                    }
+
+                    int cnt = spawnSize;
+                    while (cnt > 0)
+                    {
+                        int rand = UnityEngine.Random.Range(0, idxList.Count - 1);
+                        SpawnWaterGround(idxList[rand]);
+                        idxList.RemoveAt(rand);
+                        cnt--;
+                    }
+                }
+                // 랜덤스폰이 아닌경우 스폰할 수 있는 모든 지역에 스폰
+                else
+                {
+                    for (int i = 0; i < groundList.Count; i++)
+                    {
+                        SpawnWaterGround(i);
+                    }
                 }
 
-                int cnt = spawnSize;
-                while (cnt > 0)
-                {
-                    int rand = UnityEngine.Random.Range(0, idxList.Count - 1);
-                    SpawnWaterGround(idxList[rand]);
-                    idxList.RemoveAt(rand);
-                    cnt--;
-                }
+                DontDestroyOnLoad(gameObject);
             }
-            // 랜덤스폰이 아닌경우 스폰할 수 있는 모든 지역에 스폰
             else
             {
-                for(int i =0; i<groundList.Count; i++)
-                {
-                    SpawnWaterGround(i);
-                }
+                Destroy(gameObject);
             }
         }
 
@@ -78,6 +95,8 @@ namespace Jc
                 Debug.Log("SpawnWaterGround : 인덱스 범위 벗어남");
                 return;
             }
+            // 해당 위치의 물 활성화
+            waterList[index].SetActive(true);
 
             WaterGround waterGround = groundList[index];
             for (int z = waterGround.startPos.z; z < waterGround.startPos.z + waterGround.zSize; z++)
@@ -86,9 +105,9 @@ namespace Jc
                 {
                     Ground ground = Manager.Navi.gameMap[z].groundList[x];
                     Destroy(ground.transform.GetChild(0).gameObject);
-                    GameObject water = Instantiate(waterPrefab, ground.transform.position + Vector3.up, Quaternion.identity);
-                    water.transform.parent = transform;
-                    water.name = $"{z},{x}_Water";
+                    //GameObject water = Instantiate(waterPrefab, ground.transform.position + Vector3.up, Quaternion.identity);
+                    //water.transform.parent = transform;
+                    //water.name = $"{z},{x}_Water";
                     ground.type = GroundType.Water;
                     ground.OriginType = GroundType.Water;
                 }

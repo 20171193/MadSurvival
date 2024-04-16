@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,10 +18,15 @@ namespace Jc
 
     public class PlayerStat : MonoBehaviour
     {
+        private Player owner;
+
         [Header("이동속도")]
         [SerializeField]
         private float maxSpeed;
-        public float MaxSpeed { get { return maxSpeed; } }
+        public float MaxSpeed { get { return maxSpeed; }  set { maxSpeed = value; } }
+        [SerializeField]
+        private float curMaxSpeed;
+        public float CurMaxSpeed { get { return curMaxSpeed; } }
 
         public float speedThreshold;
 
@@ -30,13 +36,35 @@ namespace Jc
         public float MaxHp { get { return maxHp; } }
         [SerializeField]
         private float ownHp;
-        public float OwnHp{get { return ownHp; }
+        public float OwnHp
+        {
+            get { return ownHp; }
             set
             {
+                if (owner.isDie) return;
+
+                float prevHP = ownHp;
                 ownHp = value;
+                
+                if(prevHP>ownHp)
+                {
+                    owner.PlayerSource.clip = owner.PlayerClips[0];
+                    owner.PlayerSource.Play();
+                }
+
+                if (ownHp >= maxHp)
+                    ownHp = maxHp;
+
                 OnChangeHP?.Invoke(ownHp, maxHp);
+
+                if (ownHp <= 0f)
+                    owner.OnDie();
             }
         }
+
+        [SerializeField]
+        private float hpDecValue;
+        public float HpDecValue { get { return hpDecValue; } }
 
         [Header("스테미나")]
         [SerializeField]
@@ -45,26 +73,63 @@ namespace Jc
 
         [SerializeField]
         private float ownStamina;
-        public float OwnStamina{get { return ownStamina; }
+        public float OwnStamina
+        {
+            get { return ownStamina; }
             set
             {
                 ownStamina = value;
+
+                // 레버 이동범위 제한
+                if (ownStamina / MaxStamina <= 0.01f)
+                {
+                    curMaxSpeed = maxSpeed / 2f;
+                    EnterExhaust?.Invoke(); // 탈진 상태 시작
+                }
+                else if (curMaxSpeed < MaxSpeed && ownStamina / MaxStamina < 0.5f)
+                {
+                    curMaxSpeed = maxSpeed / 2f;
+                }
+                else
+                {
+                    ExitExhaust?.Invoke();  // 탈진 상태 탈출
+                    curMaxSpeed = maxSpeed;
+                }
+
                 OnChangeStamina?.Invoke(ownStamina, maxStamina);
             }
         }
+
         public float staminaDecValue;
         public float staminaIncValue;
 
         [Header("갈증")]
         [SerializeField]
         private float maxThirst;
-        public float MaxThirst { get { return maxThirst; } }
+        public float MaxThirst { get { return maxThirst; } set { maxThirst = value; } }
+
         [SerializeField]
         private float ownThirst;
-        public float OwnThirst { get { return ownThirst; } 
-            set 
-            { 
+        public float OwnThirst
+        {
+            get { return ownThirst; }
+            set
+            {              
                 ownThirst = value;
+
+                // 최대 수치 적용
+                if (ownThirst > maxThirst)
+                    ownThirst = maxThirst;
+
+                // 갈증수치가 0인 경우  
+                if (ownThirst <= 0f)
+                {
+                    ownThirst = 0f;
+                    StartTimer(false, CoreStatType.HP, hpDecValue, 1f, 0f, CoreStatType.Thirst);
+                }
+                else
+                    StopTimer(CoreStatType.HP, false, CoreStatType.Thirst);
+                
                 OnChangeThirst?.Invoke(ownThirst, MaxThirst);
             }
         }
@@ -75,24 +140,57 @@ namespace Jc
         public float MaxHunger { get { return maxHunger; } set { maxHunger = value; } }
         [SerializeField]
         private float ownHunger;
-        public float OwnHunger { get { return ownHunger; } 
-            set 
+        public float OwnHunger
+        {
+            get { return ownHunger; }
+            set
             {
                 ownHunger = value;
+
+                // 최대 수치 적용
+                if (ownHunger > maxHunger)
+                    ownHunger = maxHunger;
+
+                // 허기수치가 80이상인 경우
+                if (ownHunger >= 80f)
+                    StartTimer(true, CoreStatType.HP, 5f, 3f, 0);
+                else
+                    StopTimer(CoreStatType.HP, true);
+
+                // 허기수치가 0인 경우  
+                if (ownHunger <= 0f)
+                {
+                    ownHunger = 0f;
+                    StartTimer(false, CoreStatType.HP, hpDecValue, 1f, 0f, CoreStatType.Hunger);
+                }
+                else
+                    StopTimer(CoreStatType.HP, false, CoreStatType.Hunger);
+
                 OnChangeHunger?.Invoke(ownHunger, maxHunger);
             }
         }
 
         [Header("공격력")]
         [SerializeField]
+        private float baseMonsterATK;
+        public float BaseMonsterATK { get { return baseMonsterATK; } set { baseMonsterATK = value; } }
+
+        [SerializeField]
         private float monsterAtk;  // 공격력
         public float MonsterATK
         { get { return monsterAtk; } set { monsterAtk = value; } }
+
+        [SerializeField]
+        private float baseTreeAtk;
+        public float BaseTreeAtk { get { return baseTreeAtk; } set { baseTreeAtk = value; } }
 
         [SerializeField]        // 트리 대상 공격력
         private float treeAtk;
         public float TreeATK { get { return treeAtk; } set { treeAtk = value; } }
 
+        [SerializeField]
+        private float baseStoneAtk;
+        public float BaseStoneAtk { get { return baseStoneAtk; } set { baseStoneAtk = value; } }
         [SerializeField]
         private float stoneAtk; // 바위 대상 공격력
         public float StoneATK { get { return stoneAtk; } set { stoneAtk = value; } }
@@ -146,9 +244,12 @@ namespace Jc
         public UnityEvent<float, float> OnChangeThirst;
         public UnityEvent<float, float> OnChangeHP;
         public UnityEvent<float, float> OnChangeStamina;
+        public UnityEvent EnterExhaust;
+        public UnityEvent ExitExhaust;
 
         private Coroutine hpIncRoutine;
-        private Coroutine hpDecRoutine;
+        private Coroutine hpHungerDecRoutine;
+        private Coroutine hpThirstDecRoutine;
         private Coroutine staminaIncRoutine;
         private Coroutine staminaDecRoutine;
         private Coroutine hungerIncRoutine;
@@ -160,12 +261,28 @@ namespace Jc
 
         private void Awake()
         {
+            owner = GetComponent<Player>();
+            curMaxSpeed = MaxSpeed;
             OwnHp = maxHp;
             OwnStamina = maxStamina;
             OwnHunger = maxHunger;
             OwnThirst = maxThirst;
         }
-        public void StartTimer(bool isIncrease, CoreStatType type, float value, float time = 1f, float maxTime = 0f)
+
+        public void LoadBaseStat(PlayerData lodedData)
+        {
+            if (lodedData == null) return;
+
+            monsterAtk += lodedData.extraMonsterATK;
+            treeAtk += lodedData.extraTreeATK;
+            stoneAtk += lodedData.extraStoneATK;
+
+            MaxHunger += lodedData.extraHunger;
+            MaxThirst += lodedData.extraThirst;
+        }
+
+        // 스텟 증/감 타이머 시작
+        public void StartTimer(bool isIncrease, CoreStatType type, float value, float time = 1f, float maxTime = 0f, CoreStatType causedType = CoreStatType.NULL)
         {
             switch (type)
             {
@@ -184,8 +301,13 @@ namespace Jc
                 case CoreStatType.HP:
                     if (isIncrease == true && hpIncRoutine == null)
                         hpIncRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
-                    else if (isIncrease == false && hpDecRoutine == null)
-                        hpDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime));
+                    else if (isIncrease == false)
+                    {
+                        if (causedType == CoreStatType.Thirst && hpThirstDecRoutine == null)
+                            hpThirstDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime, CoreStatType.Thirst));
+                        else if (causedType == CoreStatType.Hunger && hpHungerDecRoutine == null)
+                            hpHungerDecRoutine = StartCoroutine(TimePerCoreValueRoutine(isIncrease, type, value, time, maxTime, CoreStatType.Hunger));
+                    }
                     break;
                 case CoreStatType.Stamina:
                     if (isIncrease == true && staminaIncRoutine == null)
@@ -197,41 +319,75 @@ namespace Jc
                     break;
             }
         }
-        public void StopTimer(CoreStatType type, bool isIncrease)
+        // 스텟 증/감 타이머 해제
+        public void StopTimer(CoreStatType type, bool isIncrease, CoreStatType causedType = CoreStatType.NULL)
         {
             switch (type)
             {
                 case CoreStatType.Thirst:
                     if (isIncrease == true && thirstIncRoutine != null)
+                    {
                         StopCoroutine(thirstIncRoutine);
+                        thirstIncRoutine = null;
+                    }
                     else if (isIncrease == false && thirstDecRoutine != null)
+                    {
                         StopCoroutine(thirstDecRoutine);
+                        thirstDecRoutine = null;
+                    }
                     break;
                 case CoreStatType.Hunger:
                     if (isIncrease == true && hungerIncRoutine != null)
+                    {
                         StopCoroutine(hungerIncRoutine);
+                        hungerIncRoutine = null;
+                    }
                     else if (isIncrease == false && hungerDecRoutine != null)
+                    {
                         StopCoroutine(hungerDecRoutine);
+                        hungerDecRoutine = null;
+                    }
                     break;
                 case CoreStatType.HP:
                     if (isIncrease == true && hpIncRoutine != null)
+                    {
                         StopCoroutine(hpIncRoutine);
-                    else if (isIncrease == false && hpDecRoutine != null)
-                        StopCoroutine(hpDecRoutine);
+                        hpIncRoutine = null;
+                    }
+                    else if (isIncrease == false)
+                    {
+                        if (causedType == CoreStatType.Thirst && hpThirstDecRoutine != null)
+                        {
+                            StopCoroutine(hpThirstDecRoutine);
+                            hpThirstDecRoutine = null;
+                        }
+                        else if (causedType == CoreStatType.Hunger && hpHungerDecRoutine != null)
+                        {
+                            StopCoroutine(hpHungerDecRoutine);
+                            hpHungerDecRoutine = null;
+                        }
+                    }
                     break;
                 case CoreStatType.Stamina:
                     if (isIncrease == true && staminaIncRoutine != null)
+                    {
                         StopCoroutine(staminaIncRoutine);
+                        staminaIncRoutine = null;
+                    }
                     else if (isIncrease == false && staminaDecRoutine != null)
+                    {
                         StopCoroutine(staminaDecRoutine);
+                        staminaIncRoutine = null;
+                    }
                     break;
                 default:
                     break;
             }
         }
-        IEnumerator TimePerCoreValueRoutine(bool isIncrease, CoreStatType type, float value, float time = 1f, float maxTime = 0f)
+        IEnumerator TimePerCoreValueRoutine(bool isIncrease, CoreStatType type, float value, float time = 1f, float maxTime = 0f, CoreStatType causedType = CoreStatType.NULL)
         {
-            bool infRun = maxTime == 0 ? true : false;
+            // 무한 루프를 사용할 것인지?
+            bool infRun = (maxTime == 0f ? true : false);
             bool flag = true;
             Coroutine curRoutine = null;
             float curTime = 0f;
@@ -259,7 +415,7 @@ namespace Jc
                     case CoreStatType.HP:
                         OwnHp += isIncrease ? value : -value;
                         if (curRoutine == null)
-                            curRoutine = isIncrease ? hpIncRoutine : hpDecRoutine;
+                            curRoutine = isIncrease ? hpIncRoutine : (causedType == CoreStatType.Thirst ? hpThirstDecRoutine : hpHungerDecRoutine);
                         if ((OwnHp <= 0 && !isIncrease) || (OwnHp >= MaxHp && isIncrease))
                             flag = false;
                         break;

@@ -11,14 +11,15 @@ namespace jungmin
         [Header("도끼 공격력")]
         [SerializeField] float atk; //공격력
         public Axe(ItemData itemdata_) : base(itemdata_) { }
+
         public override void Equip(Player player)
         {
-            player.Stat.MonsterATK += atk;
+            player.Stat.TreeATK += atk;
         }
 
         public override void UnEquip(Player player)
         {
-            player.Stat.MonsterATK -= atk;
+            player.Stat.TreeATK -= atk;
         }
     }
 }

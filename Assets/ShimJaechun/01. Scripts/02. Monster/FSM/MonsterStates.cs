@@ -28,6 +28,8 @@ namespace Jc
 
         public override void Enter()
         {
+            owner.GetComponent<CapsuleCollider>().enabled = true;
+            owner.Agent.enabled = true;
             // 일정시간 딜레이 이후 상태전환 -> 트래킹
             delayRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.1f, () => owner.FSM.ChangeState("Tracking")));
         }
@@ -41,7 +43,6 @@ namespace Jc
 
     public class MonsterTracking : MonsterBaseState
     {
-        private Coroutine trackingRoutine;
         public MonsterTracking(Monster owner)
         {
             this.owner = owner;
@@ -51,39 +52,23 @@ namespace Jc
         {
             // 타겟지점으로 트래킹 실행
             owner.Agent.isStopped = false;
-            trackingRoutine = owner.StartCoroutine(TrackingRoutine());
+            owner.Agent.destination = owner.Detecter.PlayerGround.transform.position;
         }
-
-        public override void Update()
+        public override void LateUpdate()
         {
             owner.Anim.SetFloat("MoveSpeed", owner.Agent.velocity.sqrMagnitude);
         }
-
         public override void Exit()
         {
-            if (trackingRoutine != null)
-                owner.StopCoroutine(trackingRoutine);
-
             owner.Anim.SetFloat("MoveSpeed", 0f);
             // 탈출 시 멈춤
-            owner.Agent.isStopped = true;
-        }
-
-        IEnumerator TrackingRoutine()
-        {
-            while(true)
-            {
-                // 0.1초에 한번 씩 길찾기 갱신
-                yield return new WaitForSeconds(0.1f);
-                owner.Detecter.Tracking(owner.Detecter.PlayerGround);
-            }
+            //owner.Agent.isStopped = true;
         }
     }
-
     public class MonsterAttack : MonsterBaseState
     {
         private Coroutine attackRoutine;
-        private GameObject currentTarget;
+
         public MonsterAttack(Monster owner)
         {
             this.owner = owner;
@@ -91,41 +76,52 @@ namespace Jc
         public override void Enter()
         {
             // 공격 중 멈춤
-            owner.Agent.isStopped = true;
+            //owner.Agent.isStopped = true;
+            owner.Agent.destination = owner.Detecter.CurrentTarget.transform.position;
 
-            currentTarget = owner.Detecter.CurrentTarget;
-            attackRoutine = owner.StartCoroutine(AttackRoutine());
+            if (attackRoutine == null)
+                attackRoutine = owner.StartCoroutine(AttackRoutine());
         }
         public override void Exit()
         {
-            if(attackRoutine != null)
+            if (attackRoutine != null)
+            {
                 owner.StopCoroutine(attackRoutine);
+                attackRoutine = null;
+            }
         }
+        public override void Update()
+        {
+
+        }
+
         private void Attack()
         {
             // 회전
-            owner.transform.forward = (currentTarget.transform.position - owner.transform.position).normalized;
+            owner.transform.forward = (owner.Detecter.CurrentTarget.transform.position - owner.transform.position).normalized;
             // 공격
             owner.Anim.SetTrigger("OnAttack");
         }
 
+        private bool TargetCheck()
+        {
+            return owner.Detecter.CurrentTarget && owner.Detecter.CurrentTarget.activeSelf &&
+                (owner.Detecter.CurrentTarget.transform.position - owner.transform.position).sqrMagnitude < 2f;
+        }
+
         IEnumerator AttackRoutine()
         {
-            Attack();
-            yield return null;
-
-            while (owner.Detecter.CurrentTarget == currentTarget)
+            while (TargetCheck())
             {
-                yield return new WaitForSeconds(owner.Stat.ATS);
                 Attack();
+                yield return new WaitForSeconds(owner.Stat.ATS);
             }
 
-            attackRoutine = null;
             owner.FSM.ChangeState("Tracking");
+            attackRoutine = null;
             yield return null;
         }
     }
-
     public class MonsterDie : MonsterBaseState
     {
         private Coroutine dieRoutine;
@@ -136,13 +132,31 @@ namespace Jc
 
         public override void Enter()
         {
+            DieSoundPlay();
+
+            owner.DropItem();
             owner.Agent.isStopped = true;
-            //owner.Anim.SetTrigger("OnDie");
-            dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(0.5f, ()=> owner.FSM.ChangeState("Pooled")));
+            owner.Agent.enabled = false;
+            owner.Anim.SetTrigger("OnDie");
+            owner.GetComponent<CapsuleCollider>().enabled = false;
+            dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(1.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }
+
+        private void DieSoundPlay()
+        {
+            if (owner.AudioSource == null) return;
+            owner.AudioSource.clip = owner.AudioClips[0];
+            owner.AudioSource.Play();
+        }
+
 
         public override void Exit()
         {
+            if(dieRoutine != null)
+            {
+                owner.StopCoroutine(dieRoutine);
+                dieRoutine = null;
+            }
             owner.Release();
         }
     }

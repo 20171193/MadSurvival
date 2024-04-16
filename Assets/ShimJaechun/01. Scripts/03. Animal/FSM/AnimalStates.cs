@@ -2,6 +2,7 @@ using Jc;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Jc
 {
@@ -12,7 +13,6 @@ namespace Jc
     }
     public class AnimalPooled : AnimalBaseState
     {
-
     }
     public class AnimalIdle : AnimalBaseState
     {
@@ -23,6 +23,7 @@ namespace Jc
         }
         public override void Enter()
         {
+            baseOwner.Agent.enabled = true;
             baseOwner.Agent.isStopped = true;
             baseOwner.Anim.SetFloat("MoveSpeed", 0f);
             idleRoutine = baseOwner.StartCoroutine(Extension.DelayRoutine(baseOwner.Stat.IdleTime, () => baseOwner.FSM.ChangeState("Wonder")));
@@ -61,6 +62,8 @@ namespace Jc
         }
         private bool IsArrived()
         {
+            if (!baseOwner.Agent.enabled)
+                return false;
             return baseOwner.Agent.remainingDistance < 0.9f;
         }
         private void SetDestination()
@@ -94,9 +97,44 @@ namespace Jc
     }
     public class AnimalDie : AnimalBaseState
     {
+        private Coroutine dieRoutine;
         public AnimalDie(Animal owner)
         {
             this.baseOwner = owner;
+        }
+        public override void Enter()
+        {
+            ScoreboardInvoker.Instance.killAnimal?.Invoke(ScoreType.Animal);
+
+            // 아이템 드랍
+            baseOwner.DropItem();
+            baseOwner.Anim.SetBool("IsDie", true);
+            if(baseOwner.Agent.enabled)
+                baseOwner.Agent.isStopped = true;
+            dieRoutine = baseOwner.StartCoroutine(Extension.DelayRoutine(1.5f, () => baseOwner.FSM.ChangeState("ReturnPool")));
+        }
+
+        public override void Exit()
+        {
+            if (dieRoutine != null)
+                baseOwner.StopCoroutine(dieRoutine);
+
+            baseOwner.Anim.SetBool("IsDie", false);
+        }
+    }
+    public class AnimalReturnPool : AnimalBaseState
+    {
+        public AnimalReturnPool(Animal owner)
+        {
+            baseOwner = owner;
+        }
+        public override void Enter()
+        {
+            // 초기 세팅으로 원복
+            baseOwner.Agent.enabled = false;
+            baseOwner.Stat.InitSetting();
+            baseOwner.Release();
+            baseOwner.FSM.ChangeState("Pooled");
         }
     }
 }

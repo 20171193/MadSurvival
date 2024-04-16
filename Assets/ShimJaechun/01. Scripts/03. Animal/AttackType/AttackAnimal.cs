@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,10 +25,6 @@ namespace Jc
         private float trackingTime;
         public float TrackingTime { get { return trackingTime; } }
 
-        [SerializeField]
-        private float attackRange;
-        public float AttackRange { get { return attackRange; } }
-
         [Space(3)]
         [Header("Balancing")]
         [Space(2)]
@@ -42,19 +39,34 @@ namespace Jc
             fsm.CreateFSM(this);
             fsm.FSM.AddState("Tracking", new AnimalTracking(this));
             fsm.FSM.AddState("Attack", new AnimalAttack(this));
-            fsm.FSM.Init("Pooled");
 
-            attacker.Range = attackRange;
-            Manager.Navi.OnChangePlayerGround += OnPlayerGround;
+            fsm.FSM.Init("Pooled");
         }
 
-        protected override void OnEnable()
+        private void OnEnable()
         {
-            base.OnEnable();
+            Manager.Navi.OnChangePlayerGround += OnPlayerGround;
+            Trigger.OnTakeDamage += OnTracking;
+        }
+        private void OnDisable()
+        {
+            Manager.Navi.OnChangePlayerGround -= OnPlayerGround;
+            Trigger.OnTakeDamage -= OnTracking;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+
+            attacker.Range = stat.AtkRange;
+            attackTrigger.AtkCol.radius = stat.AtkRange/2f;
         }
 
         public void OnTracking()
         {
+            if (fsm.FSM.CurState == "Die" || fsm.FSM.CurState == "ReturnPool") 
+                return;
+
             fsm.FSM.ChangeState("Tracking");
         }
 

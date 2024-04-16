@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
+  m_Name: BoneFire
+  m_EditorClassIdentifier: 
+  itemName: "\uBAA8\uB2E5\uBD88"
+  itemImage: {fileID: 21300000, guid: 306c6a641dff6c748a8931147b7867bb, type: 3}
+  itemtype: 3
+  itemInfo: "\uC57C\uAC04\uC5D0 \uBE5B\uC744 \uC8FC\uB294 \uD544\uC218\uC801\uC778
+    \uC544\uC774\uD15C. \uADFC\uCC98\uC5D0 \uC788\uC73C\uBA74 \uB9C8\uC74C\uB3C4
+    \uBAB8\uB3C4 \uB530\uB73B\uD55C \uB290\uB08C\uC774 \uB4E0\uB2E4."
+  recipe:
+    name: 
+    IGD_1:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_2:
+      IGD_Name: 
+      IGD_Count: 0
+    IGD_3:
+      IGD_Name: 
+      IGD_Count: 0

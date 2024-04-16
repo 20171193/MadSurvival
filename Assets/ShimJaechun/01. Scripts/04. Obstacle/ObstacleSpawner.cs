@@ -52,6 +52,9 @@ namespace Jc
         // 하루가 지나고 스폰
         public void SpawnObstacle(int day)
         {
+            // 16일 이후는 16일차의 오브젝트를 스폰
+            if (day > 16) day = 16;
+
             // 기존에 스폰되었던 장애물 제거
             OnEnterNextDay?.Invoke();
 

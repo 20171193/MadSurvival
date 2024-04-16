@@ -18,5 +18,7 @@ namespace Jc
         public float hp;
         [Header("방어력")]
         public float amr;
+        [Header("고기를 드랍할 확률")]
+        public float dropMeatPercent;
     }
 }

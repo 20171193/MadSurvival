@@ -71,3 +71,6 @@ MonoBehaviour:
   groundLM:
     serializedVersion: 2
     m_Bits: 16777216
+  waterLM:
+    serializedVersion: 2
+    m_Bits: 16

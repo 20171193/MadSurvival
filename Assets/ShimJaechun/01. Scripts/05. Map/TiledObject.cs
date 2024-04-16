@@ -26,7 +26,10 @@ namespace Jc
             onGround = ground;
             ChangeGroundType(true);
         }
-
+        public Ground GetOnTile()
+        {
+            return onGround;
+        }
         private void ChangeGroundType(bool isEnable)
         {
             //// 게임맵에서 현재 오브젝트가 위치한 타일의 타입을 변경

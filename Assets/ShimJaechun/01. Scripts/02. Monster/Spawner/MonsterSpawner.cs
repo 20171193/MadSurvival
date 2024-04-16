@@ -10,13 +10,12 @@ namespace Jc
     {
         [SerializeField]
         private GameFlowController gameFlow;
-
+        [SerializeField]
+        private List<Monster> monsterPrefabs;
         [SerializeField]
         private float waveSpawnTime;
 
         private Coroutine spawnRoutine;
-
-        private Dictionary<int, WaveData> waveDataDic;
 
         [SerializeField]
         private GroundPos[] spawnablePos;
@@ -50,10 +49,14 @@ namespace Jc
             };
             mapThresholds = new MapThreshold[8]
             {
-                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),new MapThreshold(new GroundPos(0,20), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,40), new GroundPos(19,59)),
-                new MapThreshold(new GroundPos(20,0), new GroundPos(39, 19)),new MapThreshold(new GroundPos(20,40), new GroundPos(39,59)),
-                new MapThreshold(new GroundPos(40, 0), new GroundPos(59, 19)),new MapThreshold(new GroundPos(40, 20), new GroundPos(59,39)),new MapThreshold(new GroundPos(40, 40), new GroundPos(59,59))
+                new MapThreshold(new GroundPos(0,0), new GroundPos(19,19)),  new MapThreshold(new GroundPos(0,19), new GroundPos(19,39)), new MapThreshold(new GroundPos(0,39), new GroundPos(19,59)),
+                new MapThreshold(new GroundPos(19,0), new GroundPos(39, 19)), new MapThreshold(new GroundPos(19,39), new GroundPos(39,59)),
+                new MapThreshold(new GroundPos(39, 0), new GroundPos(59, 19)), new MapThreshold(new GroundPos(39, 19), new GroundPos(59,39)),new MapThreshold(new GroundPos(39, 39), new GroundPos(59,59))
             };
+
+            // 몬스터 풀링
+            foreach(Monster monster in monsterPrefabs)
+                Manager.Pool.CreatePool(monster, monster.Size, 20);
         }
 
         public void OnSpawn(int day)
@@ -61,41 +64,59 @@ namespace Jc
             if (spawnRoutine != null)
                 StopCoroutine(spawnRoutine);
 
+            // 16일 이후는 16일차의 몬스터를 계속해서 스폰
+            if (day > 16) day = 16;
+
             if (!Manager.Data.daysWaveDataDic.ContainsKey(day))
                 return;
-            waveDataDic = Manager.Data.daysWaveDataDic[day];
-            spawnRoutine = StartCoroutine(SpawnRoutine());
+
+            spawnCount = 0;
+
+            // 총 몬스터 스폰갯수 체크
+            for (int i =0; i< Manager.Data.daysWaveDataDic[day].spawnList.Count; i++)
+            {
+                for(int j =0; j< Manager.Data.daysWaveDataDic[day].spawnList[i].monsterList.Count; j++)
+                {
+                    spawnCount += Manager.Data.daysWaveDataDic[day].spawnList[i].monsterList[j];
+                }
+            }
+
+            spawnRoutine = StartCoroutine(SpawnRoutine(day));
         }
         
-        IEnumerator SpawnRoutine()
+        IEnumerator SpawnRoutine(int day)
         {
-            int spawnWave = 1;
+            int spawnWave = 0;
+            Spawn(day, spawnWave++);
             yield return null;
 
-            while(spawnWave <= 3)
+            while(spawnWave <= 2)
             {
-                Spawn(spawnWave++);
+                Spawn(day, spawnWave++);
                 yield return new WaitForSeconds(waveSpawnTime);
             }
         }
-        private void Spawn(int wave)
+        private void Spawn(int day, int wave)
         {
-            if (waveDataDic == null) return;
-            if (!waveDataDic.ContainsKey(wave)) return;
+            if (!Manager.Data.daysWaveDataDic.ContainsKey(day)) return;
+            if (Manager.Data.daysWaveDataDic[day] == null) return;
 
-            foreach(SpawnInfo spawnInfo in waveDataDic[wave].spawnList)
+            for(int i =0; i< Manager.Data.daysWaveDataDic[day].spawnList[wave].monsterList.Count; i++)
             {
-                string monsterName = spawnInfo.monsterName;
-                for(int i =0; i<spawnInfo.count; i++)
+                if (Manager.Data.daysWaveDataDic[day].spawnList[wave].monsterList[i] < 1) continue;
+                string monsterName = Define.TryGetMonsterName((Define.MonsterName)i);
+
+                for (int j = 0; j < Manager.Data.daysWaveDataDic[day].spawnList[wave].monsterList[i]; j++)
                 {
                     Ground spawnGround = null;
-                    while(spawnGround == null)
+                    while (spawnGround == null)
                     {
                         spawnGround = SetSpawnPos();
                     }
+
                     Monster spawned = (Monster)Manager.Pool.GetPool(Manager.Data.monsterDic[monsterName], spawnGround.transform.position, Quaternion.identity);
                     spawned.OnMonsterDie += MonsterDie;
-                    spawnCount++;
+                    spawned.FSM.ChangeState("Idle");
                 }
             }
         }
@@ -116,7 +137,7 @@ namespace Jc
 
             // bfs 탐색
             Queue<GroundPos> q = new Queue<GroundPos>();
-            bool[,] visited = new bool[20, 20];
+            bool[,] visited = new bool[21, 21];
 
             // 중점부터 각 변까지의 거리
             int resol = Manager.Navi.mapZsize / 3 / 2;
@@ -133,7 +154,8 @@ namespace Jc
 
             q.Enqueue(startPos);
             visited[startPos.z - minZ, startPos.x - minX] = true;
-            while(q.Count > 0)
+
+            while (q.Count > 0)
             {
                 GroundPos curPos = q.Dequeue();
                 for (int i = 0; i < 4; i++)
