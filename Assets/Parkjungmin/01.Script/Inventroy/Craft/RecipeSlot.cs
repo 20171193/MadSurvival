@@ -49,11 +49,33 @@ public class RecipeSlot : MonoBehaviour, IPointerClickHandler
             SelectedSlot_Recipe.instance.slot.SetColorBG(255);
             SelectedSlot_Recipe.instance.slot = this;
             SetColorBG(0);
+            if (RecipeController.instance != null)
+            {
+                for(int x=0;x<RecipeController.instance.recipe_slots.Length;x++)
+                {
+                    if (RecipeController.instance.recipe_slots[x] == this)
+                    {
+                        RecipeController.instance.Selected_Slot_index = x;
+                    }
+                }
+
+            }
         }
         else
         {
             SelectedSlot_Recipe.instance.slot = this;
             SetColorBG(0);
+            if (RecipeController.instance != null)
+            {
+                for (int x = 0; x < RecipeController.instance.recipe_slots.Length; x++)
+                {
+                    if (RecipeController.instance.recipe_slots[x] == this)
+                    {
+                        RecipeController.instance.Selected_Slot_index = x;
+                    }
+                }
+
+            }
         }
 
     }
