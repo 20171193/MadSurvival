@@ -14,6 +14,7 @@ namespace jungmin
         [Header("벽의 체력")]
         public float maxHp;
         public float ownHp;
+        public AudioSource OnDamagedSound;
 
         public float OwnHp
         {
@@ -24,7 +25,7 @@ namespace jungmin
             set
             {
                 ownHp = value;
-
+                OnDamagedSound?.Play();
                 if (ownHp <= 0)
                 {
                     Release();

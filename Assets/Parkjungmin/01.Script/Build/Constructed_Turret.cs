@@ -14,6 +14,8 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
     public List<GameObject> target_List = new List<GameObject>(); //몬스터 큐 
     [SerializeField]
     private Ground onGround;
+    [SerializeField]
+    public AudioSource DamagedSound;
 
     [Header("터렛의 체력")]
     public float maxHp;
@@ -28,7 +30,7 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
         set
         {
             ownHp = value;
-
+            DamagedSound?.Play();
             if(ownHp <= 0)
             {
                 Release();

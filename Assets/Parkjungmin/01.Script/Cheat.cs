@@ -33,7 +33,7 @@ public class Cheat : MonoBehaviour
 
                     bottle.ownCapacity = bottle.maxCapacity;
                     QuickSlotController.instance.slots[x].UpdateSlotCount();
-                    Debug.Log("물병 채워짐");
+                    //Debug.Log("물병 채워짐");
                 }
             }
         }

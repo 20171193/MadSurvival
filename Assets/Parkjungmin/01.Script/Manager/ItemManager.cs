@@ -4,6 +4,8 @@ using UnityEngine;
 using jungmin;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.Events;
+using JetBrains.Annotations;
 namespace jungmin
 {
     public enum ItemType
@@ -16,6 +18,7 @@ public class ItemManager : Singleton<ItemManager>
 {
     public Dictionary<string, Item> ItemDic = new Dictionary<string, Item>();
     bool ready_Craft;
+
     private void Start()
     {
         ItemDicInit();
@@ -264,6 +267,7 @@ public class ItemManager : Singleton<ItemManager>
             {
                 //2. 조합법의 결과 아이템 인벤토리에 추가.
                 BackPackController.instance.AcquireItem(ItemDic[SelectedSlot_Recipe.instance.slot.recipe_name]);
+                BackPackController.instance.craftsound?.Play();
                 Debug.Log("크래프팅 생성");
 
 

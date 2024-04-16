@@ -17,7 +17,9 @@ namespace jungmin
         [SerializeField] GameObject destroy_Button;
         [SerializeField] TMP_Text itemName;
         [SerializeField] TMP_Text item_info;
-        [SerializeField] PlayerItemController playerItemController; 
+        [SerializeField] PlayerItemController playerItemController;
+        [SerializeField] AudioSource buttonclick;
+        
 
         public void Start()
         {
@@ -29,6 +31,7 @@ namespace jungmin
         //Method : **** 활성화 되었을 때, 툴팁의 필드에 현재 아이템 데이터 할당 ****
         private void OnEnable()
         {
+            buttonclick?.Play();
             if(destroy_Button.activeSelf == false)
             {
                 destroy_Button.SetActive(true);
@@ -61,6 +64,7 @@ namespace jungmin
         // Method : ****    사용 버튼   ****
         public void Button_Use()
         {
+            buttonclick?.Play();
             // 1.플레이어에서 Use() 메소드 사용
             playerItemController.Use();
             // 2.사용 후 슬롯의 개수 UI 업데이트 
@@ -77,6 +81,7 @@ namespace jungmin
         // Method : ****    제거 버튼   ****
         public void Button_Destroy()
         {
+            buttonclick?.Play();
             SelectedSlot_Inventory.instance.SelectedSlot.ClearSlot();
             gameObject.SetActive(false);
         }
@@ -85,6 +90,7 @@ namespace jungmin
         // Method : ****    취소 버튼   ****
         public void Button_Cancel()
         {
+            buttonclick?.Play();
             transform.gameObject.SetActive(false);
         }
         void IsEquipItem()
