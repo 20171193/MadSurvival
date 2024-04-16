@@ -19,13 +19,14 @@ namespace jungmin
         List<Dictionary<string, object>> reader;
         public List<Recipe> recipeList = new List<Recipe>(); //레시피 리스트
 
-        [SerializeField] RecipeSlot[] recipe_slots; //레시피 슬롯들
+        [SerializeField] public RecipeSlot[] recipe_slots; //레시피 슬롯들
         [SerializeField] GameObject Slot_parent;
         [SerializeField]
         public TMP_Text Recipe_Info;
         public int Page_index;
         int Max_index;
         int Min_index;
+        public int Selected_Slot_index;
 
         /*
          *0~5 1페이지.
@@ -75,7 +76,14 @@ namespace jungmin
                 {
                     slot.ResetSlot();
                 }
+                if (SelectedSlot_Recipe.instance.slot != null)
+                {
+                    SelectedSlot_Recipe.instance.slot.SetColorBG(255);
+                    SelectedSlot_Recipe.instance.slot = null;
+                    Recipe_Info.text = "";
+                }
             }
+
         }
         // Method : 크래프팅 슬롯의 이전 페이지로 이동 ****
         public void PastRecipePage()
@@ -89,6 +97,14 @@ namespace jungmin
                 {
                     slot.ResetSlot();
                 }
+                if(SelectedSlot_Recipe.instance.slot != null)
+                {
+                    SelectedSlot_Recipe.instance.slot.SetColorBG(255);
+                    SelectedSlot_Recipe.instance.slot = null;
+                    Recipe_Info.text = "";
+                }
+
+               
             }
         }
         // Method : 레시피 CSV 파일의 데이터를 레시피 List에 넣음 ****
