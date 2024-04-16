@@ -48,4 +48,4 @@ MonoBehaviour:
   Weapon_Level: 2
   equipType: 0
   atkType: 1
-  atk: 50
+  atk: 100

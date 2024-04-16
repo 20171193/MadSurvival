@@ -10,7 +10,7 @@ public class Turret_Line_Renderer : MonoBehaviour
 
     IEnumerator Set_False_Coroutine()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         gameObject.SetActive(false);
     }
     private void Start()
@@ -28,7 +28,6 @@ public class Turret_Line_Renderer : MonoBehaviour
     private void OnEnable()
     {
         setfalsecoroutine = StartCoroutine(Set_False_Coroutine());
-
     }
 
 
