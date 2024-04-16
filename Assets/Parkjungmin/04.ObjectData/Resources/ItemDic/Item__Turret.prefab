@@ -95,7 +95,7 @@ MonoBehaviour:
   Turret_Head: {fileID: 8397989459413367439}
   turret_Line_Renderer: {fileID: 245947440674374308}
   damageValue: 20
-  range_Radius: 10
+  range_Radius: 1.2
   attackCycle_Time: 2
   nowCyle_Time: 0
   TargetPos: {x: 0, y: 0, z: 0}

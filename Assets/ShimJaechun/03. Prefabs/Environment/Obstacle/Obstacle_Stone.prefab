@@ -38,6 +38,7 @@ Transform:
   - {fileID: 1534303666679755425}
   - {fileID: 5492560192726776733}
   - {fileID: 2041121199856591200}
+  - {fileID: 899982702290891414}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &-1747353356283172662
@@ -122,7 +123,11 @@ MonoBehaviour:
   - {fileID: 6493055372106944671}
   - {fileID: 6487862204150748034}
   explosionInvoker: {fileID: 7579299635910308337, guid: 504e6e517fb46094fa09da03d2fd1126, type: 3}
-  diggedAudio: {fileID: 359517276460104821}
+  digParticleOb: {fileID: 629492773275741862}
+  aSource: {fileID: 359517276460104821}
+  aClips:
+  - {fileID: 8300000, guid: a94c5a3c69c607e48b6f5b6063397f79, type: 3}
+  - {fileID: 8300000, guid: 92de99ddd9e90134a8de718e9c791024, type: 3}
   popItemPower: 10
   popItemRange: 3
   spawnCount: 35
@@ -342,6 +347,77 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 5, z: 1.5}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!1001 &6780686388482550001
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5553646808764641579}
+    m_Modifications:
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243605432956520023, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_Name
+      value: Particle_Dig
+      objectReference: {fileID: 0}
+    - target: {fileID: 6243605432956520023, guid: c58106188744a7642b90217182e0482c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c58106188744a7642b90217182e0482c, type: 3}
+--- !u!1 &629492773275741862 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6243605432956520023, guid: c58106188744a7642b90217182e0482c, type: 3}
+  m_PrefabInstance: {fileID: 6780686388482550001}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &899982702290891414 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5937071590752606823, guid: c58106188744a7642b90217182e0482c, type: 3}
+  m_PrefabInstance: {fileID: 6780686388482550001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8788179967486289213
 PrefabInstance:
   m_ObjectHideFlags: 0

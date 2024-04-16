@@ -6,6 +6,7 @@ using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static Unity.VisualScripting.Member;
 
 namespace Jc
 {
@@ -19,12 +20,17 @@ namespace Jc
         [SerializeField]
         private ExplosionInvoker explosionInvoker;
 
+        [SerializeField]
+        private GameObject digParticleOb;
+
         [Space(3)]
         [Header("Editor Setting")]
         [Space(2)]
         [SerializeField]
-        private AudioSource diggedAudio;
-
+        private AudioSource aSource;
+        [Header("데미지, 채굴")]
+        [SerializeField]
+        private AudioClip[] aClips;
         [SerializeField]
         private float popItemPower;
         [Range(0, 10f)]
@@ -120,10 +126,11 @@ namespace Jc
         {
             return onGround;
         }
-
         public virtual void Digged()
         {
-            diggedAudio.Play();
+            aSource.clip = aClips[1];
+            aSource.Play();
+
             onGround.SetOriginType();
             // 파괴 처리
             DropItem();
@@ -174,11 +181,20 @@ namespace Jc
             float damage = value - amr;
             if (damage < 1) return;
 
+            digParticleOb.SetActive(true);
+            digParticleOb.GetComponent<ParticleSystem>().Play();
+            StartCoroutine(Extension.DelayRoutine(0.5f, () => digParticleOb.SetActive(false)));
+
             // 데미지 처리
             ownHp -= damage;
             if (ownHp <= 0f)
             {
                 Digged();
+            }
+            else
+            {
+                aSource.clip = aClips[0];
+                aSource.Play();
             }
         }
         public ObstacleType GetObstacleType()

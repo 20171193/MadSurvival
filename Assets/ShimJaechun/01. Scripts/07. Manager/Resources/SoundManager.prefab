@@ -47,6 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 2248673773396367673}
+  bgmClips:
+  - {fileID: 8300000, guid: df6b5ed7fa2cfa14eabd0cc693544051, type: 3}
+  - {fileID: 8300000, guid: 52fb9f3d57ccc2446936c45d04b7b351, type: 3}
+  - {fileID: 8300000, guid: 7cbd69a57abdf20498963d8118d6d2d0, type: 3}
   sfxSource: {fileID: 2935719542016581127}
   audioMixer: {fileID: 24100000, guid: 7fba7a5523cf721499cd8da8af14eca7, type: 2}
   sfxClips:
@@ -224,7 +228,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -8694387135244453554, guid: 7fba7a5523cf721499cd8da8af14eca7, type: 2}
   m_audioClip: {fileID: 8300000, guid: 76f96c9b3b4b96947b8333f219315b92, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

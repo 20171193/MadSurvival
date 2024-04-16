@@ -30,11 +30,11 @@ namespace Jc
         [SerializeField]
         private AudioSource interactableSource;
         public AudioSource InteractableSource { get { return interactableSource; } }
-        [Header("음식 섭취, 공격")]
+        [Header("음식 섭취, 빌드")]
         [SerializeField]
         private AudioClip[] interactableClips;
         public AudioClip[] InteractableClips { get { return interactableClips; } }
-        [Header("피격")]
+        [Header("피격, 아이템 획득")]
         [SerializeField]
         private AudioSource playerSource;
         public AudioSource PlayerSource { get { return playerSource; } }
@@ -123,6 +123,8 @@ namespace Jc
         [SerializeField]
         private bool isOnWater = false;
         public bool IsOnWater { get { return isOnWater; } set { isOnWater = value; } }
+
+        public bool isDie = false;
 
         public UnityAction OnPlayerDie;
 
@@ -242,7 +244,8 @@ namespace Jc
         }
         public void OnDie()
         {
-            anim.SetBool("IsDie", true);
+            isDie = true;
+            anim.SetTrigger("OnDie");
             OnPlayerDie?.Invoke();
         }
         #endregion
@@ -275,6 +278,10 @@ namespace Jc
                     }
                 case InteractButtonMode.Build:
                     {
+                        // 빌드 사운드 출력
+                        interactableSource.clip = interactableClips[1];
+                        interactableSource.Play();
+
                         Builder.Build((Build_Base)ItemController.CurQuickSlot.item);
                         break;
                     }
@@ -302,6 +309,10 @@ namespace Jc
         }
         public void GetItem(Item item)
         {
+            // 사운드 출력
+            playerSource.clip = playerClips[1];
+            playerSource.Play();
+
             backPack.AcquireItem(item);
         }
         // 무기 모델적용

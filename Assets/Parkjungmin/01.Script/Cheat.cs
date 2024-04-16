@@ -13,11 +13,11 @@ public class Cheat : MonoBehaviour
         {
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["조잡한 도끼"], 1);
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["조잡한 곡괭이"], 1);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["물병"], 1);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["목재"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["튼튼한 목재"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["다이아몬드"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["철괴"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["조잡한 물병"], 1);
+            //QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["목재"], 100);
+            //QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["튼튼한 목재"], 100);
+            //QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["다이아몬드"], 100);
+            //QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["철괴"], 100);
 
             isOnce = true;
 
