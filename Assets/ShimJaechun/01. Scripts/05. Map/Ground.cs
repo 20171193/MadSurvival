@@ -57,6 +57,7 @@ namespace Jc
 
         [SerializeField]
         public GroundType type;
+
         [SerializeField]
         private GroundType originType;  // 그라운드의 원래 타입 (게임 시작 시 설정 -> 변하지 않음) 
         public GroundType OriginType { get { return originType; } set{ originType = value; } }

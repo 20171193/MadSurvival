@@ -154,6 +154,11 @@ namespace Jc
             }
         }
 
+        private void Gravity()
+        {
+
+        }
+
         private void Move()
         {
             // 플레이어 이동 
@@ -281,7 +286,6 @@ namespace Jc
                     break;
             }
         }
-
         public void OpenBackPack()
         {
             backPack.TryOpenInventory();
