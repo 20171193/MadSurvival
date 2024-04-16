@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: Sword3
   m_EditorClassIdentifier: 
-  itemName: Sword3
+  itemName: "\uB0A0\uCE74\uB85C\uC6B4 \uAC80"
   itemImage: {fileID: 21300000, guid: cb4e53fdf15bbc845948ee7c1d2b12af, type: 3}
   itemtype: 0
-  itemInfo: 
+  itemInfo: "\uCD5C\uACE0\uC758 \uAC80. \uAC00\uBCCD\uACE0 \uB0A0\uCE74\uB85C\uC6CC
+    \uB3CC\uC774\uB098 \uAE08\uC18D\uB3C4 \uC798\uB77C\uB0BC \uC218 \uC788\uC744
+    \uAC83 \uAC19\uB2E4."
   recipe:
     name: 
     IGD_1:

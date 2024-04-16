@@ -68,8 +68,6 @@ namespace Jc
         [SerializeField]
         private Ground onGround;
 
-        private GroundType originType;
-
         [SerializeField]
         private ObstacleSpawner spawner;
 
@@ -116,7 +114,6 @@ namespace Jc
 
         public void OnTile(Ground ground)
         {
-            originType = ground.type;
             onGround = ground;
         }
         public Ground GetOnTile()
@@ -127,7 +124,7 @@ namespace Jc
         public virtual void Digged()
         {
             diggedAudio.Play();
-            onGround.type = originType;
+            onGround.SetOriginType();
             // ÆÄ±« Ã³¸®
             DropItem();
 

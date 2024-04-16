@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: Fence2
   m_EditorClassIdentifier: 
-  itemName: Fence2
+  itemName: "\uD0C4\uD0C4\uD55C \uC6B8\uD0C0\uB9AC"
   itemImage: {fileID: 21300000, guid: 4bca3fb3dbb71cc45975fd724a22e8d2, type: 3}
   itemtype: 3
-  itemInfo: 
+  itemInfo: "\uD0C4\uD0C4\uD55C \uC6B8\uD0C0\uB9AC. \uC774 \uAC83\uC744 \uB6AB\uC73C\uB824\uBA74
+    \uC0DD\uAC01\uBCF4\uB2E4 \uB9CE\uC740 \uC2DC\uAC04\uC774 \uD544\uC694\uD560\uAC70\uB2E4."
   recipe:
     name: 
     IGD_1:

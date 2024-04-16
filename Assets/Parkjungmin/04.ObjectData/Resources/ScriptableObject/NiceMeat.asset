@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab2a25fd21021f49b13dc1573cc5f60, type: 3}
   m_Name: NiceMeat
   m_EditorClassIdentifier: 
-  itemName: NiceMeat
+  itemName: "\uB9DB\uC788\uB294 \uACE0\uAE30"
   itemImage: {fileID: 21300000, guid: 192cbe98d1f501742afe9c5fda3ef42b, type: 3}
   itemtype: 1
-  itemInfo: 
+  itemInfo: "\uACE0\uAE30 \uC911\uC5D0\uC11C\uB3C4 \uD2B9\uC0C1\uD488. \uD55C\uC6B0\uAC00
+    \uBD80\uB7FD\uC9C0 \uC54A\uC740 \uB9DB\uC5D0 \uB4E0\uB4E0\uD558\uAE30\uAE4C\uC9C0
+    \uD558\uB2E4."
   recipe:
     name: 
     IGD_1:

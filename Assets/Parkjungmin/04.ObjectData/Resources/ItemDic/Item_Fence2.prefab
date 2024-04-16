@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6327350156694396432}
   - component: {fileID: 7955698851630743619}
   - component: {fileID: 8833270897494539464}
-  m_Layer: 19
+  m_Layer: 0
   m_Name: Item_Fence_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 4330538167568085640}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.882, y: 0, z: 0}
-  m_LocalScale: {x: 0.71, y: 0.83, z: 1.065}
+  m_LocalPosition: {x: 0.85, y: 0, z: 0}
+  m_LocalScale: {x: 0.65, y: 0.83, z: 1.065}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8049333986055460194}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 7498569557688854189}
   - component: {fileID: 8511790142780403552}
   - component: {fileID: 9027679646131371140}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Item_Fence2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.44, y: 0.81, z: 0.085}
+  m_Extents: {x: 0.68, y: 0.81, z: 0.085}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1

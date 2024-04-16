@@ -11,13 +11,13 @@ public class Cheat : MonoBehaviour
     {
         if (!isOnce)
         {
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Axe"], 1);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["PickAxe"], 1);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Bottle"], 1);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Wood"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Ingots"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Wood2"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["Diamond"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["조잡한 도끼"], 1);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["조잡한 곡괭이"], 1);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["물병"], 1);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["장작"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["철괴"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["튼튼한 목재"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["다이아몬드"], 100);
 
             isOnce = true;
 
