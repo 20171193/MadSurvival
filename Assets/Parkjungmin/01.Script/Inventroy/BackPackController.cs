@@ -17,7 +17,9 @@ namespace jungmin
 		[SerializeField] GameObject Slot_parent;
 		[SerializeField] GameObject inventory_Base;
 		[SerializeField] GameObject toolTip;
-		UnityAction OnCraft;
+        UnityAction OnCraft;
+		public AudioSource craftsound;
+
 
 		private void Start()
 		{
