@@ -19,6 +19,9 @@ public class SoundManager : Singleton<SoundManager>
     [SerializeField] 
     private AudioSource bgmSource;
     [SerializeField]
+    private AudioClip[] bgmClips;
+
+    [SerializeField]
     private AudioSource sfxSource;
 
     [SerializeField]
@@ -32,12 +35,13 @@ public class SoundManager : Singleton<SoundManager>
     public float BGMVolme { get { return bgmSource.volume; } set { bgmSource.volume = value; } }
     public float SFXVolme { get { return sfxSource.volume; } set { sfxSource.volume = value; } }
 
-    public void PlayBGM()
+    public void PlayBGM(int index)
     {
         if (bgmSource.isPlaying)
         {
             bgmSource.Stop();
         }
+        bgmSource.clip = bgmClips[index];
         bgmSource.Play();
     }
 

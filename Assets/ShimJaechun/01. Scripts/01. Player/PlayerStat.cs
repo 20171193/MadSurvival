@@ -41,9 +41,17 @@ namespace Jc
             get { return ownHp; }
             set
             {
+                if (owner.isDie) return;
 
+                float prevHP = ownHp;
                 ownHp = value;
                 
+                if(prevHP>ownHp)
+                {
+                    owner.PlayerSource.clip = owner.PlayerClips[0];
+                    owner.PlayerSource.Play();
+                }
+
                 if (ownHp >= maxHp)
                     ownHp = maxHp;
 

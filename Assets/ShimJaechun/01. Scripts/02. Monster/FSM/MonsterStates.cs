@@ -137,7 +137,7 @@ namespace Jc
             owner.DropItem();
             owner.Agent.isStopped = true;
             owner.Agent.enabled = false;
-            owner.Anim.SetBool("IsDie", true);
+            owner.Anim.SetTrigger("OnDie");
             owner.GetComponent<CapsuleCollider>().enabled = false;
             dieRoutine = owner.StartCoroutine(Extension.DelayRoutine(1.5f, ()=> owner.FSM.ChangeState("Pooled")));
         }
@@ -157,7 +157,6 @@ namespace Jc
                 owner.StopCoroutine(dieRoutine);
                 dieRoutine = null;
             }
-            owner.Anim.SetBool("IsDie", false);
             owner.Release();
         }
     }

@@ -142,17 +142,16 @@ namespace Jc
         }
         private void OnEnable()
         {
-            Manager.Sound.PlayBGM();
+
         }
         private void OnDisable()
         {
-            Manager.Sound.StopBGM();
         }
 
         public void EnterNight()
         {
             Debug.Log("EnterNight");
-
+            StartCoroutine(Extension.DelayRoutine(1.5f, () => Manager.Sound.PlayBGM(2))); 
             // 동물 리턴
             animalSpawner.ReturnAllAnimal();
 
@@ -171,6 +170,7 @@ namespace Jc
         }
         public void ExitNight()
         {
+            Manager.Sound.PlayBGM(1);
             // 태양 회전값 적용
             dayLight.transform.eulerAngles = dayRot;
             // 플레이어 스포트라이트 적용
