@@ -61,6 +61,7 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<string, AnimalData> animalDataDic;
     public Dictionary<int, List<DaysAnimalInfo>> daysAnimalDataDic;
 
+    [SerializeField]
     private PlayerData prData;
     public PlayerData PrData { get { return prData; } }
 
@@ -100,11 +101,12 @@ public class DataManager : Singleton<DataManager>
         }
 
         // 수치적용
-        prData.extraMonsterATK = prData.prevMonsterATK + prData.extraMonsterATK*0.03f;
-        prData.extraTreeATK = prData.prevTreeATK + prData.extraTreeATK*0.03f;
-        prData.extraStoneATK = prData.prevStoneATK + prData.extraStoneATK * 0.03f;
-        prData.extraHunger = prData.prevHunger + prData.extraHunger * 0.03f;
-        prData.extraThirst = prData.prevThirst + prData.extraThirst * 0.03f;
+        float monsterATKValue = prData.extraMonsterATK * 0.1f;
+        prData.extraMonsterATK = prData.prevMonsterATK + prData.extraMonsterATK * 0.1f;
+        prData.extraTreeATK = prData.prevTreeATK + prData.extraTreeATK * 0.1f;
+        prData.extraStoneATK = prData.prevStoneATK + prData.extraStoneATK * 0.1f;
+        prData.extraHunger = prData.prevHunger + prData.extraHunger * 0.1f;
+        prData.extraThirst = prData.prevThirst + prData.extraThirst * 0.1f;
 
         string json = JsonUtility.ToJson(prData, true);
         File.WriteAllText($"{dataPath}/JsonData/PlayerData.txt", json);

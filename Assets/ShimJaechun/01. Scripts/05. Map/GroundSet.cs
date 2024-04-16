@@ -154,10 +154,12 @@ namespace Jc
                     {
                         groundLists[z].groundList[x].type = GroundType.PlayerSpawn;
                         groundLists[z].groundList[x].OriginType = GroundType.PlayerSpawn;
-                        continue;
                     }
-                    groundLists[z].groundList[x].type = GroundType.Buildable;
-                    groundLists[z].groundList[x].OriginType = GroundType.Buildable;
+                    else
+                    {
+                        groundLists[z].groundList[x].type = GroundType.Buildable;
+                        groundLists[z].groundList[x].OriginType = GroundType.Buildable;
+                    }
                     groundLists[z].groundList[x].transform.GetChild(0).GetComponent<MeshRenderer>().SetMaterials(buildableMt);
                 }
             }

@@ -247,6 +247,7 @@ namespace Jc
         IEnumerator DayChangeFadeOutRoutine()
         {
             lootButtonGroup.SetActive(false);
+            ExitNight();
             yield return null;
 
             float rate = 0f;
@@ -257,7 +258,6 @@ namespace Jc
                 yield return null;
             }
 
-            ExitNight();
             fadeImage.color = fadeOutColor;
             Time.timeScale = 1f;
             yield return null;
