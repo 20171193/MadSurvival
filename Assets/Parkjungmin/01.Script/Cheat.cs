@@ -14,10 +14,10 @@ public class Cheat : MonoBehaviour
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["¡∂¿‚«— µµ≥¢"], 1);
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["¡∂¿‚«— ∞Ó±™¿Ã"], 1);
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["π∞∫¥"], 1);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["¿Â¿€"], 100);
-            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["√∂±´"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["∏Ò¿Á"], 100);
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["∆∞∆∞«— ∏Ò¿Á"], 100);
             QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["¥Ÿ¿Ãæ∆∏ÛµÂ"], 100);
+            QuickSlotController.instance.AcquireItem(ItemManager.Instance.ItemDic["√∂±´"], 100);
 
             isOnce = true;
 

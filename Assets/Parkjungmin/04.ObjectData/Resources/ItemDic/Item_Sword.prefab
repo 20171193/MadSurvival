@@ -45,9 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemdata: {fileID: 11400000, guid: 6cea3fb2ea421814097576ceb76063b5, type: 2}
-  Maxdurable: 100
-  Owndurable: 0
   Weapon_Level: 0
   equipType: 0
   atkType: 1
-  atk: 5
+  atk: 15

@@ -16,6 +16,7 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
     private Ground onGround;
     [SerializeField]
     public AudioSource DamagedSound;
+    [SerializeField] Fire_Sound firesound;
 
     [Header("터렛의 체력")]
     public float maxHp;
@@ -71,6 +72,14 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
     {
         if (target_List.Count <= 0) return;
 
+        for (int x = 0; x < target_List.Count; x++)
+        {
+            if (target_List[x] == null || target_List[x].activeSelf == false)
+            {
+                target_List.RemoveAt(x);
+            }
+        }
+
         // 포신 회전
         TurretRotation();
 
@@ -85,6 +94,14 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
     void TurretRotation() //큐에 넣은 순서대로 공격하는 로직.
     {
         if (target_List.Count <= 0) return;
+
+        for (int x = 0; x < target_List.Count; x++)
+        {
+            if (target_List[x] == null || target_List[x].activeSelf == false)
+            {
+                target_List.RemoveAt(x);
+            }
+        }
 
         TargetPos = target_List[0].gameObject.transform.position; 
         TargetDir = (target_List[0].gameObject.transform.position - Turret_Head.transform.position).normalized;
@@ -114,10 +131,15 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
     void DamageToEnemy()
     {
         if (target_List.Count <= 0) return;
-
-
         else if (target_List.Count > 0)
         {
+            for (int x = 0; x < target_List.Count; x++)
+            {
+                if (target_List[x] == null || target_List[x].activeSelf == false)
+                {
+                    target_List.RemoveAt(x);
+                }
+            }
             IDamageable damageable = target_List[0].GetComponent<IDamageable>();
             damageable.TakeDamage(damageValue);
 
@@ -125,7 +147,9 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
             {
                 target_List.RemoveAt(0);
             }
+            firesound?.PlayFire();
         }
+
     }
     public void CheckMonsterLM(Collider other)
     {
@@ -137,6 +161,15 @@ public class Constructed_Turret : Construct, ITileable, IDamageable
                 Debug.Log($"몬스터 {other.gameObject.name}이 목표 리스트에 삽입되었습니다.");
                 if (attakcoroutine == null)
                     attakcoroutine = StartCoroutine(AttackCoroutine());
+
+                for(int x = 0; x < target_List.Count; x++)
+                {
+                    if (target_List[x] == null || target_List[x].activeSelf == false)
+                    {
+                        target_List.RemoveAt(x);
+                    }
+                }
+
             }
         }
     }
