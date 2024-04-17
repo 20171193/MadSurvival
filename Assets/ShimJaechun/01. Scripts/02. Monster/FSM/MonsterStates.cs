@@ -90,10 +90,6 @@ namespace Jc
                 attackRoutine = null;
             }
         }
-        public override void Update()
-        {
-
-        }
 
         private void Attack()
         {
@@ -106,7 +102,7 @@ namespace Jc
         private bool TargetCheck()
         {
             return owner.Detecter.CurrentTarget && owner.Detecter.CurrentTarget.activeSelf &&
-                (owner.Detecter.CurrentTarget.transform.position - owner.transform.position).sqrMagnitude < 2f;
+                (owner.Detecter.CurrentTarget.transform.position - owner.transform.position).sqrMagnitude < 3f;
         }
 
         IEnumerator AttackRoutine()
@@ -116,9 +112,8 @@ namespace Jc
                 Attack();
                 yield return new WaitForSeconds(owner.Stat.ATS);
             }
-
-            owner.FSM.ChangeState("Tracking");
             attackRoutine = null;
+            owner.FSM.ChangeState("Tracking");
             yield return null;
         }
     }

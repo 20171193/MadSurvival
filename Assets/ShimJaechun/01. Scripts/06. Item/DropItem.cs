@@ -33,6 +33,9 @@ namespace Jc
         private float rotSpeed;
         [SerializeField]
         private float getSpeed;
+        [Header("Balancing")]
+        [SerializeField]
+        private bool isDropped = false;
 
         private Coroutine getItemRoutine;
 
@@ -46,6 +49,11 @@ namespace Jc
             // 아이템 회전 적용
             if (autoRotate)
                 obTr.Rotate(Vector3.up * rotSpeed * Time.deltaTime);
+        }
+        private void FixedUpdate()
+        {
+            if (!isDropped)
+                rigid.AddForce(Vector3.down);
         }
 
         private void InitSetting()
@@ -67,6 +75,7 @@ namespace Jc
             autoRotate = true;
             obCol.enabled = false;
             ownerCol.enabled = true;
+            isDropped = true;
         }
 
         private void OnTriggerEnter(Collider other)

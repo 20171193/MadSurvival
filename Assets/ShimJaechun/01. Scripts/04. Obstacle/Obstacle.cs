@@ -80,6 +80,8 @@ namespace Jc
         [SerializeField]
         private ObstacleData obstacleData;
 
+        private bool isDigged = false;
+
         protected virtual void Awake()
         {
             spawnCount = spawnCount > size ? size : spawnCount;
@@ -89,6 +91,7 @@ namespace Jc
         {
             spawner.OnEnterNextDay -= Release;
             base.Release();
+            isDigged = false;
         }
 
         public void InitSetting(string name, int level, ObstacleSpawner spanwer)
@@ -142,6 +145,8 @@ namespace Jc
 
             levelSpecificModel[level].SetActive(false);
 
+            isDigged = true;
+
             StartCoroutine(Extension.DelayRoutine(1.5f, () => Release()));
         }
         protected virtual void DropItem()
@@ -178,6 +183,8 @@ namespace Jc
         }
         public void DigUp(float value)
         {
+            if (isDigged) return;
+
             float damage = value - amr;
             if (damage < 1) return;
 
