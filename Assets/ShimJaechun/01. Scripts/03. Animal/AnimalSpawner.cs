@@ -123,7 +123,6 @@ namespace Jc
             int[] dx = new int[4] { 1, -1, 0, 0 };
 
             q.Enqueue(startPos);
-            Debug.Log($"스폰 : {startPos.z - minZ}, {startPos.x - minX}");
             visited[startPos.z - minZ, startPos.x - minX] = true;
 
             while (q.Count > 0)
@@ -133,9 +132,12 @@ namespace Jc
                 {
                     int nz = dz[i] + curPos.z;
                     int nx = dz[i] + curPos.x;
+                    // 구역 범위를 벗어난 경우 continue
                     if (nz < minZ || nz > maxZ || nx < minX || nx > maxX) continue;
+                    // 이미 방문한 타일인 경우 continue
                     if (visited[nz - minZ, nx - minX]) continue;
 
+                    // 해당 타일의 타입이 Empty일 경우 해당 타일을 반환
                     if (Manager.Navi.gameMap[nz].groundList[nx].type == GroundType.Empty)
                         return Manager.Navi.gameMap[nz].groundList[nx];
 

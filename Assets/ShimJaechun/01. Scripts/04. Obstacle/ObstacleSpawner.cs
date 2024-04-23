@@ -87,9 +87,13 @@ namespace Jc
                     int nz = z + spawnDirections[i].z;
                     int nx = x + spawnDirections[i].x;
 
+                    // 맵 범위를 벗어난 경우 continue
                     if (nz < 0 || nz >= Manager.Navi.mapZsize || nx < 0 || nx >= Manager.Navi.mapXsize) 
                         continue;
+                    
+                    // 해당 타일의 현재 타입을 할당
                     GroundType nType = Manager.Navi.gameMap[nz].groundList[nx].type;
+                    
                     // 장애물이 위치할 수 있는 조건만 리스트에 담기
                     if (nType == GroundType.Empty || nType == GroundType.Buildable)
                         spawnableIDX.Add(i);

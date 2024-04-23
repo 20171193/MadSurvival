@@ -28,12 +28,12 @@ namespace Jc
     ****************************************************************************************/
     public enum GroundType
     {
-        Empty,
-        Buildable,
-        Object,
-        Wall,
-        Water,
-        PlayerSpawn
+        Empty,      // 비어있는 타일
+        Buildable,  // 비어있는 타일 (플레이어가 건물을 지을 수 있는 타일)
+        Object,     // 오브젝트가 스폰된 타일 (나무, 돌 등 플레이어와 상호작용하는 환경 오브젝트)
+        Wall,       // 플레이어가 설치한 벽이 위치한 타일
+        Water,      // 물 타일 (이동 불가능, 플레이어와 상호작용)
+        PlayerSpawn // 하루가 지나고 플레이어가 스폰될 위치
     }
     [Serializable]
     public struct GroundPos
