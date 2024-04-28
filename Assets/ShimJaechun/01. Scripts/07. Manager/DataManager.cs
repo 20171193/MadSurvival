@@ -56,10 +56,10 @@ public class DataManager : Singleton<DataManager>
     // 로드해서 관리될 Dictionary
     public Dictionary<string, MonsterData> monsterDataDic;
     public Dictionary<string, Dictionary<int,ObstacleData>> obstacleDataDic;
-    public Dictionary<int, WaveData> daysWaveDataDic;
-    public Dictionary<int, DaysObstacleData> daysObstacleDataDic;
     public Dictionary<string, AnimalData> animalDataDic;
-    public Dictionary<int, List<DaysAnimalInfo>> daysAnimalDataDic;
+    public Dictionary<int, WaveData> daysWaveDataDic;               // 날짜 별 몬스터 스폰  (해당 날짜의 웨이브 별로 구성)
+    public Dictionary<int, DaysObstacleData> daysObstacleDataDic;   // 날짜 별 장애물 스폰  (레벨 별 구성)
+    public Dictionary<int, List<DaysAnimalInfo>> daysAnimalDataDic; // 날짜 별 동물 스폰 
 
     [SerializeField]
     private PlayerData prData;

@@ -14,6 +14,7 @@ public class PooledObject : MonoBehaviour
     protected int size;
     public int Size { get { return size; } }
 
+    // 오브젝트의 비활성화
     public virtual void Release()
     {
         if (pooler != null)

@@ -19,9 +19,11 @@ namespace Jc
 
     public class StateMachine<TOwner>
     {
+        // 상태머신 소유자
         private TOwner owner;
         public TOwner Owner { get { return owner; } }
 
+        // 현재 상태
         private string curState;
         public string CurState { get { return curState; } }
 
@@ -66,6 +68,8 @@ namespace Jc
         // 상태 전이
         public void ChangeState(string nextState)
         {
+            // 현재 상태 탈출 -> 다음상태 진입
+            // 이전 상태의 Exit이 먼저 호출되고 다음 상태의 Enter호출
             stateDic[curState].Exit();
             curState = nextState;
             stateDic[curState].Enter();

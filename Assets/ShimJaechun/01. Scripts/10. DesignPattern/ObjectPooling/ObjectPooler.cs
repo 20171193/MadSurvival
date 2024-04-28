@@ -4,17 +4,20 @@ using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Pool;
 
+// 각 오브젝트를 풀링할 때 생성될 오브젝트 풀러
 public class ObjectPooler : MonoBehaviour
 {
     [SerializeField]
-    protected Stack<PooledObject> objectPool;
-    [SerializeField]
-    protected PooledObject prefab;
+    protected Stack<PooledObject> objectPool;   // 풀 Stack
+
+    [SerializeField]    
+    protected PooledObject prefab;  // 풀링할 오브젝트
 
     [SerializeField]
-    protected int size;
+    protected int size;     // 할당한 크기
+
     [SerializeField]
-    protected int capacity;
+    protected int capacity; // 용량
 
     public virtual void CreatePool(PooledObject prefab, int size, int capacity)
     {
