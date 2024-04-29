@@ -8,9 +8,6 @@ namespace Jc
     // 베이스 상태
     public class BaseState
     {
-        protected List<Transition> transitions = new List<Transition>();
-        public List<Transition> Transitions { get { return transitions; } }
-
         public virtual void Enter() { }
         public virtual void Update() { }
         public virtual void LateUpdate() { }
