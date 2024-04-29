@@ -5,18 +5,6 @@ using UnityEngine;
 
 namespace Jc
 {
-    // 트랜지션을 통한 상태전이 
-    public struct Transition
-    {
-        public string end;
-        public Func<bool> condition;
-        public Transition(string end, Func<bool> condition)
-        {
-            this.end = end;
-            this.condition = condition;
-        }
-    }
-
     public class StateMachine<TOwner>
     {
         // 상태머신 소유자
@@ -31,31 +19,15 @@ namespace Jc
         private Dictionary<string, BaseState> stateDic;
         public Dictionary<string, BaseState> StateDic { get { return stateDic; } }
 
-        private List<Transition> anyStateTransition;
-
         public StateMachine(TOwner owner)
         {
             this.owner = owner;
-            stateDic = new Dictionary<string, BaseState>();
-            anyStateTransition = new List<Transition>();
+            stateDic = new Dictionary<string, BaseState>(); 
         }
 
         public void AddState(string key, BaseState value)
         {
             stateDic.Add(key, value);
-        }
-
-        // AnyState 추가
-        // 어떤 상태에서든 전이 가능
-        public void AddAnyState(string key, Func<bool> condition)
-        {
-            anyStateTransition.Add(new Transition(key, condition));
-        }
-
-        // 트랜지션 추가
-        public void AddTransition(string start, string end, Func<bool> condition)
-        {
-            stateDic[start].Transitions.Add(new Transition(end, condition));
         }
 
         // 초기 상태 지정
@@ -79,27 +51,6 @@ namespace Jc
         public void Update()
         {
             stateDic[curState].Update();
-
-            // 우선순위 1
-            // AnyState 확인
-            foreach (var transition in anyStateTransition)
-            {
-                if (transition.condition() && transition.end != curState)
-                {
-                    ChangeState(transition.end);
-                    return;
-                }
-            }
-
-            // 상태 전이 확인
-            foreach (var transition in stateDic[curState].Transitions)
-            {
-                if (transition.condition())
-                {
-                    ChangeState(transition.end);
-                    return;
-                }
-            }
         }
 
         public void LateUpdate()
